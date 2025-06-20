@@ -1,0 +1,3 @@
+C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles/minilang.dir
+C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles/edit_cache.dir
+C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles/rebuild_cache.dir
