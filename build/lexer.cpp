@@ -1,6 +1,6 @@
-#line 1 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 1 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
 
-#line 3 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 3 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -352,8 +352,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 14
-#define YY_END_OF_BUFFER 15
+#define YY_NUM_RULES 22
+#define YY_END_OF_BUFFER 23
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -361,11 +361,13 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[29] =
+static const flex_int16_t yy_accept[42] =
     {   0,
-        0,    0,   15,   13,   12,   12,   10,   11,    7,    5,
-        6,    8,    3,    9,    4,    4,    4,   12,    3,    4,
-        4,    4,    1,    4,    4,    4,    2,    0
+        0,    0,   23,   21,   20,   20,   21,   12,   13,    9,
+        7,    8,   10,    5,   11,   18,   21,   19,    6,    6,
+        6,    6,   20,   15,    5,   16,   14,   17,    6,    6,
+        2,    6,    6,    6,    3,    6,    1,    6,    6,    4,
+        0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -373,17 +375,17 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
-        5,    6,    7,    1,    8,    1,    9,   10,   10,   10,
-       10,   10,   10,   10,   10,   10,   10,    1,   11,    1,
-        1,    1,    1,    1,   12,   12,   12,   12,   12,   12,
-       12,   12,   12,   12,   12,   12,   12,   12,   12,   12,
-       12,   12,   12,   12,   12,   12,   12,   12,   12,   12,
-        1,    1,    1,    1,   12,    1,   12,   12,   12,   12,
+        1,    2,    4,    1,    1,    1,    1,    1,    1,    5,
+        6,    7,    8,    1,    9,    1,   10,   11,   11,   11,
+       11,   11,   11,   11,   11,   11,   11,    1,   12,   13,
+       14,   15,    1,    1,   16,   16,   16,   16,   16,   16,
+       16,   16,   16,   16,   16,   16,   16,   16,   16,   16,
+       16,   16,   16,   16,   16,   16,   16,   16,   16,   16,
+        1,    1,    1,    1,   16,    1,   16,   16,   16,   16,
 
-       13,   12,   12,   12,   14,   12,   12,   12,   12,   15,
-       12,   12,   12,   16,   12,   17,   18,   12,   12,   12,
-       12,   12,    1,    1,    1,    1,    1,    1,    1,    1,
+       17,   18,   16,   16,   19,   16,   16,   20,   16,   21,
+       16,   16,   16,   22,   23,   24,   25,   16,   16,   16,
+       16,   16,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -400,44 +402,53 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[19] =
-    {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
-        1,    2,    2,    2,    2,    2,    2,    2
-    } ;
-
-static const flex_int16_t yy_base[30] =
-    {   0,
-        0,    0,   35,   36,   17,   19,   36,   36,   36,   36,
-       36,   36,   24,   36,    0,   18,   19,   21,   21,    0,
-       13,   12,    0,   10,   11,   11,    0,   36,   23
-    } ;
-
-static const flex_int16_t yy_def[30] =
-    {   0,
-       28,    1,   28,   28,   28,   28,   28,   28,   28,   28,
-       28,   28,   28,   28,   29,   29,   29,   28,   28,   29,
-       29,   29,   29,   29,   29,   29,   29,    0,   28
-    } ;
-
-static const flex_int16_t yy_nxt[55] =
-    {   0,
-        4,    5,    6,    7,    8,    9,   10,   11,   12,   13,
-       14,   15,   15,   16,   15,   17,   15,   15,   18,   18,
-       18,   18,   18,   18,   20,   27,   26,   25,   24,   23,
-       19,   22,   21,   19,   28,    3,   28,   28,   28,   28,
-       28,   28,   28,   28,   28,   28,   28,   28,   28,   28,
-       28,   28,   28,   28
-    } ;
-
-static const flex_int16_t yy_chk[55] =
+static const YY_CHAR yy_meta[26] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    5,    5,
-        6,    6,   18,   18,   29,   26,   25,   24,   22,   21,
-       19,   17,   16,   13,    3,   28,   28,   28,   28,   28,
-       28,   28,   28,   28,   28,   28,   28,   28,   28,   28,
-       28,   28,   28,   28
+        2,    1,    1,    1,    1,    2,    2,    2,    2,    2,
+        2,    2,    2,    2,    2
+    } ;
+
+static const flex_int16_t yy_base[43] =
+    {   0,
+        0,    0,   50,   51,   24,   26,   35,   51,   51,   51,
+       51,   51,   51,   37,   51,   33,   32,   31,    0,   24,
+       12,   26,   29,   51,   31,   51,   51,   51,    0,   18,
+        0,   16,   15,   21,    0,   12,    0,   14,   14,    0,
+       51,   32
+    } ;
+
+static const flex_int16_t yy_def[43] =
+    {   0,
+       41,    1,   41,   41,   41,   41,   41,   41,   41,   41,
+       41,   41,   41,   41,   41,   41,   41,   41,   42,   42,
+       42,   42,   41,   41,   41,   41,   41,   41,   42,   42,
+       42,   42,   42,   42,   42,   42,   42,   42,   42,   42,
+        0,   41
+    } ;
+
+static const flex_int16_t yy_nxt[77] =
+    {   0,
+        4,    5,    6,    7,    8,    9,   10,   11,   12,   13,
+       14,   15,   16,   17,   18,   19,   20,   19,   21,   19,
+       19,   22,   19,   19,   19,   23,   23,   23,   23,   31,
+       23,   23,   32,   29,   40,   39,   38,   37,   36,   35,
+       34,   25,   33,   30,   28,   27,   26,   25,   24,   41,
+        3,   41,   41,   41,   41,   41,   41,   41,   41,   41,
+       41,   41,   41,   41,   41,   41,   41,   41,   41,   41,
+       41,   41,   41,   41,   41,   41
+    } ;
+
+static const flex_int16_t yy_chk[77] =
+    {   0,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    5,    5,    6,    6,   21,
+       23,   23,   21,   42,   39,   38,   36,   34,   33,   32,
+       30,   25,   22,   20,   18,   17,   16,   14,    7,    3,
+       41,   41,   41,   41,   41,   41,   41,   41,   41,   41,
+       41,   41,   41,   41,   41,   41,   41,   41,   41,   41,
+       41,   41,   41,   41,   41,   41
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -465,8 +476,8 @@ char *yytext;
 extern FILE* yyin;
 int yylex();
 void yyerror(const char* s);
-#line 468 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
-#line 469 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 479 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 480 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
 
 #define INITIAL 0
 
@@ -685,8 +696,7 @@ YY_DECL
 	{
 #line 13 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
 
-
-#line 689 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 699 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -713,13 +723,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 29 )
+				if ( yy_current_state >= 42 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 36 );
+		while ( yy_base[yy_current_state] != 51 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -745,76 +755,116 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 15 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return INT; }
+#line 14 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return ELSE; } 
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return RETURN; }
+#line 15 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return IF; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ yylval.ival = atoi(yytext); return NUMBER; }
+#line 16 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return INT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 19 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ yylval.id = strdup(yytext); return IDENTIFIER; }
+#line 17 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return RETURN; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 21 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return '+'; }
+#line 19 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ yylval.ival = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 22 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return '-'; }
+#line 20 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ yylval.id = strdup(yytext); return IDENTIFIER; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 23 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return '*'; }
+#line 22 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return '+'; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 24 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return '/'; }
+#line 23 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return '-'; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 26 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return ';'; }
+#line 24 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return '*'; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 27 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return '('; }
+#line 25 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return '/'; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 28 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return ')'; }
+#line 27 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return ';'; }
 	YY_BREAK
 case 12:
-/* rule 12 can match eol */
 YY_RULE_SETUP
-#line 30 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ /* skip whitespace */ }
+#line 28 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return '('; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 32 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
-{ return yytext[0]; }
+#line 29 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return ')'; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
+#line 31 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return EQ; }
+	YY_BREAK
+case 15:
+YY_RULE_SETUP
+#line 32 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return NE; }
+	YY_BREAK
+case 16:
+YY_RULE_SETUP
+#line 33 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return LE; }
+	YY_BREAK
+case 17:
+YY_RULE_SETUP
 #line 34 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return GE; }
+	YY_BREAK
+case 18:
+YY_RULE_SETUP
+#line 35 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return '<'; }
+	YY_BREAK
+case 19:
+YY_RULE_SETUP
+#line 36 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return '>'; }
+	YY_BREAK
+case 20:
+/* rule 20 can match eol */
+YY_RULE_SETUP
+#line 39 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ /* skip whitespace */ }
+	YY_BREAK
+case 21:
+YY_RULE_SETUP
+#line 41 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+{ return yytext[0]; }
+	YY_BREAK
+case 22:
+YY_RULE_SETUP
+#line 43 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
 ECHO;
 	YY_BREAK
-#line 817 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 867 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1111,7 +1161,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 29 )
+			if ( yy_current_state >= 42 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1139,11 +1189,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 29 )
+		if ( yy_current_state >= 42 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 28);
+	yy_is_jam = (yy_current_state == 41);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1819,7 +1869,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 34 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
+#line 43 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
 
 
 int yywrap() {

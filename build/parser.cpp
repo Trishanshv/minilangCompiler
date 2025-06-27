@@ -67,21 +67,28 @@
 
 
 /* First part of user prologue.  */
-#line 4 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+#line 5 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
 
+#define YYDEBUG 1
 #include <vector>
 #include <memory>
 #include "ast.hpp"
-#include "parser.hpp"
 
 extern int yylex();
 void yyerror(const char *s) {
-    fprintf(stderr, "Parser error: %s\n", s);
+    fprintf(stderr, "Error: %s at token '%s'\n", s, yylex);
 }
 
 std::unique_ptr<Program> root;
 
-#line 85 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+template<typename T>
+std::vector<T>* make_vector(T item) {
+    auto vec = new std::vector<T>();
+    vec->push_back(item);
+    return vec;
+}
+
+#line 92 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -119,16 +126,27 @@ enum yysymbol_kind_t
   YYSYMBOL_IF = 7,                         /* IF  */
   YYSYMBOL_ELSE = 8,                       /* ELSE  */
   YYSYMBOL_WHILE = 9,                      /* WHILE  */
-  YYSYMBOL_10_ = 10,                       /* '+'  */
-  YYSYMBOL_11_ = 11,                       /* '-'  */
-  YYSYMBOL_12_ = 12,                       /* '*'  */
-  YYSYMBOL_13_ = 13,                       /* '/'  */
-  YYSYMBOL_14_ = 14,                       /* ';'  */
-  YYSYMBOL_YYACCEPT = 15,                  /* $accept  */
-  YYSYMBOL_program = 16,                   /* program  */
-  YYSYMBOL_statement_list = 17,            /* statement_list  */
-  YYSYMBOL_statement = 18,                 /* statement  */
-  YYSYMBOL_expression = 19                 /* expression  */
+  YYSYMBOL_EQ = 10,                        /* EQ  */
+  YYSYMBOL_NE = 11,                        /* NE  */
+  YYSYMBOL_LE = 12,                        /* LE  */
+  YYSYMBOL_GE = 13,                        /* GE  */
+  YYSYMBOL_14_ = 14,                       /* '+'  */
+  YYSYMBOL_15_ = 15,                       /* '-'  */
+  YYSYMBOL_16_ = 16,                       /* '*'  */
+  YYSYMBOL_17_ = 17,                       /* '/'  */
+  YYSYMBOL_18_ = 18,                       /* '<'  */
+  YYSYMBOL_19_ = 19,                       /* '>'  */
+  YYSYMBOL_20_ = 20,                       /* ';'  */
+  YYSYMBOL_21_ = 21,                       /* '='  */
+  YYSYMBOL_22_ = 22,                       /* '{'  */
+  YYSYMBOL_23_ = 23,                       /* '}'  */
+  YYSYMBOL_24_ = 24,                       /* '('  */
+  YYSYMBOL_25_ = 25,                       /* ')'  */
+  YYSYMBOL_YYACCEPT = 26,                  /* $accept  */
+  YYSYMBOL_program = 27,                   /* program  */
+  YYSYMBOL_statement_list = 28,            /* statement_list  */
+  YYSYMBOL_statement = 29,                 /* statement  */
+  YYSYMBOL_expression = 30                 /* expression  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -454,21 +472,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  7
+#define YYFINAL  21
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   14
+#define YYLAST   174
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  15
+#define YYNTOKENS  26
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  10
+#define YYNRULES  25
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  18
+#define YYNSTATES  60
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   264
+#define YYMAXUTOK   268
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -486,15 +504,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,    12,    10,     2,    11,     2,    13,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    14,
+      24,    25,    16,    14,     2,    15,     2,    17,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    20,
+      18,    21,    19,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,    22,     2,    23,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -508,15 +526,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9
+       5,     6,     7,     8,     9,    10,    11,    12,    13
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    42,    42,    46,    47,    51,    55,    56,    57,    58,
-      59
+       0,    53,    53,    57,    58,    62,    63,    67,    71,    72,
+      73,    74,    75,    82,    83,    84,    85,    86,    87,    88,
+      89,    90,    91,    92,    93,    94
 };
 #endif
 
@@ -533,8 +552,9 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "IDENTIFIER", "NUMBER",
-  "INT", "RETURN", "IF", "ELSE", "WHILE", "'+'", "'-'", "'*'", "'/'",
-  "';'", "$accept", "program", "statement_list", "statement", "expression", YY_NULLPTR
+  "INT", "RETURN", "IF", "ELSE", "WHILE", "EQ", "NE", "LE", "GE", "'+'",
+  "'-'", "'*'", "'/'", "'<'", "'>'", "';'", "'='", "'{'", "'}'", "'('",
+  "')'", "$accept", "program", "statement_list", "statement", "expression", YY_NULLPTR
 };
 
 static const char *
@@ -544,7 +564,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-11)
+#define YYPACT_NINF (-21)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -556,10 +576,14 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-static const yytype_int8 yypact[] =
+static const yytype_int16 yypact[] =
 {
-       5,     8,    13,     5,   -11,   -11,   -10,   -11,   -11,     8,
-       8,     8,     8,   -11,    -3,    -3,   -11,   -11
+      52,   -19,   -21,     0,    14,   -20,   -18,    52,    14,     7,
+      52,   -21,   101,    14,   -13,   -21,   112,    14,    14,    30,
+      53,   -21,   -21,    14,    14,    14,    14,    14,    14,    14,
+      14,    14,    14,   -21,   123,    14,   -21,    69,    85,   -21,
+     -21,   -21,   -21,   -21,   -21,   145,   145,   155,   155,   -21,
+     -21,   -21,   134,    52,    52,   -21,     3,   -21,    52,   -21
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -567,20 +591,24 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     2,     3,     6,     0,     1,     4,     0,
-       0,     0,     0,     5,     7,     8,     9,    10
+       0,    14,    13,     0,     0,     0,     0,     0,     0,     0,
+       2,     3,     0,     0,     0,    14,     0,     0,     0,     0,
+       0,     1,     4,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    12,     0,     0,     5,     0,     0,     8,
+      15,    24,    25,    22,    23,    16,    17,    18,    19,    20,
+      21,     7,     0,     0,     0,     6,     9,    11,     0,    10
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -11,   -11,   -11,    11,    -4
+     -21,   -21,     5,   -10,    -3
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,     4,     6
+       0,     9,    10,    11,    12
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -588,36 +616,74 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       9,    10,    11,    12,    13,    14,    15,    16,    17,    11,
-      12,     1,     5,     7,     8
+      22,    16,    13,    14,    17,    20,    18,    21,    35,    22,
+      34,    58,    19,     0,    37,    38,     0,    15,     2,     0,
+      41,    42,    43,    44,    45,    46,    47,    48,    49,    50,
+       0,     0,    52,     1,     2,     3,     4,     5,     8,     6,
+       0,     0,     0,    56,    57,     0,     0,     0,    59,     0,
+       0,     0,     7,    39,     8,     1,     2,     3,     4,     5,
+       0,     6,     0,    23,    24,    25,    26,    27,    28,    29,
+      30,    31,    32,     0,     7,     0,     8,     0,    40,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,     0,
+       0,     0,     0,     0,    53,    23,    24,    25,    26,    27,
+      28,    29,    30,    31,    32,     0,     0,     0,     0,     0,
+      54,    23,    24,    25,    26,    27,    28,    29,    30,    31,
+      32,    33,    23,    24,    25,    26,    27,    28,    29,    30,
+      31,    32,    36,    23,    24,    25,    26,    27,    28,    29,
+      30,    31,    32,    51,    23,    24,    25,    26,    27,    28,
+      29,    30,    31,    32,    55,    23,    24,    25,    26,     0,
+       0,    29,    30,    31,    32,    23,    24,    25,    26,     0,
+       0,     0,     0,    31,    32
 };
 
 static const yytype_int8 yycheck[] =
 {
-      10,    11,    12,    13,    14,     9,    10,    11,    12,    12,
-      13,     6,     4,     0,     3
+      10,     4,    21,     3,    24,     8,    24,     0,    21,    19,
+      13,     8,     7,    -1,    17,    18,    -1,     3,     4,    -1,
+      23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
+      -1,    -1,    35,     3,     4,     5,     6,     7,    24,     9,
+      -1,    -1,    -1,    53,    54,    -1,    -1,    -1,    58,    -1,
+      -1,    -1,    22,    23,    24,     3,     4,     5,     6,     7,
+      -1,     9,    -1,    10,    11,    12,    13,    14,    15,    16,
+      17,    18,    19,    -1,    22,    -1,    24,    -1,    25,    10,
+      11,    12,    13,    14,    15,    16,    17,    18,    19,    -1,
+      -1,    -1,    -1,    -1,    25,    10,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    -1,    -1,    -1,    -1,    -1,
+      25,    10,    11,    12,    13,    14,    15,    16,    17,    18,
+      19,    20,    10,    11,    12,    13,    14,    15,    16,    17,
+      18,    19,    20,    10,    11,    12,    13,    14,    15,    16,
+      17,    18,    19,    20,    10,    11,    12,    13,    14,    15,
+      16,    17,    18,    19,    20,    10,    11,    12,    13,    -1,
+      -1,    16,    17,    18,    19,    10,    11,    12,    13,    -1,
+      -1,    -1,    -1,    18,    19
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     6,    16,    17,    18,     4,    19,     0,    18,    10,
-      11,    12,    13,    14,    19,    19,    19,    19
+       0,     3,     4,     5,     6,     7,     9,    22,    24,    27,
+      28,    29,    30,    21,     3,     3,    30,    24,    24,    28,
+      30,     0,    29,    10,    11,    12,    13,    14,    15,    16,
+      17,    18,    19,    20,    30,    21,    20,    30,    30,    23,
+      25,    30,    30,    30,    30,    30,    30,    30,    30,    30,
+      30,    20,    30,    25,    25,    20,    29,    29,     8,    29
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    15,    16,    17,    17,    18,    19,    19,    19,    19,
-      19
+       0,    26,    27,    28,    28,    29,    29,    29,    29,    29,
+      29,    29,    29,    30,    30,    30,    30,    30,    30,    30,
+      30,    30,    30,    30,    30,    30
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     1,     2,     3,     1,     3,     3,     3,
-       3
+       0,     2,     1,     1,     2,     3,     5,     4,     3,     5,
+       7,     5,     2,     1,     1,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3
 };
 
 
@@ -1081,61 +1147,160 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: statement_list  */
-#line 42 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { root = std::make_unique<Program>((yyvsp[0].stmt_list)); }
-#line 1087 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 53 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                   { root = std::make_unique<Program>((yyvsp[0].stmt_list)); }
+#line 1153 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
   case 3: /* statement_list: statement  */
-#line 46 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.stmt_list) = new std::vector<Statement*>(); (yyval.stmt_list)->push_back((yyvsp[0].stmt)); }
-#line 1093 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 57 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+              { (yyval.stmt_list) = make_vector((yyvsp[0].stmt)); }
+#line 1159 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
   case 4: /* statement_list: statement_list statement  */
-#line 47 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.stmt_list) = (yyvsp[-1].stmt_list); (yyval.stmt_list)->push_back((yyvsp[0].stmt)); }
-#line 1099 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 58 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                             { (yyvsp[-1].stmt_list)->push_back((yyvsp[0].stmt)); (yyval.stmt_list) = (yyvsp[-1].stmt_list); }
+#line 1165 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
   case 5: /* statement: RETURN expression ';'  */
-#line 51 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.stmt) = new ReturnStatement((yyvsp[-1].expr)); }
-#line 1105 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 62 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                          { (yyval.stmt) = new ReturnStatement((yyvsp[-1].expr)); }
+#line 1171 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
-  case 6: /* expression: NUMBER  */
-#line 55 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.expr) = new IntegerLiteral((yyvsp[0].ival)); }
-#line 1111 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+  case 6: /* statement: INT IDENTIFIER '=' expression ';'  */
+#line 63 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                      { 
+        (yyval.stmt) = new VarDeclaration((yyvsp[-3].id), (yyvsp[-1].expr)); 
+        free((yyvsp[-3].id));
+    }
+#line 1180 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
-  case 7: /* expression: expression '+' expression  */
-#line 56 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+  case 7: /* statement: IDENTIFIER '=' expression ';'  */
+#line 67 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                  { 
+        (yyval.stmt) = new Assignment((yyvsp[-3].id), (yyvsp[-1].expr)); 
+        free((yyvsp[-3].id));
+    }
+#line 1189 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 8: /* statement: '{' statement_list '}'  */
+#line 71 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                           { (yyval.stmt) = new Block((yyvsp[-1].stmt_list)); }
+#line 1195 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 9: /* statement: IF '(' expression ')' statement  */
+#line 72 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                    { (yyval.stmt) = new IFStatement((yyvsp[-2].expr), (yyvsp[0].stmt)); }
+#line 1201 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 10: /* statement: IF '(' expression ')' statement ELSE statement  */
+#line 73 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                                   { (yyval.stmt) = new IFStatement((yyvsp[-4].expr), (yyvsp[-2].stmt), (yyvsp[0].stmt)); }
+#line 1207 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 11: /* statement: WHILE '(' expression ')' statement  */
+#line 74 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                       { (yyval.stmt) = new WhileStatement((yyvsp[-2].expr), (yyvsp[0].stmt)); }
+#line 1213 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 12: /* statement: expression ';'  */
+#line 75 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                   { 
+        (yyval.stmt) = new ExprStatement((yyvsp[-1].expr)); 
+        printf("Parsed expression statement\n");  // Debug output
+    }
+#line 1222 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 13: /* expression: NUMBER  */
+#line 82 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+           { (yyval.expr) = new IntegerLiteral((yyvsp[0].ival)); }
+#line 1228 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 14: /* expression: IDENTIFIER  */
+#line 83 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+               { (yyval.expr) = new VariableExpr((yyvsp[0].id)); free((yyvsp[0].id)); }
+#line 1234 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 15: /* expression: '(' expression ')'  */
+#line 84 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                       { (yyval.expr) = (yyvsp[-1].expr); }
+#line 1240 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 16: /* expression: expression '+' expression  */
+#line 85 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                               { (yyval.expr) = new BinaryExpr('+', (yyvsp[-2].expr), (yyvsp[0].expr)); }
-#line 1117 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1246 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
-  case 8: /* expression: expression '-' expression  */
-#line 57 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+  case 17: /* expression: expression '-' expression  */
+#line 86 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                               { (yyval.expr) = new BinaryExpr('-', (yyvsp[-2].expr), (yyvsp[0].expr)); }
-#line 1123 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1252 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
-  case 9: /* expression: expression '*' expression  */
-#line 58 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+  case 18: /* expression: expression '*' expression  */
+#line 87 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                               { (yyval.expr) = new BinaryExpr('*', (yyvsp[-2].expr), (yyvsp[0].expr)); }
-#line 1129 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1258 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
-  case 10: /* expression: expression '/' expression  */
-#line 59 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+  case 19: /* expression: expression '/' expression  */
+#line 88 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                               { (yyval.expr) = new BinaryExpr('/', (yyvsp[-2].expr), (yyvsp[0].expr)); }
-#line 1135 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1264 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 20: /* expression: expression '<' expression  */
+#line 89 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                              { (yyval.expr) = new ComparisonExpr("<", (yyvsp[-2].expr), (yyvsp[0].expr)); }
+#line 1270 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 21: /* expression: expression '>' expression  */
+#line 90 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                              { (yyval.expr) = new ComparisonExpr(">", (yyvsp[-2].expr), (yyvsp[0].expr)); }
+#line 1276 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 22: /* expression: expression LE expression  */
+#line 91 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                             { (yyval.expr) = new ComparisonExpr("<=", (yyvsp[-2].expr), (yyvsp[0].expr)); }
+#line 1282 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 23: /* expression: expression GE expression  */
+#line 92 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                             { (yyval.expr) = new ComparisonExpr(">=", (yyvsp[-2].expr), (yyvsp[0].expr)); }
+#line 1288 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 24: /* expression: expression EQ expression  */
+#line 93 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                             { (yyval.expr) = new ComparisonExpr("==", (yyvsp[-2].expr), (yyvsp[0].expr)); }
+#line 1294 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+    break;
+
+  case 25: /* expression: expression NE expression  */
+#line 94 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                             { (yyval.expr) = new ComparisonExpr("!=", (yyvsp[-2].expr), (yyvsp[0].expr)); }
+#line 1300 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
     break;
 
 
-#line 1139 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1304 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
 
       default: break;
     }
@@ -1328,5 +1493,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 62 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-
+#line 97 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"

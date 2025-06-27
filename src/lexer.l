@@ -11,7 +11,8 @@ void yyerror(const char* s);
 %}
 
 %%
-
+"else"      { return ELSE; } 
+"if"        { return IF; }
 "int"       { return INT; }
 "return"    { return RETURN; }
 
@@ -26,6 +27,14 @@ void yyerror(const char* s);
 ";"         { return ';'; }
 "("         { return '('; }
 ")"         { return ')'; }
+
+"=="        { return EQ; }
+"!="        { return NE; }
+"<="        { return LE; }
+">="        { return GE; }
+"<"         { return '<'; }
+">"         { return '>'; }
+
 
 [ \t\r\n]+  { /* skip whitespace */ }
 

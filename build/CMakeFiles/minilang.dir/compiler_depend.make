@@ -3,7 +3,6 @@
 
 CMakeFiles/minilang.dir/lexer.cpp.obj: lexer.cpp \
   C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/ast.hpp \
-  parser.hpp \
   C:/msys64/mingw64/include/_mingw.h \
   C:/msys64/mingw64/include/_mingw_mac.h \
   C:/msys64/mingw64/include/_mingw_off_t.h \
@@ -177,11 +176,11 @@ CMakeFiles/minilang.dir/lexer.cpp.obj: lexer.cpp \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/limits.h \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/mm_malloc.h \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stddef.h \
-  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/syslimits.h
+  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/syslimits.h \
+  parser.hpp
 
 CMakeFiles/minilang.dir/parser.cpp.obj: parser.cpp \
   C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/ast.hpp \
-  parser.hpp \
   C:/msys64/mingw64/include/_mingw.h \
   C:/msys64/mingw64/include/_mingw_mac.h \
   C:/msys64/mingw64/include/_mingw_off_t.h \
@@ -349,7 +348,8 @@ CMakeFiles/minilang.dir/parser.cpp.obj: parser.cpp \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/limits.h \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/mm_malloc.h \
   C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stddef.h \
-  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/syslimits.h
+  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/syslimits.h \
+  parser.hpp
 
 CMakeFiles/minilang.dir/src/main.cpp.obj: C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/main.cpp \
   C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/ast.hpp \
@@ -527,6 +527,10 @@ C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/main.cpp:
 
 C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/syslimits.h:
 
+parser.hpp:
+
+C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stddef.h:
+
 C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/mm_malloc.h:
 
 C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/limits.h:
@@ -605,6 +609,12 @@ C:/msys64/mingw64/include/c++/15.1.0/bits/ptr_traits.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/ostream.tcc:
 
+C:/msys64/mingw64/include/c++/15.1.0/bits/std_abs.h:
+
+C:/msys64/mingw64/include/c++/15.1.0/bits/atomic_lockfree_defines.h:
+
+C:/msys64/mingw64/include/c++/15.1.0/bits/stl_vector.h:
+
 C:/msys64/mingw64/include/c++/15.1.0/bits/ostream.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/locale_facets.tcc:
@@ -628,10 +638,6 @@ C:/msys64/mingw64/include/stddef.h:
 C:/msys64/mingw64/include/c++/15.1.0/bits/locale_classes.tcc:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/locale_classes.h:
-
-C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/stddef.h:
-
-parser.hpp:
 
 C:/msys64/mingw64/include/limits.h:
 
@@ -697,13 +703,13 @@ C:/msys64/mingw64/include/_mingw_stat64.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/streambuf_iterator.h:
 
+C:/msys64/mingw64/include/c++/15.1.0/backward/binders.h:
+
 C:/msys64/mingw64/include/c++/15.1.0/bits/allocated_ptr.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/memoryfwd.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/istream:
-
-C:/msys64/mingw64/include/c++/15.1.0/backward/binders.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/atomic_base.h:
 
@@ -714,12 +720,6 @@ C:/msys64/mingw64/include/c++/15.1.0/bit:
 lexer.cpp:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/stl_bvector.h:
-
-C:/msys64/mingw64/include/c++/15.1.0/bits/atomic_lockfree_defines.h:
-
-C:/msys64/mingw64/include/c++/15.1.0/bits/std_abs.h:
-
-C:/msys64/mingw64/include/c++/15.1.0/bits/stl_vector.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/bits/range_access.h:
 
@@ -843,10 +843,6 @@ C:/msys64/mingw64/include/c++/15.1.0/ostream:
 
 C:/msys64/mingw64/include/c++/15.1.0/pstl/pstl_config.h:
 
-C:/msys64/mingw64/include/c++/15.1.0/x86_64-w64-mingw32/bits/cpu_defines.h:
-
-C:/msys64/mingw64/include/c++/15.1.0/stdexcept:
-
 C:/msys64/mingw64/include/c++/15.1.0/bits/align.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/stdlib.h:
@@ -880,3 +876,7 @@ C:/msys64/mingw64/include/c++/15.1.0/bits/stl_tempbuf.h:
 C:/msys64/mingw64/include/c++/15.1.0/x86_64-w64-mingw32/bits/atomic_word.h:
 
 C:/msys64/mingw64/include/c++/15.1.0/x86_64-w64-mingw32/bits/c++allocator.h:
+
+C:/msys64/mingw64/include/c++/15.1.0/stdexcept:
+
+C:/msys64/mingw64/include/c++/15.1.0/x86_64-w64-mingw32/bits/cpu_defines.h:

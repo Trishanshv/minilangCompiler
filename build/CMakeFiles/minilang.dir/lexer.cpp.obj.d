@@ -1,5 +1,5 @@
 CMakeFiles/minilang.dir/lexer.cpp.obj: \
- C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp \
+ C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp \
  C:/msys64/mingw64/include/stdio.h \
  C:/msys64/mingw64/include/corecrt_stdio_config.h \
  C:/msys64/mingw64/include/corecrt.h C:/msys64/mingw64/include/_mingw.h \
@@ -80,7 +80,7 @@ CMakeFiles/minilang.dir/lexer.cpp.obj: \
  C:/msys64/mingw64/include/c++/15.1.0/bits/uses_allocator.h \
  C:/msys64/mingw64/include/c++/15.1.0/bits/uses_allocator_args.h \
  C:/msys64/mingw64/include/c++/15.1.0/tuple \
- C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp \
+ C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp \
  C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/ast.hpp \
  C:/msys64/mingw64/include/c++/15.1.0/string \
  C:/msys64/mingw64/include/c++/15.1.0/bits/stringfwd.h \

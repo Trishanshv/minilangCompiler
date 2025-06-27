@@ -47,9 +47,9 @@ extern int yydebug;
 /* "%code requires" blocks.  */
 #line 1 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
 
-    #include "ast.hpp"  // Ensures Bison includes this in generated parser.hpp
+    #include "ast.hpp"
 
-#line 53 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
+#line 53 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -66,7 +66,11 @@ extern int yydebug;
     RETURN = 261,                  /* RETURN  */
     IF = 262,                      /* IF  */
     ELSE = 263,                    /* ELSE  */
-    WHILE = 264                    /* WHILE  */
+    WHILE = 264,                   /* WHILE  */
+    EQ = 265,                      /* EQ  */
+    NE = 266,                      /* NE  */
+    LE = 267,                      /* LE  */
+    GE = 268                       /* GE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -75,15 +79,16 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+#line 26 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
 
     int ival;
     char* id;
     Expression* expr;
     Statement* stmt;
     std::vector<Statement*>* stmt_list;
+    std::vector<Expression*>* expr_list;
 
-#line 87 "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
+#line 92 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -40,7 +40,7 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/install_local_manifest.txt"
+  file(WRITE "C:/users/trish/desktop/shitz/project/minilangCompiler/build/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
 if(CMAKE_INSTALL_COMPONENT)
@@ -56,6 +56,6 @@ else()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/Users/trish/desktop/shitz/project/minilangCompiler/build/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "C:/users/trish/desktop/shitz/project/minilangCompiler/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

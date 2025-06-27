@@ -56,7 +56,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = C:/Users/trish/Desktop/Shitz/project/minilangCompiler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/Users/trish/desktop/shitz/project/minilangCompiler/build
+CMAKE_BINARY_DIR = C:/users/trish/desktop/shitz/project/minilangCompiler/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/minilang.dir/depend.make
@@ -70,17 +70,17 @@ include CMakeFiles/minilang.dir/progress.make
 include CMakeFiles/minilang.dir/flags.make
 
 parser.cpp: C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "[BISON][Parser] Building parser with bison 3.8.2"
-	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/mingw64/bin/cmake.exe -E make_directory C:/Users/trish/desktop/shitz/project/minilangCompiler/build
-	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/usr/bin/bison.exe --defines=C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp -o C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "[BISON][Parser] Building parser with bison 3.8.2"
+	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/mingw64/bin/cmake.exe -E make_directory C:/users/trish/desktop/shitz/project/minilangCompiler/build
+	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/usr/bin/bison.exe --defines=C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp -o C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y
 
 parser.hpp: parser.cpp
 	@$(CMAKE_COMMAND) -E touch_nocreate parser.hpp
 
 lexer.cpp: C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "[FLEX][Lexer] Building scanner with flex 2.6.4"
-	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/mingw64/bin/cmake.exe -E make_directory C:/Users/trish/desktop/shitz/project/minilangCompiler/build
-	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/usr/bin/flex.exe -oC:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "[FLEX][Lexer] Building scanner with flex 2.6.4"
+	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/mingw64/bin/cmake.exe -E make_directory C:/users/trish/desktop/shitz/project/minilangCompiler/build
+	cd C:/Users/trish/Desktop/Shitz/project/minilangCompiler && C:/msys64/usr/bin/flex.exe -oC:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l
 
 CMakeFiles/minilang.dir/codegen:
 .PHONY : CMakeFiles/minilang.dir/codegen
@@ -89,38 +89,38 @@ CMakeFiles/minilang.dir/parser.cpp.obj: CMakeFiles/minilang.dir/flags.make
 CMakeFiles/minilang.dir/parser.cpp.obj: CMakeFiles/minilang.dir/includes_CXX.rsp
 CMakeFiles/minilang.dir/parser.cpp.obj: parser.cpp
 CMakeFiles/minilang.dir/parser.cpp.obj: CMakeFiles/minilang.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/minilang.dir/parser.cpp.obj"
-	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minilang.dir/parser.cpp.obj -MF CMakeFiles/minilang.dir/parser.cpp.obj.d -o CMakeFiles/minilang.dir/parser.cpp.obj -c C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/minilang.dir/parser.cpp.obj"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minilang.dir/parser.cpp.obj -MF CMakeFiles/minilang.dir/parser.cpp.obj.d -o CMakeFiles/minilang.dir/parser.cpp.obj -c C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp
 
 CMakeFiles/minilang.dir/parser.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/minilang.dir/parser.cpp.i"
-	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp > CMakeFiles/minilang.dir/parser.cpp.i
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp > CMakeFiles/minilang.dir/parser.cpp.i
 
 CMakeFiles/minilang.dir/parser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/minilang.dir/parser.cpp.s"
-	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp -o CMakeFiles/minilang.dir/parser.cpp.s
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp -o CMakeFiles/minilang.dir/parser.cpp.s
 
 CMakeFiles/minilang.dir/lexer.cpp.obj: CMakeFiles/minilang.dir/flags.make
 CMakeFiles/minilang.dir/lexer.cpp.obj: CMakeFiles/minilang.dir/includes_CXX.rsp
 CMakeFiles/minilang.dir/lexer.cpp.obj: lexer.cpp
 CMakeFiles/minilang.dir/lexer.cpp.obj: parser.hpp
 CMakeFiles/minilang.dir/lexer.cpp.obj: CMakeFiles/minilang.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/minilang.dir/lexer.cpp.obj"
-	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minilang.dir/lexer.cpp.obj -MF CMakeFiles/minilang.dir/lexer.cpp.obj.d -o CMakeFiles/minilang.dir/lexer.cpp.obj -c C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/minilang.dir/lexer.cpp.obj"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minilang.dir/lexer.cpp.obj -MF CMakeFiles/minilang.dir/lexer.cpp.obj.d -o CMakeFiles/minilang.dir/lexer.cpp.obj -c C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp
 
 CMakeFiles/minilang.dir/lexer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/minilang.dir/lexer.cpp.i"
-	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp > CMakeFiles/minilang.dir/lexer.cpp.i
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp > CMakeFiles/minilang.dir/lexer.cpp.i
 
 CMakeFiles/minilang.dir/lexer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/minilang.dir/lexer.cpp.s"
-	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp -o CMakeFiles/minilang.dir/lexer.cpp.s
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp -o CMakeFiles/minilang.dir/lexer.cpp.s
 
 CMakeFiles/minilang.dir/src/main.cpp.obj: CMakeFiles/minilang.dir/flags.make
 CMakeFiles/minilang.dir/src/main.cpp.obj: CMakeFiles/minilang.dir/includes_CXX.rsp
 CMakeFiles/minilang.dir/src/main.cpp.obj: C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/main.cpp
 CMakeFiles/minilang.dir/src/main.cpp.obj: CMakeFiles/minilang.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/minilang.dir/src/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/minilang.dir/src/main.cpp.obj"
 	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minilang.dir/src/main.cpp.obj -MF CMakeFiles/minilang.dir/src/main.cpp.obj.d -o CMakeFiles/minilang.dir/src/main.cpp.obj -c C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/main.cpp
 
 CMakeFiles/minilang.dir/src/main.cpp.i: cmake_force
@@ -146,7 +146,7 @@ minilang.exe: CMakeFiles/minilang.dir/src/main.cpp.obj
 minilang.exe: CMakeFiles/minilang.dir/build.make
 minilang.exe: CMakeFiles/minilang.dir/linkLibs.rsp
 minilang.exe: CMakeFiles/minilang.dir/objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable minilang.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable minilang.exe"
 	C:/msys64/mingw64/bin/cmake.exe -E rm -f CMakeFiles/minilang.dir/objects.a
 	C:/msys64/mingw64/bin/ar.exe qc CMakeFiles/minilang.dir/objects.a @CMakeFiles/minilang.dir/objects1.rsp
 	C:/msys64/mingw64/bin/c++.exe -Wl,--whole-archive CMakeFiles/minilang.dir/objects.a -Wl,--no-whole-archive -o minilang.exe -Wl,--out-implib,libminilang.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/minilang.dir/linkLibs.rsp
@@ -162,6 +162,6 @@ CMakeFiles/minilang.dir/clean:
 CMakeFiles/minilang.dir/depend: lexer.cpp
 CMakeFiles/minilang.dir/depend: parser.cpp
 CMakeFiles/minilang.dir/depend: parser.hpp
-	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/Users/trish/desktop/shitz/project/minilangCompiler/build C:/Users/trish/desktop/shitz/project/minilangCompiler/build C:/Users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles/minilang.dir/DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/users/trish/desktop/shitz/project/minilangCompiler/build C:/users/trish/desktop/shitz/project/minilangCompiler/build C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles/minilang.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/minilang.dir/depend
 
