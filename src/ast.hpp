@@ -61,24 +61,6 @@ struct ComparisonExpr : Expression {
     }
 };
 
-struct FunctionCall : Expression {
-    std::string name;
-    std::vector<std::unique_ptr<Expression>> args;
-    
-    FunctionCall(std::string n, std::vector<Expression*> a) : name(std::move(n)) {
-        for (auto* arg : a) args.emplace_back(arg);
-    }
-    
-    void print() const override {
-        std::cout << name << "(";
-        for (size_t i = 0; i < args.size(); ++i) {
-            if (args[i]) args[i]->print();
-            if (i + 1 < args.size()) std::cout << ", ";
-        }
-        std::cout << ")";
-    }
-};
-
 // Base Statement
 struct Statement {
     virtual ~Statement() = default;
@@ -175,27 +157,27 @@ struct WhileStatement : Statement {
     }
 };
 
-struct FunctionCallStatement : Statement {
+struct FunctionCall : public Expression {
     std::string name;
-    std::vector<std::unique_ptr<Expression>> args;
+    std::vector<Expression*>* args;
+public:
+    FunctionCall(const std::string& n, std::vector<Expression*>* a)
+    : name(n), args(a ? a : new std::vector<Expression*>()) {}
     
-    FunctionCallStatement(std::string n, std::vector<Expression*>* a) : name(std::move(n)) {
-        for (auto* arg : *a) args.emplace_back(arg);
-        delete a;
-    }
-    
-    void print() const override {
+   void print() const override {
         std::cout << name << "(";
-        for (size_t i = 0; i < args.size(); ++i) {
-            if (args[i]) args[i]->print();
-            if (i + 1 < args.size()) std::cout << ", ";
+        if (args) {  // Check if args exists
+            for (size_t i = 0; i < args->size(); ++i) {  // Note args->size()
+                (*args)[i]->print();  // Dereference the pointer
+                if (i + 1 < args->size()) std::cout << ", ";
+            }
         }
-        std::cout << ");\n";
+        std::cout << ")";
     }
 };
 
 struct ExprStatement : Statement {
-    Expression* expr;
+    std::unique_ptr<Expression> expr; 
     explicit ExprStatement(Expression* e) : expr(e) {}
     void print() const override {
         std::cout << "[DEBUG] Expression statement: ";

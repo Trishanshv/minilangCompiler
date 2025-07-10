@@ -131,11 +131,43 @@ CMakeFiles/minilang.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/minilang.dir/src/main.cpp.s"
 	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/main.cpp -o CMakeFiles/minilang.dir/src/main.cpp.s
 
+CMakeFiles/minilang.dir/src/semantic.cpp.obj: CMakeFiles/minilang.dir/flags.make
+CMakeFiles/minilang.dir/src/semantic.cpp.obj: CMakeFiles/minilang.dir/includes_CXX.rsp
+CMakeFiles/minilang.dir/src/semantic.cpp.obj: C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/semantic.cpp
+CMakeFiles/minilang.dir/src/semantic.cpp.obj: CMakeFiles/minilang.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/minilang.dir/src/semantic.cpp.obj"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minilang.dir/src/semantic.cpp.obj -MF CMakeFiles/minilang.dir/src/semantic.cpp.obj.d -o CMakeFiles/minilang.dir/src/semantic.cpp.obj -c C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/semantic.cpp
+
+CMakeFiles/minilang.dir/src/semantic.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/minilang.dir/src/semantic.cpp.i"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/semantic.cpp > CMakeFiles/minilang.dir/src/semantic.cpp.i
+
+CMakeFiles/minilang.dir/src/semantic.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/minilang.dir/src/semantic.cpp.s"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/semantic.cpp -o CMakeFiles/minilang.dir/src/semantic.cpp.s
+
+CMakeFiles/minilang.dir/src/codegen.cpp.obj: CMakeFiles/minilang.dir/flags.make
+CMakeFiles/minilang.dir/src/codegen.cpp.obj: CMakeFiles/minilang.dir/includes_CXX.rsp
+CMakeFiles/minilang.dir/src/codegen.cpp.obj: C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/codegen.cpp
+CMakeFiles/minilang.dir/src/codegen.cpp.obj: CMakeFiles/minilang.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/minilang.dir/src/codegen.cpp.obj"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minilang.dir/src/codegen.cpp.obj -MF CMakeFiles/minilang.dir/src/codegen.cpp.obj.d -o CMakeFiles/minilang.dir/src/codegen.cpp.obj -c C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/codegen.cpp
+
+CMakeFiles/minilang.dir/src/codegen.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/minilang.dir/src/codegen.cpp.i"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/codegen.cpp > CMakeFiles/minilang.dir/src/codegen.cpp.i
+
+CMakeFiles/minilang.dir/src/codegen.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/minilang.dir/src/codegen.cpp.s"
+	C:/msys64/mingw64/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/codegen.cpp -o CMakeFiles/minilang.dir/src/codegen.cpp.s
+
 # Object files for target minilang
 minilang_OBJECTS = \
 "CMakeFiles/minilang.dir/parser.cpp.obj" \
 "CMakeFiles/minilang.dir/lexer.cpp.obj" \
-"CMakeFiles/minilang.dir/src/main.cpp.obj"
+"CMakeFiles/minilang.dir/src/main.cpp.obj" \
+"CMakeFiles/minilang.dir/src/semantic.cpp.obj" \
+"CMakeFiles/minilang.dir/src/codegen.cpp.obj"
 
 # External object files for target minilang
 minilang_EXTERNAL_OBJECTS =
@@ -143,13 +175,80 @@ minilang_EXTERNAL_OBJECTS =
 minilang.exe: CMakeFiles/minilang.dir/parser.cpp.obj
 minilang.exe: CMakeFiles/minilang.dir/lexer.cpp.obj
 minilang.exe: CMakeFiles/minilang.dir/src/main.cpp.obj
+minilang.exe: CMakeFiles/minilang.dir/src/semantic.cpp.obj
+minilang.exe: CMakeFiles/minilang.dir/src/codegen.cpp.obj
 minilang.exe: CMakeFiles/minilang.dir/build.make
+minilang.exe: C:/msys64/mingw64/lib/libLLVMCore.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMOrcJIT.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMX86CodeGen.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMX86AsmParser.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMX86Desc.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMX86Disassembler.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMX86Info.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMPasses.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMCoroutines.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMHipStdPar.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMipo.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMFrontendOpenMP.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMFrontendOffloading.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMFrontendAtomic.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMLinker.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMVectorize.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMSandboxIR.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMExecutionEngine.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMJITLink.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMOrcTargetProcess.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMOrcShared.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMWindowsDriver.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMOption.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMRuntimeDyld.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMAsmPrinter.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMCFGuard.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMGlobalISel.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMIRPrinter.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMInstrumentation.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMSelectionDAG.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMCodeGen.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMTarget.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMScalarOpts.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMAggressiveInstCombine.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMInstCombine.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMObjCARCOpts.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMTransformUtils.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMCGData.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMBitWriter.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMAnalysis.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMProfileData.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMSymbolize.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMDebugInfoDWARF.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMDebugInfoPDB.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMDebugInfoCodeView.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMDebugInfoMSF.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMDebugInfoBTF.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMObject.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMIRReader.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMBitReader.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMAsmParser.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMCore.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMRemarks.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMBitstreamReader.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMTextAPI.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMCodeGenTypes.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMMCParser.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMMCDisassembler.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMMC.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMBinaryFormat.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMTargetParser.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMSupport.a
+minilang.exe: C:/msys64/mingw64/lib/libLLVMDemangle.a
+minilang.exe: C:/msys64/mingw64/lib/libz.dll.a
+minilang.exe: C:/msys64/mingw64/lib/libzstd.dll.a
 minilang.exe: CMakeFiles/minilang.dir/linkLibs.rsp
 minilang.exe: CMakeFiles/minilang.dir/objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable minilang.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable minilang.exe"
 	C:/msys64/mingw64/bin/cmake.exe -E rm -f CMakeFiles/minilang.dir/objects.a
 	C:/msys64/mingw64/bin/ar.exe qc CMakeFiles/minilang.dir/objects.a @CMakeFiles/minilang.dir/objects1.rsp
-	C:/msys64/mingw64/bin/c++.exe -Wl,--whole-archive CMakeFiles/minilang.dir/objects.a -Wl,--no-whole-archive -o minilang.exe -Wl,--out-implib,libminilang.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/minilang.dir/linkLibs.rsp
+	C:/msys64/mingw64/bin/c++.exe -g -Wl,--whole-archive CMakeFiles/minilang.dir/objects.a -Wl,--no-whole-archive -o minilang.exe -Wl,--out-implib,libminilang.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/minilang.dir/linkLibs.rsp
 
 # Rule to build all files generated by this target.
 CMakeFiles/minilang.dir/build: minilang.exe

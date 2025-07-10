@@ -9,8 +9,9 @@
 #include "ast.hpp"
 
 extern int yylex();
+extern char* yytext;
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s at token '%s'\n", s, yylex);
+    fprintf(stderr, "Error: %s at token '%s'\n", s, yytext);
 }
 
 std::unique_ptr<Program> root;
@@ -46,6 +47,7 @@ std::vector<T>* make_vector(T item) {
 %type <expr> expression
 %type <stmt> statement
 %type <stmt_list> statement_list
+%type <expr_list> expression_list
 
 %%
 
@@ -92,6 +94,19 @@ expression:
   | expression GE expression { $$ = new ComparisonExpr(">=", $1, $3); }
   | expression EQ expression { $$ = new ComparisonExpr("==", $1, $3); }
   | expression NE expression { $$ = new ComparisonExpr("!=", $1, $3); }
+    | IDENTIFIER '(' ')' { 
+        $$ = new FunctionCall(std::string($1), new std::vector<Expression*>()); 
+        free($1);
+    }
+  | IDENTIFIER '(' expression_list ')' { 
+        $$ = new FunctionCall(std::string($1), $3); 
+        free($1);
+    }
+;
+
+expression_list:
+    expression { $$ = make_vector($1); }
+  | expression_list ',' expression { $1->push_back($3); $$ = $1; }
 ;
 
 %%

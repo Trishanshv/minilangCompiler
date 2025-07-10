@@ -117,6 +117,97 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named intrinsics_gen
+
+# Build rule for target.
+intrinsics_gen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 intrinsics_gen
+.PHONY : intrinsics_gen
+
+# fast build rule for target.
+intrinsics_gen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/intrinsics_gen.dir/build.make CMakeFiles/intrinsics_gen.dir/build
+.PHONY : intrinsics_gen/fast
+
+#=============================================================================
+# Target rules for targets named vt_gen
+
+# Build rule for target.
+vt_gen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vt_gen
+.PHONY : vt_gen
+
+# fast build rule for target.
+vt_gen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vt_gen.dir/build.make CMakeFiles/vt_gen.dir/build
+.PHONY : vt_gen/fast
+
+#=============================================================================
+# Target rules for targets named omp_gen
+
+# Build rule for target.
+omp_gen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 omp_gen
+.PHONY : omp_gen
+
+# fast build rule for target.
+omp_gen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/omp_gen.dir/build.make CMakeFiles/omp_gen.dir/build
+.PHONY : omp_gen/fast
+
+#=============================================================================
+# Target rules for targets named acc_gen
+
+# Build rule for target.
+acc_gen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 acc_gen
+.PHONY : acc_gen
+
+# fast build rule for target.
+acc_gen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/acc_gen.dir/build.make CMakeFiles/acc_gen.dir/build
+.PHONY : acc_gen/fast
+
+#=============================================================================
+# Target rules for targets named ARMTargetParserTableGen
+
+# Build rule for target.
+ARMTargetParserTableGen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ARMTargetParserTableGen
+.PHONY : ARMTargetParserTableGen
+
+# fast build rule for target.
+ARMTargetParserTableGen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ARMTargetParserTableGen.dir/build.make CMakeFiles/ARMTargetParserTableGen.dir/build
+.PHONY : ARMTargetParserTableGen/fast
+
+#=============================================================================
+# Target rules for targets named AArch64TargetParserTableGen
+
+# Build rule for target.
+AArch64TargetParserTableGen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 AArch64TargetParserTableGen
+.PHONY : AArch64TargetParserTableGen
+
+# fast build rule for target.
+AArch64TargetParserTableGen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AArch64TargetParserTableGen.dir/build.make CMakeFiles/AArch64TargetParserTableGen.dir/build
+.PHONY : AArch64TargetParserTableGen/fast
+
+#=============================================================================
+# Target rules for targets named RISCVTargetParserTableGen
+
+# Build rule for target.
+RISCVTargetParserTableGen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 RISCVTargetParserTableGen
+.PHONY : RISCVTargetParserTableGen
+
+# fast build rule for target.
+RISCVTargetParserTableGen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RISCVTargetParserTableGen.dir/build.make CMakeFiles/RISCVTargetParserTableGen.dir/build
+.PHONY : RISCVTargetParserTableGen/fast
+
+#=============================================================================
 # Target rules for targets named minilang
 
 # Build rule for target.
@@ -177,6 +268,30 @@ parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/parser.cpp.s
 .PHONY : parser.cpp.s
 
+src/codegen.obj: src/codegen.cpp.obj
+.PHONY : src/codegen.obj
+
+# target to build an object file
+src/codegen.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/src/codegen.cpp.obj
+.PHONY : src/codegen.cpp.obj
+
+src/codegen.i: src/codegen.cpp.i
+.PHONY : src/codegen.i
+
+# target to preprocess a source file
+src/codegen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/src/codegen.cpp.i
+.PHONY : src/codegen.cpp.i
+
+src/codegen.s: src/codegen.cpp.s
+.PHONY : src/codegen.s
+
+# target to generate assembly for a file
+src/codegen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/src/codegen.cpp.s
+.PHONY : src/codegen.cpp.s
+
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -201,6 +316,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/semantic.obj: src/semantic.cpp.obj
+.PHONY : src/semantic.obj
+
+# target to build an object file
+src/semantic.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/src/semantic.cpp.obj
+.PHONY : src/semantic.cpp.obj
+
+src/semantic.i: src/semantic.cpp.i
+.PHONY : src/semantic.i
+
+# target to preprocess a source file
+src/semantic.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/src/semantic.cpp.i
+.PHONY : src/semantic.cpp.i
+
+src/semantic.s: src/semantic.cpp.s
+.PHONY : src/semantic.s
+
+# target to generate assembly for a file
+src/semantic.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/src/semantic.cpp.s
+.PHONY : src/semantic.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -209,6 +348,13 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... AArch64TargetParserTableGen"
+	@echo "... ARMTargetParserTableGen"
+	@echo "... RISCVTargetParserTableGen"
+	@echo "... acc_gen"
+	@echo "... intrinsics_gen"
+	@echo "... omp_gen"
+	@echo "... vt_gen"
 	@echo "... minilang"
 	@echo "... lexer.obj"
 	@echo "... lexer.i"
@@ -216,9 +362,15 @@ help:
 	@echo "... parser.obj"
 	@echo "... parser.i"
 	@echo "... parser.s"
+	@echo "... src/codegen.obj"
+	@echo "... src/codegen.i"
+	@echo "... src/codegen.s"
 	@echo "... src/main.obj"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/semantic.obj"
+	@echo "... src/semantic.i"
+	@echo "... src/semantic.s"
 .PHONY : help
 
 

@@ -1,1 +1,1 @@
-CMakeFiles/minilang.dir/parser.cpp.obj CMakeFiles/minilang.dir/lexer.cpp.obj CMakeFiles/minilang.dir/src/main.cpp.obj
+CMakeFiles/minilang.dir/parser.cpp.obj CMakeFiles/minilang.dir/lexer.cpp.obj CMakeFiles/minilang.dir/src/main.cpp.obj CMakeFiles/minilang.dir/src/semantic.cpp.obj CMakeFiles/minilang.dir/src/codegen.cpp.obj

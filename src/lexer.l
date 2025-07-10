@@ -11,6 +11,7 @@ void yyerror(const char* s);
 %}
 
 %%
+"while"     { return WHILE;}
 "else"      { return ELSE; } 
 "if"        { return IF; }
 "int"       { return INT; }

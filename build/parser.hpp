@@ -79,7 +79,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 26 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+#line 27 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
 
     int ival;
     char* id;
