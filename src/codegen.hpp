@@ -1,8 +1,11 @@
 #pragma once
+
 #include "ast.hpp"
 #include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Value.h>
+#include <map>
 
 class CodeGenContext {
 public:
@@ -10,11 +13,11 @@ public:
     llvm::IRBuilder<> builder;
     std::unique_ptr<llvm::Module> module;
 
-    CodeGenContext() : builder(llvmContext) {
-        module = std::make_unique<llvm::Module>("main", llvmContext);
-    }
+    std::map<std::string, llvm::Value*> namedValues;
 
+    CodeGenContext();
+
+    llvm::Function* generateCode(Program* prog);
     llvm::Value* codegen(Expression* expr);
     llvm::Value* codegen(Statement* stmt);
-    llvm::Function* codegen(Program* prog);
 };

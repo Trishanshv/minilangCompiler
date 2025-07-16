@@ -1,5 +1,8 @@
 #include "ast.hpp"
-#include<cstdio>
+#include "codegen.hpp"
+#include "parser.hpp"
+#include <iostream>
+#include <fstream>
 
 extern int yydebug;
 extern int yyparse();
@@ -17,19 +20,19 @@ int main(int argc, char** argv) {
         perror("fopen");
         return 1;
     }
-    
     yydebug=1;
+    std::cout<<"Starting parsing\n";
     
-    if (yyparse() == 0) {
-        if (root) {
-            root->print();
-        } else {
-            fprintf(stderr, "AST not generated.\n");
-        }
-    } else {
-        fprintf(stderr, "Parsing failed.\n");
+    if (yyparse() != 0) {
+        std::cerr << "Parsing failed.\n";
+        return 1;
     }
 
-    fclose(yyin);
+    std::cout << "Generating LLVM IR...\n";
+    CodeGenContext context;
+    context.generateCode(root.get());
+
+    context.module->print(llvm::outs(), nullptr);
+
     return 0;
 }

@@ -27,10 +27,10 @@ std::vector<T>* make_vector(T item) {
 %union {
     int ival;
     char* id;
-    Expression* expr;
-    Statement* stmt;
-    std::vector<Statement*>* stmt_list;
-    std::vector<Expression*>* expr_list;
+    std::unique_ptr<Expression> expr;
+    std::unique_ptr<Statement> stmt;
+    std::vector<std::unique_ptr<Statement>>* stmt_list;
+    std::vector<std::unique_ptr<Expression>>* expr_list;
 }
 
 %start program
@@ -61,7 +61,7 @@ statement_list:
 ;
 
 statement:
-    RETURN expression ';' { $$ = new ReturnStatement($2); }
+    RETURN expression ';' { $$ = new ReturnStatement(std::unique_ptr<Expression>($2)); }
   | INT IDENTIFIER '=' expression ';' { 
         $$ = new VarDeclaration($2, $4); 
         free($2);
@@ -84,16 +84,16 @@ expression:
     NUMBER { $$ = new IntegerLiteral($1); }
   | IDENTIFIER { $$ = new VariableExpr($1); free($1); }
   | '(' expression ')' { $$ = $2; }
-  | expression '+' expression { $$ = new BinaryExpr('+', $1, $3); }
-  | expression '-' expression { $$ = new BinaryExpr('-', $1, $3); }
-  | expression '*' expression { $$ = new BinaryExpr('*', $1, $3); }
-  | expression '/' expression { $$ = new BinaryExpr('/', $1, $3); }
-  | expression '<' expression { $$ = new ComparisonExpr("<", $1, $3); }
-  | expression '>' expression { $$ = new ComparisonExpr(">", $1, $3); }
-  | expression LE expression { $$ = new ComparisonExpr("<=", $1, $3); }
-  | expression GE expression { $$ = new ComparisonExpr(">=", $1, $3); }
-  | expression EQ expression { $$ = new ComparisonExpr("==", $1, $3); }
-  | expression NE expression { $$ = new ComparisonExpr("!=", $1, $3); }
+  | expression '+' expression { $$ = new BinaryExpr('+', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression '-' expression { $$ = new BinaryExpr('-', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression '*' expression { $$ = new BinaryExpr('*', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression '/' expression { $$ = new BinaryExpr('/', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression '<' expression { $$ = new ComparisonExpr("<", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression '>' expression { $$ = new ComparisonExpr(">", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression LE expression { $$ = new ComparisonExpr("<=", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression GE expression { $$ = new ComparisonExpr(">=", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression EQ expression { $$ = new ComparisonExpr("==", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
+  | expression NE expression { $$ = new ComparisonExpr("!=", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
     | IDENTIFIER '(' ')' { 
         $$ = new FunctionCall(std::string($1), new std::vector<Expression*>()); 
         free($1);

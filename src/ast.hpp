@@ -31,11 +31,12 @@ struct VariableExpr : Expression {
 // Expressions
 struct BinaryExpr : Expression {
     char op;
-    std::unique_ptr<Expression> lhs, rhs;
-    
-    BinaryExpr(char o, Expression* l, Expression* r) 
-        : op(o), lhs(l), rhs(r) {}
-    
+    std::unique_ptr<Expression> lhs;
+    std::unique_ptr<Expression> rhs;
+
+    BinaryExpr(char o, std::unique_ptr<Expression> l, std::unique_ptr<Expression> r)
+        : op(o), lhs(std::move(l)), rhs(std::move(r)) {}
+
     void print() const override {
         std::cout << "(";
         lhs->print();
@@ -70,10 +71,13 @@ struct Statement {
 // Statements
 struct ReturnStatement : Statement {
     std::unique_ptr<Expression> expr;
-    explicit ReturnStatement(Expression* e) : expr(e) {}
+
+    ReturnStatement(std::unique_ptr<Expression> e)
+        : expr(std::move(e)) {}
+
     void print() const override {
         std::cout << "return ";
-        if (expr) expr->print();
+        expr->print();
         std::cout << ";\n";
     }
 };
@@ -110,8 +114,8 @@ struct Assignment : Statement {
 struct Block : Statement {
     std::vector<std::unique_ptr<Statement>> statements;
     
-    explicit Block(std::vector<Statement*>* stmts) {
-        for (auto* stmt : *stmts) statements.emplace_back(stmt);
+    explicit Block(std::vector<std::unique_ptr<Statement>>* stmts) {
+        statements = std::move(*stmts);
         delete stmts;
     }
     

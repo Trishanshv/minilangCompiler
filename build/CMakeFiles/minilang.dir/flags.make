@@ -6,5 +6,5 @@ CXX_DEFINES = -D_FILE_OFFSET_BITS="64 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_M
 
 CXX_INCLUDES = @CMakeFiles/minilang.dir/includes_CXX.rsp
 
-CXX_FLAGS = -g -std=gnu++17
+CXX_FLAGS = -std=gnu++17
 

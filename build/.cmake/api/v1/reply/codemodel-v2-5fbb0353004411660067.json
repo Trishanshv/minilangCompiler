@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"jsonFile" : "directory-.-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.10"
@@ -26,7 +26,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -53,56 +53,56 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "AArch64TargetParserTableGen::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-AArch64TargetParserTableGen-Debug-109881704bf5106a446c.json",
+					"jsonFile" : "target-AArch64TargetParserTableGen-109881704bf5106a446c.json",
 					"name" : "AArch64TargetParserTableGen",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ARMTargetParserTableGen::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ARMTargetParserTableGen-Debug-a71fc3a2ce21cd06f399.json",
+					"jsonFile" : "target-ARMTargetParserTableGen-a71fc3a2ce21cd06f399.json",
 					"name" : "ARMTargetParserTableGen",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "RISCVTargetParserTableGen::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-RISCVTargetParserTableGen-Debug-c78341d15b34c51680e8.json",
+					"jsonFile" : "target-RISCVTargetParserTableGen-c78341d15b34c51680e8.json",
 					"name" : "RISCVTargetParserTableGen",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "acc_gen::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-acc_gen-Debug-a686fddea80a0fd8bd31.json",
+					"jsonFile" : "target-acc_gen-a686fddea80a0fd8bd31.json",
 					"name" : "acc_gen",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "intrinsics_gen::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-intrinsics_gen-Debug-af8b6de849faad07e023.json",
+					"jsonFile" : "target-intrinsics_gen-af8b6de849faad07e023.json",
 					"name" : "intrinsics_gen",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "minilang::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-minilang-Debug-61c96ac114db3a0963f3.json",
+					"jsonFile" : "target-minilang-564175002b620d6b48e4.json",
 					"name" : "minilang",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "omp_gen::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-omp_gen-Debug-c35fd85b9876f90367b2.json",
+					"jsonFile" : "target-omp_gen-c35fd85b9876f90367b2.json",
 					"name" : "omp_gen",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "vt_gen::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-vt_gen-Debug-84132d6b8207b65ed479.json",
+					"jsonFile" : "target-vt_gen-84132d6b8207b65ed479.json",
 					"name" : "vt_gen",
 					"projectIndex" : 0
 				}
