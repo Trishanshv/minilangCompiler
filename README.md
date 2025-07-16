@@ -30,9 +30,10 @@ The goal of this project is **deep understanding of compiler theory and implemen
 
 ---
 
+
 ## 📄 Example
 
-Input (`test.minilang`):
+**Input (`test.minilang`)**:
 
 ```c
 int x = 10;
@@ -42,35 +43,48 @@ if (x > 5) {
 } else {
     return 0;
 }
-Output
-return 1;
+```
 
+**Output**:
+
+```
+return 1;
+```
+
+---
+
+## 🔧 Compilation Pipeline
+
+```text
 [ Source Code ]
       |
-   [Lexer.l]  → Flex → Tokens
+   [Lexer.l]   →  Flex     → Tokens
       |
-   [Parser.y] → Bison → AST
+   [Parser.y]  →  Bison    → AST
       |
-   [AST.hpp]  → C++ AST Nodes
+   [AST.hpp]   →  C++ AST Nodes
       |
-   [CodeGen]  → LLVM IR Generation
+   [CodeGen]   →  LLVM IR Generation
       |
  [LLVM Backend] → Native Code
+```
 
-📦 Dependencies
-C++17 / C++20
+---
 
-Flex
+## 📦 Dependencies
 
-Bison
+* **C++17 / C++20**
+* **Flex**
+* **Bison**
+* **LLVM** (tested with version 15+)
+* **Catch2** (for unit testing)
+* **CMake** (build system)
 
-LLVM (tested with 15+)
+---
 
-Catch2 (for unit testing)
+## ⚒️ Build Instructions
 
-CMake (build system)
-
-Build
+```bash
 # Create build directory
 mkdir build && cd build
 
@@ -82,32 +96,29 @@ make
 
 # Run
 ./minilang ../test.minilang
+```
 
-📝 Roadmap
- Basic expressions and types
+---
 
- Variable declarations and assignments
+## 📝 Roadmap
 
- Return statements
+* [x] Basic expressions and types
+* [x] Variable declarations and assignments
+* [x] Return statements
+* [x] Control flow (if, else, while)
+* [x] Comparison operators
+* [x] Scoping and local variables
+* [ ] Functions and parameters
+* [ ] Type checking and semantic analysis
+* [ ] Code optimization passes
+* [ ] Full IR generation for control structures
+* [ ] Emit `.ll` or `.s` output
 
- Control flow (if, else, while)
+---
 
- Comparison operators
+## 📂 Project Structure
 
- Scoping and local variables
-
- Functions and parameters
-
- Type checking and semantic analysis
-
- Code optimization passes
-
- Full IR generation for control structures
-
- Emit .ll or .s output
-
-
-Project Structure
+```text
 ├── CMakeLists.txt
 ├── README.md
 ├── src/
@@ -119,3 +130,4 @@ Project Structure
 │   └── codegen.hpp
 ├── test.minilang
 └── build/
+```
