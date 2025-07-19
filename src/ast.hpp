@@ -34,8 +34,8 @@ struct BinaryExpr : Expression {
     std::unique_ptr<Expression> lhs;
     std::unique_ptr<Expression> rhs;
 
-    BinaryExpr(char o, std::unique_ptr<Expression> l, std::unique_ptr<Expression> r)
-        : op(o), lhs(std::move(l)), rhs(std::move(r)) {}
+    BinaryExpr(char o, Expression* l, Expression* r)
+        : op(o), lhs(l), rhs(r) {}
 
     void print() const override {
         std::cout << "(";
@@ -50,7 +50,7 @@ struct ComparisonExpr : Expression {
     std::string op;
     std::unique_ptr<Expression> lhs, rhs;
     
-    ComparisonExpr(const char* o, Expression* l, Expression* r)
+    ComparisonExpr(std::string o, Expression* l, Expression* r)
         : op(std::move(o)), lhs(l), rhs(r) {}
     
     void print() const override {
@@ -72,8 +72,7 @@ struct Statement {
 struct ReturnStatement : Statement {
     std::unique_ptr<Expression> expr;
 
-    ReturnStatement(std::unique_ptr<Expression> e)
-        : expr(std::move(e)) {}
+    explicit ReturnStatement(Expression* e) : expr(e) {}
 
     void print() const override {
         std::cout << "return ";
@@ -114,8 +113,10 @@ struct Assignment : Statement {
 struct Block : Statement {
     std::vector<std::unique_ptr<Statement>> statements;
     
-    explicit Block(std::vector<std::unique_ptr<Statement>>* stmts) {
-        statements = std::move(*stmts);
+    explicit Block(std::vector<Statement*>* stmts) {
+        for (auto* stmt : *stmts) {
+            statements.emplace_back(stmt);
+        }
         delete stmts;
     }
     
@@ -170,9 +171,9 @@ public:
     
    void print() const override {
         std::cout << name << "(";
-        if (args) {  // Check if args exists
-            for (size_t i = 0; i < args->size(); ++i) {  // Note args->size()
-                (*args)[i]->print();  // Dereference the pointer
+        if (args) { 
+            for (size_t i = 0; i < args->size(); ++i) {  
+                (*args)[i]->print();
                 if (i + 1 < args->size()) std::cout << ", ";
             }
         }
@@ -195,9 +196,13 @@ struct Program {
     std::vector<std::unique_ptr<Statement>> statements;
     
     explicit Program(std::vector<Statement*>* stmts) {
-        for (auto* stmt : *stmts) statements.emplace_back(stmt);
+        for (auto* stmt : *stmts) {
+            statements.emplace_back(stmt);
+        }
         delete stmts;
     }
+    
+    const auto& getStatements() const { return statements; }
     
     void print() const {
         for (const auto& stmt : statements) {

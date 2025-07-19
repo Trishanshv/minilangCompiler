@@ -49,7 +49,7 @@ extern int yydebug;
 
     #include "ast.hpp"
 
-#line 53 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
+#line 53 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -85,10 +85,10 @@ union YYSTYPE
     char* id;
     Expression* expr;
     Statement* stmt;
-    std::vector<std::unique_ptr<Statement>>* stmt_list;
-    std::vector<std::unique_ptr<Expression>>* expr_list;
+    std::vector<Statement*>* stmt_list;
+    std::vector<Expression*>* expr_list;
 
-#line 92 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
+#line 92 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1,6 +1,6 @@
-#line 1 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 1 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/lexer.cpp"
 
-#line 3 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 3 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/lexer.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -478,8 +478,8 @@ char *yytext;
 extern FILE* yyin;
 int yylex();
 void yyerror(const char* s);
-#line 481 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
-#line 482 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 481 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/lexer.cpp"
+#line 482 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/lexer.cpp"
 
 #define INITIAL 0
 
@@ -698,7 +698,7 @@ YY_DECL
 	{
 #line 13 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
 
-#line 701 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 701 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/lexer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -871,7 +871,7 @@ YY_RULE_SETUP
 #line 44 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/lexer.l"
 ECHO;
 	YY_BREAK
-#line 874 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/lexer.cpp"
+#line 874 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

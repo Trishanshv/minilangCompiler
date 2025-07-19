@@ -49,9 +49,12 @@ add_executable(minilang
 
 # Include parser headers and src directory
 target_include_directories(minilang PRIVATE
+    ${LLVM_LIBS}
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
 )
 
 # Link LLVM libraries
 target_link_libraries(minilang PRIVATE ${LLVM_LIBS})
+
+list(APPEND CMAKE_PREFIX_PATH "/mingw64/lib/cmake/llvm")

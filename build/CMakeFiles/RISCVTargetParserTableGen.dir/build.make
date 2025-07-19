@@ -56,7 +56,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = C:/Users/trish/Desktop/Shitz/project/minilangCompiler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/users/trish/desktop/shitz/project/minilangCompiler/build
+CMAKE_BINARY_DIR = C:/users/trish/Desktop/shitz/project/minilangCompiler/Build
 
 # Utility rule file for RISCVTargetParserTableGen.
 
@@ -81,6 +81,6 @@ CMakeFiles/RISCVTargetParserTableGen.dir/clean:
 .PHONY : CMakeFiles/RISCVTargetParserTableGen.dir/clean
 
 CMakeFiles/RISCVTargetParserTableGen.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/users/trish/desktop/shitz/project/minilangCompiler/build C:/users/trish/desktop/shitz/project/minilangCompiler/build C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles/RISCVTargetParserTableGen.dir/DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/users/trish/Desktop/shitz/project/minilangCompiler/Build C:/users/trish/Desktop/shitz/project/minilangCompiler/Build C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles/RISCVTargetParserTableGen.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/RISCVTargetParserTableGen.dir/depend
 

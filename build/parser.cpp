@@ -83,13 +83,13 @@ void yyerror(const char *s) {
 std::unique_ptr<Program> root;
 
 template<typename T>
-std::vector<T>* make_vector(T item) {
-    auto vec = new std::vector<T>();
+std::vector<T*>* make_vector(T* item) {
+    auto vec = new std::vector<T*>();
     vec->push_back(item);
     return vec;
 }
 
-#line 93 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 93 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -534,11 +534,11 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    55,    55,    59,    60,    64,    65,    69,    73,    74,
-      75,    76,    77,    84,    85,    86,    87,    88,    89,    90,
-      91,    92,    93,    94,    95,    96,    97,   101,   108,   109
+       0,    55,    55,    59,    60,    64,    67,    71,    75,    78,
+      81,    84,    87,    94,    97,   101,   104,   107,   110,   113,
+     116,   119,   122,   125,   128,   131,   134,   141,   148,   149
 };
 #endif
 
@@ -1160,188 +1160,228 @@ yyreduce:
   case 2: /* program: statement_list  */
 #line 55 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                    { root = std::make_unique<Program>((yyvsp[0].stmt_list)); }
-#line 1164 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1164 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 3: /* statement_list: statement  */
 #line 59 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
               { (yyval.stmt_list) = make_vector((yyvsp[0].stmt)); }
-#line 1170 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1170 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 4: /* statement_list: statement_list statement  */
 #line 60 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                              { (yyvsp[-1].stmt_list)->push_back((yyvsp[0].stmt)); (yyval.stmt_list) = (yyvsp[-1].stmt_list); }
-#line 1176 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1176 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 5: /* statement: RETURN expression ';'  */
 #line 64 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                          { (yyval.stmt) = new ReturnStatement(std::unique_ptr<Expression>((yyvsp[-1].expr))); }
-#line 1182 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+                          {
+        (yyval.stmt) = new ReturnStatement((yyvsp[-1].expr));   
+    }
+#line 1184 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 6: /* statement: INT IDENTIFIER '=' expression ';'  */
-#line 65 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                                      { 
-        (yyval.stmt) = new VarDeclaration((yyvsp[-3].id), (yyvsp[-1].expr)); 
-        free((yyvsp[-3].id));
+#line 67 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                        {
+        (yyval.stmt) = new VarDeclaration((yyvsp[-3].id), (yyvsp[-1].expr));   
+        free((yyvsp[-3].id));  
     }
-#line 1191 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1193 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 7: /* statement: IDENTIFIER '=' expression ';'  */
-#line 69 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                                  { 
-        (yyval.stmt) = new Assignment((yyvsp[-3].id), (yyvsp[-1].expr)); 
-        free((yyvsp[-3].id));
+#line 71 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                    {
+        (yyval.stmt) = new Assignment((yyvsp[-3].id), (yyvsp[-1].expr));   
+        free((yyvsp[-3].id)); 
     }
-#line 1200 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1202 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 8: /* statement: '{' statement_list '}'  */
-#line 73 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                           { (yyval.stmt) = new Block((yyvsp[-1].stmt_list)); }
-#line 1206 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 75 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                             {
+        (yyval.stmt) = new Block((yyvsp[-1].stmt_list));   
+    }
+#line 1210 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 9: /* statement: IF '(' expression ')' statement  */
-#line 74 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                                    { (yyval.stmt) = new IFStatement((yyvsp[-2].expr), (yyvsp[0].stmt)); }
-#line 1212 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 78 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                      {
+        (yyval.stmt) = new IFStatement((yyvsp[-2].expr), (yyvsp[0].stmt));   
+    }
+#line 1218 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 10: /* statement: IF '(' expression ')' statement ELSE statement  */
-#line 75 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                                                   { (yyval.stmt) = new IFStatement((yyvsp[-4].expr), (yyvsp[-2].stmt), (yyvsp[0].stmt)); }
-#line 1218 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 81 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                                     {
+        (yyval.stmt) = new IFStatement((yyvsp[-4].expr), (yyvsp[-2].stmt), (yyvsp[0].stmt));   
+    }
+#line 1226 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 11: /* statement: WHILE '(' expression ')' statement  */
-#line 76 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                                       { (yyval.stmt) = new WhileStatement((yyvsp[-2].expr), (yyvsp[0].stmt)); }
-#line 1224 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 84 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                         {
+        (yyval.stmt) = new WhileStatement((yyvsp[-2].expr), (yyvsp[0].stmt));   
+    }
+#line 1234 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 12: /* statement: expression ';'  */
-#line 77 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                   { 
-        (yyval.stmt) = new ExprStatement((yyvsp[-1].expr)); 
-        printf("Parsed expression statement\n");  // Debug output
+#line 87 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                     {
+        (yyval.stmt) = new ExprStatement((yyvsp[-1].expr));   
+        printf("Parsed expression statement\n");
     }
-#line 1233 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1243 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 13: /* expression: NUMBER  */
-#line 84 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-           { (yyval.expr) = new IntegerLiteral((yyvsp[0].ival)); }
-#line 1239 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 94 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+           {
+        (yyval.expr) = new IntegerLiteral((yyvsp[0].ival));  // Raw pointer creation
+    }
+#line 1251 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 14: /* expression: IDENTIFIER  */
-#line 85 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-               { (yyval.expr) = new VariableExpr((yyvsp[0].id)); free((yyvsp[0].id)); }
-#line 1245 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 97 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                 {
+        (yyval.expr) = new VariableExpr((yyvsp[0].id));   
+        free((yyvsp[0].id));  // Free the lexer-allocated string
+    }
+#line 1260 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 15: /* expression: '(' expression ')'  */
-#line 86 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                       { (yyval.expr) = (yyvsp[-1].expr); }
-#line 1251 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 101 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                         {
+        (yyval.expr) = (yyvsp[-1].expr);  // Direct pass-through
+    }
+#line 1268 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 16: /* expression: expression '+' expression  */
-#line 87 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                              { (yyval.expr) = new BinaryExpr('+', std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1257 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 104 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                {
+        (yyval.expr) = new BinaryExpr('+', (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1276 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 17: /* expression: expression '-' expression  */
-#line 88 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                              { (yyval.expr) = new BinaryExpr('-', std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1263 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 107 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                {
+        (yyval.expr) = new BinaryExpr('-', (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1284 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 18: /* expression: expression '*' expression  */
-#line 89 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                              { (yyval.expr) = new BinaryExpr('*', std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1269 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 110 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                {
+        (yyval.expr) = new BinaryExpr('*', (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1292 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 19: /* expression: expression '/' expression  */
-#line 90 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                              { (yyval.expr) = new BinaryExpr('/', std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1275 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 113 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                {
+        (yyval.expr) = new BinaryExpr('/', (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1300 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 20: /* expression: expression '<' expression  */
-#line 91 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                              { (yyval.expr) = new ComparisonExpr("<", std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1281 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 116 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                {
+        (yyval.expr) = new ComparisonExpr("<", (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1308 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 21: /* expression: expression '>' expression  */
-#line 92 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                              { (yyval.expr) = new ComparisonExpr(">", std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1287 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 119 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                {
+        (yyval.expr) = new ComparisonExpr(">", (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1316 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 22: /* expression: expression LE expression  */
-#line 93 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.expr) = new ComparisonExpr("<=", std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1293 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 122 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                               {
+        (yyval.expr) = new ComparisonExpr("<=", (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1324 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 23: /* expression: expression GE expression  */
-#line 94 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.expr) = new ComparisonExpr(">=", std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1299 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 125 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                               {
+        (yyval.expr) = new ComparisonExpr(">=", (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1332 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 24: /* expression: expression EQ expression  */
-#line 95 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.expr) = new ComparisonExpr("==", std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1305 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 128 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                               {
+        (yyval.expr) = new ComparisonExpr("==", (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1340 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 25: /* expression: expression NE expression  */
-#line 96 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                             { (yyval.expr) = new ComparisonExpr("!=", std::unique_ptr<Expression>((yyvsp[-2].expr)), std::unique_ptr<Expression>((yyvsp[0].expr))); }
-#line 1311 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 131 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                               {
+        (yyval.expr) = new ComparisonExpr("!=", (yyvsp[-2].expr), (yyvsp[0].expr));   
+    }
+#line 1348 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 26: /* expression: IDENTIFIER '(' ')'  */
-#line 97 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                         { 
-        (yyval.expr) = new FunctionCall(std::string((yyvsp[-2].id)), new std::vector<Expression*>()); 
-        free((yyvsp[-2].id));
+#line 134 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                         {
+        (yyval.expr) = new FunctionCall(
+            std::string((yyvsp[-2].id)), 
+            new std::vector<Expression*>()   
+        );
+        free((yyvsp[-2].id)); 
     }
-#line 1320 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1360 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 27: /* expression: IDENTIFIER '(' expression_list ')'  */
-#line 101 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
-                                       { 
-        (yyval.expr) = new FunctionCall(std::string((yyvsp[-3].id)), (yyvsp[-1].expr_list)); 
+#line 141 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+                                         {
+        (yyval.expr) = new FunctionCall(std::string((yyvsp[-3].id)), (yyvsp[-1].expr_list));   
         free((yyvsp[-3].id));
     }
-#line 1329 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1369 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 28: /* expression_list: expression  */
-#line 108 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+#line 148 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                { (yyval.expr_list) = make_vector((yyvsp[0].expr)); }
-#line 1335 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1375 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
   case 29: /* expression_list: expression_list ',' expression  */
-#line 109 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+#line 149 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
                                    { (yyvsp[-2].expr_list)->push_back((yyvsp[0].expr)); (yyval.expr_list) = (yyvsp[-2].expr_list); }
-#line 1341 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1381 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
     break;
 
 
-#line 1345 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.cpp"
+#line 1385 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.cpp"
 
       default: break;
     }
@@ -1534,4 +1574,4 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 112 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+#line 152 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"

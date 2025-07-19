@@ -17,8 +17,8 @@ void yyerror(const char *s) {
 std::unique_ptr<Program> root;
 
 template<typename T>
-std::vector<T>* make_vector(T item) {
-    auto vec = new std::vector<T>();
+std::vector<T*>* make_vector(T* item) {
+    auto vec = new std::vector<T*>();
     vec->push_back(item);
     return vec;
 }
@@ -27,10 +27,10 @@ std::vector<T>* make_vector(T item) {
 %union {
     int ival;
     char* id;
-    std::unique_ptr<Expression> expr;
-    std::unique_ptr<Statement> stmt;
-    std::vector<std::unique_ptr<Statement>>* stmt_list;
-    std::vector<std::unique_ptr<Expression>>* expr_list;
+    Expression* expr;
+    Statement* stmt;
+    std::vector<Statement*>* stmt_list;
+    std::vector<Expression*>* expr_list;
 }
 
 %start program
@@ -61,45 +61,85 @@ statement_list:
 ;
 
 statement:
-    RETURN expression ';' { $$ = new ReturnStatement(std::unique_ptr<Expression>($2)); }
-  | INT IDENTIFIER '=' expression ';' { 
-        $$ = new VarDeclaration($2, $4); 
-        free($2);
+    RETURN expression ';' {
+        $$ = new ReturnStatement($2);   
     }
-  | IDENTIFIER '=' expression ';' { 
-        $$ = new Assignment($1, $3); 
-        free($1);
+    | INT IDENTIFIER '=' expression ';' {
+        $$ = new VarDeclaration($2, $4);   
+        free($2);  
     }
-  | '{' statement_list '}' { $$ = new Block($2); }
-  | IF '(' expression ')' statement { $$ = new IFStatement($3, $5); }
-  | IF '(' expression ')' statement ELSE statement { $$ = new IFStatement($3, $5, $7); }
-  | WHILE '(' expression ')' statement { $$ = new WhileStatement($3, $5); }
-  | expression ';' { 
-        $$ = new ExprStatement($1); 
-        printf("Parsed expression statement\n");  // Debug output
+    | IDENTIFIER '=' expression ';' {
+        $$ = new Assignment($1, $3);   
+        free($1); 
+    }
+    | '{' statement_list '}' {
+        $$ = new Block($2);   
+    }
+    | IF '(' expression ')' statement {
+        $$ = new IFStatement($3, $5);   
+    }
+    | IF '(' expression ')' statement ELSE statement {
+        $$ = new IFStatement($3, $5, $7);   
+    }
+    | WHILE '(' expression ')' statement {
+        $$ = new WhileStatement($3, $5);   
+    }
+    | expression ';' {
+        $$ = new ExprStatement($1);   
+        printf("Parsed expression statement\n");
     }
 ;
 
 expression:
-    NUMBER { $$ = new IntegerLiteral($1); }
-  | IDENTIFIER { $$ = new VariableExpr($1); free($1); }
-  | '(' expression ')' { $$ = $2; }
-  | expression '+' expression { $$ = new BinaryExpr('+', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression '-' expression { $$ = new BinaryExpr('-', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression '*' expression { $$ = new BinaryExpr('*', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression '/' expression { $$ = new BinaryExpr('/', std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression '<' expression { $$ = new ComparisonExpr("<", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression '>' expression { $$ = new ComparisonExpr(">", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression LE expression { $$ = new ComparisonExpr("<=", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression GE expression { $$ = new ComparisonExpr(">=", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression EQ expression { $$ = new ComparisonExpr("==", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-  | expression NE expression { $$ = new ComparisonExpr("!=", std::unique_ptr<Expression>($1), std::unique_ptr<Expression>($3)); }
-    | IDENTIFIER '(' ')' { 
-        $$ = new FunctionCall(std::string($1), new std::vector<Expression*>()); 
-        free($1);
+    NUMBER {
+        $$ = new IntegerLiteral($1);  // Raw pointer creation
     }
-  | IDENTIFIER '(' expression_list ')' { 
-        $$ = new FunctionCall(std::string($1), $3); 
+    | IDENTIFIER {
+        $$ = new VariableExpr($1);   
+        free($1);  // Free the lexer-allocated string
+    }
+    | '(' expression ')' {
+        $$ = $2;  // Direct pass-through
+    }
+    | expression '+' expression {
+        $$ = new BinaryExpr('+', $1, $3);   
+    }
+    | expression '-' expression {
+        $$ = new BinaryExpr('-', $1, $3);   
+    }
+    | expression '*' expression {
+        $$ = new BinaryExpr('*', $1, $3);   
+    }
+    | expression '/' expression {
+        $$ = new BinaryExpr('/', $1, $3);   
+    }
+    | expression '<' expression {
+        $$ = new ComparisonExpr("<", $1, $3);   
+    }
+    | expression '>' expression {
+        $$ = new ComparisonExpr(">", $1, $3);   
+    }
+    | expression LE expression {
+        $$ = new ComparisonExpr("<=", $1, $3);   
+    }
+    | expression GE expression {
+        $$ = new ComparisonExpr(">=", $1, $3);   
+    }
+    | expression EQ expression {
+        $$ = new ComparisonExpr("==", $1, $3);   
+    }
+    | expression NE expression {
+        $$ = new ComparisonExpr("!=", $1, $3);   
+    }
+    | IDENTIFIER '(' ')' {
+        $$ = new FunctionCall(
+            std::string($1), 
+            new std::vector<Expression*>()   
+        );
+        free($1); 
+    }
+    | IDENTIFIER '(' expression_list ')' {
+        $$ = new FunctionCall(std::string($1), $3);   
         free($1);
     }
 ;

@@ -56,7 +56,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = C:/Users/trish/Desktop/Shitz/project/minilangCompiler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/users/trish/desktop/shitz/project/minilangCompiler/build
+CMAKE_BINARY_DIR = C:/users/trish/Desktop/shitz/project/minilangCompiler/Build
 
 # Utility rule file for intrinsics_gen.
 
@@ -81,6 +81,6 @@ CMakeFiles/intrinsics_gen.dir/clean:
 .PHONY : CMakeFiles/intrinsics_gen.dir/clean
 
 CMakeFiles/intrinsics_gen.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/users/trish/desktop/shitz/project/minilangCompiler/build C:/users/trish/desktop/shitz/project/minilangCompiler/build C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles/intrinsics_gen.dir/DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/Users/trish/Desktop/Shitz/project/minilangCompiler C:/users/trish/Desktop/shitz/project/minilangCompiler/Build C:/users/trish/Desktop/shitz/project/minilangCompiler/Build C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles/intrinsics_gen.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/intrinsics_gen.dir/depend
 

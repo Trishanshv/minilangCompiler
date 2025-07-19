@@ -57,7 +57,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = C:/Users/trish/Desktop/Shitz/project/minilangCompiler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/users/trish/desktop/shitz/project/minilangCompiler/build
+CMAKE_BINARY_DIR = C:/users/trish/Desktop/shitz/project/minilangCompiler/Build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -92,14 +92,14 @@ clean: CMakeFiles/minilang.dir/clean
 CMakeFiles/intrinsics_gen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/intrinsics_gen.dir/build.make CMakeFiles/intrinsics_gen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/intrinsics_gen.dir/build.make CMakeFiles/intrinsics_gen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Built target intrinsics_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Built target intrinsics_gen"
 .PHONY : CMakeFiles/intrinsics_gen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/intrinsics_gen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/intrinsics_gen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/intrinsics_gen.dir/rule
 
 # Convenience name for target.
@@ -109,7 +109,7 @@ intrinsics_gen: CMakeFiles/intrinsics_gen.dir/rule
 # codegen rule for target.
 CMakeFiles/intrinsics_gen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/intrinsics_gen.dir/build.make CMakeFiles/intrinsics_gen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Finished codegen for target intrinsics_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Finished codegen for target intrinsics_gen"
 .PHONY : CMakeFiles/intrinsics_gen.dir/codegen
 
 # clean rule for target.
@@ -124,14 +124,14 @@ CMakeFiles/intrinsics_gen.dir/clean:
 CMakeFiles/vt_gen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vt_gen.dir/build.make CMakeFiles/vt_gen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vt_gen.dir/build.make CMakeFiles/vt_gen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Built target vt_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Built target vt_gen"
 .PHONY : CMakeFiles/vt_gen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/vt_gen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/vt_gen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/vt_gen.dir/rule
 
 # Convenience name for target.
@@ -141,7 +141,7 @@ vt_gen: CMakeFiles/vt_gen.dir/rule
 # codegen rule for target.
 CMakeFiles/vt_gen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vt_gen.dir/build.make CMakeFiles/vt_gen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Finished codegen for target vt_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Finished codegen for target vt_gen"
 .PHONY : CMakeFiles/vt_gen.dir/codegen
 
 # clean rule for target.
@@ -156,14 +156,14 @@ CMakeFiles/vt_gen.dir/clean:
 CMakeFiles/omp_gen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/omp_gen.dir/build.make CMakeFiles/omp_gen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/omp_gen.dir/build.make CMakeFiles/omp_gen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Built target omp_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Built target omp_gen"
 .PHONY : CMakeFiles/omp_gen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/omp_gen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/omp_gen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/omp_gen.dir/rule
 
 # Convenience name for target.
@@ -173,7 +173,7 @@ omp_gen: CMakeFiles/omp_gen.dir/rule
 # codegen rule for target.
 CMakeFiles/omp_gen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/omp_gen.dir/build.make CMakeFiles/omp_gen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Finished codegen for target omp_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Finished codegen for target omp_gen"
 .PHONY : CMakeFiles/omp_gen.dir/codegen
 
 # clean rule for target.
@@ -188,14 +188,14 @@ CMakeFiles/omp_gen.dir/clean:
 CMakeFiles/acc_gen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/acc_gen.dir/build.make CMakeFiles/acc_gen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/acc_gen.dir/build.make CMakeFiles/acc_gen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Built target acc_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Built target acc_gen"
 .PHONY : CMakeFiles/acc_gen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/acc_gen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/acc_gen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/acc_gen.dir/rule
 
 # Convenience name for target.
@@ -205,7 +205,7 @@ acc_gen: CMakeFiles/acc_gen.dir/rule
 # codegen rule for target.
 CMakeFiles/acc_gen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/acc_gen.dir/build.make CMakeFiles/acc_gen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Finished codegen for target acc_gen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Finished codegen for target acc_gen"
 .PHONY : CMakeFiles/acc_gen.dir/codegen
 
 # clean rule for target.
@@ -220,14 +220,14 @@ CMakeFiles/acc_gen.dir/clean:
 CMakeFiles/ARMTargetParserTableGen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ARMTargetParserTableGen.dir/build.make CMakeFiles/ARMTargetParserTableGen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ARMTargetParserTableGen.dir/build.make CMakeFiles/ARMTargetParserTableGen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Built target ARMTargetParserTableGen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Built target ARMTargetParserTableGen"
 .PHONY : CMakeFiles/ARMTargetParserTableGen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ARMTargetParserTableGen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ARMTargetParserTableGen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/ARMTargetParserTableGen.dir/rule
 
 # Convenience name for target.
@@ -237,7 +237,7 @@ ARMTargetParserTableGen: CMakeFiles/ARMTargetParserTableGen.dir/rule
 # codegen rule for target.
 CMakeFiles/ARMTargetParserTableGen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ARMTargetParserTableGen.dir/build.make CMakeFiles/ARMTargetParserTableGen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Finished codegen for target ARMTargetParserTableGen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Finished codegen for target ARMTargetParserTableGen"
 .PHONY : CMakeFiles/ARMTargetParserTableGen.dir/codegen
 
 # clean rule for target.
@@ -252,14 +252,14 @@ CMakeFiles/ARMTargetParserTableGen.dir/clean:
 CMakeFiles/AArch64TargetParserTableGen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AArch64TargetParserTableGen.dir/build.make CMakeFiles/AArch64TargetParserTableGen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AArch64TargetParserTableGen.dir/build.make CMakeFiles/AArch64TargetParserTableGen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Built target AArch64TargetParserTableGen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Built target AArch64TargetParserTableGen"
 .PHONY : CMakeFiles/AArch64TargetParserTableGen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/AArch64TargetParserTableGen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/AArch64TargetParserTableGen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/AArch64TargetParserTableGen.dir/rule
 
 # Convenience name for target.
@@ -269,7 +269,7 @@ AArch64TargetParserTableGen: CMakeFiles/AArch64TargetParserTableGen.dir/rule
 # codegen rule for target.
 CMakeFiles/AArch64TargetParserTableGen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AArch64TargetParserTableGen.dir/build.make CMakeFiles/AArch64TargetParserTableGen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Finished codegen for target AArch64TargetParserTableGen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Finished codegen for target AArch64TargetParserTableGen"
 .PHONY : CMakeFiles/AArch64TargetParserTableGen.dir/codegen
 
 # clean rule for target.
@@ -284,14 +284,14 @@ CMakeFiles/AArch64TargetParserTableGen.dir/clean:
 CMakeFiles/RISCVTargetParserTableGen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/RISCVTargetParserTableGen.dir/build.make CMakeFiles/RISCVTargetParserTableGen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/RISCVTargetParserTableGen.dir/build.make CMakeFiles/RISCVTargetParserTableGen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Built target RISCVTargetParserTableGen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Built target RISCVTargetParserTableGen"
 .PHONY : CMakeFiles/RISCVTargetParserTableGen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/RISCVTargetParserTableGen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/RISCVTargetParserTableGen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/RISCVTargetParserTableGen.dir/rule
 
 # Convenience name for target.
@@ -301,7 +301,7 @@ RISCVTargetParserTableGen: CMakeFiles/RISCVTargetParserTableGen.dir/rule
 # codegen rule for target.
 CMakeFiles/RISCVTargetParserTableGen.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/RISCVTargetParserTableGen.dir/build.make CMakeFiles/RISCVTargetParserTableGen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num= "Finished codegen for target RISCVTargetParserTableGen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num= "Finished codegen for target RISCVTargetParserTableGen"
 .PHONY : CMakeFiles/RISCVTargetParserTableGen.dir/codegen
 
 # clean rule for target.
@@ -316,14 +316,14 @@ CMakeFiles/RISCVTargetParserTableGen.dir/clean:
 CMakeFiles/minilang.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target minilang"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target minilang"
 .PHONY : CMakeFiles/minilang.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/minilang.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/minilang.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles 0
 .PHONY : CMakeFiles/minilang.dir/rule
 
 # Convenience name for target.
@@ -333,7 +333,7 @@ minilang: CMakeFiles/minilang.dir/rule
 # codegen rule for target.
 CMakeFiles/minilang.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minilang.dir/build.make CMakeFiles/minilang.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/desktop/shitz/project/minilangCompiler/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Finished codegen for target minilang"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Finished codegen for target minilang"
 .PHONY : CMakeFiles/minilang.dir/codegen
 
 # clean rule for target.

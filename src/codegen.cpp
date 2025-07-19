@@ -17,7 +17,7 @@ Function* CodeGenContext::generateCode(Program* prog) {
     BasicBlock* entry = BasicBlock::Create(llvmContext, "entry", mainFunc);
     builder.SetInsertPoint(entry);
 
-    for (const auto& stmt : *prog->stmts) {
+    for (const auto& stmt : prog->statements) {
         codegen(stmt.get());
     }
 
