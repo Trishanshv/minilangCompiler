@@ -48,8 +48,9 @@ extern int yydebug;
 #line 1 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
 
     #include "ast.hpp"
+    #include <memory>
 
-#line 53 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.hpp"
+#line 54 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -64,13 +65,17 @@ extern int yydebug;
     NUMBER = 259,                  /* NUMBER  */
     INT = 260,                     /* INT  */
     RETURN = 261,                  /* RETURN  */
-    IF = 262,                      /* IF  */
-    ELSE = 263,                    /* ELSE  */
-    WHILE = 264,                   /* WHILE  */
-    EQ = 265,                      /* EQ  */
-    NE = 266,                      /* NE  */
-    LE = 267,                      /* LE  */
-    GE = 268                       /* GE  */
+    TOK_IF = 262,                  /* TOK_IF  */
+    TOK_ELSE = 263,                /* TOK_ELSE  */
+    TOK_WHILE = 264,               /* TOK_WHILE  */
+    TOK_FOR = 265,                 /* TOK_FOR  */
+    TOK_BREAK = 266,               /* TOK_BREAK  */
+    TOK_CONTINUE = 267,            /* TOK_CONTINUE  */
+    EQ = 268,                      /* EQ  */
+    NE = 269,                      /* NE  */
+    LE = 270,                      /* LE  */
+    GE = 271,                      /* GE  */
+    LOWER_THAN_ELSE = 272          /* LOWER_THAN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -79,7 +84,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 27 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
+#line 28 "C:/Users/trish/Desktop/Shitz/project/minilangCompiler/src/parser.y"
 
     int ival;
     char* id;
@@ -88,7 +93,7 @@ union YYSTYPE
     std::vector<Statement*>* stmt_list;
     std::vector<Expression*>* expr_list;
 
-#line 92 "C:/users/trish/Desktop/shitz/project/minilangCompiler/Build/parser.hpp"
+#line 97 "C:/users/trish/desktop/shitz/project/minilangCompiler/build/parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

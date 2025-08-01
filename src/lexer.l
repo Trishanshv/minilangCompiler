@@ -11,9 +11,12 @@ void yyerror(const char* s);
 %}
 
 %%
-"while"     { return WHILE;}
-"else"      { return ELSE; } 
-"if"        { return IF; }
+"if"       { return TOK_IF; }
+"else"     { return TOK_ELSE; }
+"while"    { return TOK_WHILE; }
+"for"      { return TOK_FOR; }
+"break"    { return TOK_BREAK; }
+"continue" { return TOK_CONTINUE; }
 "int"       { return INT; }
 "return"    { return RETURN; }
 

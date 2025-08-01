@@ -4,6 +4,7 @@ project(minilang LANGUAGES C CXX)
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Find Bison and Flex
 find_package(BISON REQUIRED)
@@ -30,31 +31,55 @@ find_package(LLVM REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
-# Set LLVM includes and defines
-include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
+llvm_map_components_to_libnames(LLVM_LIBS core irreader mcjit native support)
 
-# Map LLVM components
-llvm_map_components_to_libnames(LLVM_LIBS core orcjit native)
+# Set LLVM components
+llvm_map_components_to_libnames(LLVM_LIBS
+    core
+    executionengine
+    irreader
+    mcjit
+    native
+    support
+    analysis
+    all
+)
 
-# Add the executable after defining sources
+# Compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unused-parameter")
+
+# Add executable
 add_executable(minilang
     ${BISON_Parser_OUTPUTS}
     ${FLEX_Lexer_OUTPUTS}
     src/main.cpp
-    src/semantic.cpp
-    src/codegen.cpp
     src/codegen.hpp
 )
 
-# Include parser headers and src directory
-target_include_directories(minilang PRIVATE
-    ${LLVM_LIBS}
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
+add_library(minilang_lib STATIC
+    src/semantic.cpp
+    src/codegen.cpp
+    src/ast.cpp
+    src/ast.hpp
+    src/codegen.hpp
 )
+target_link_libraries(minilang PRIVATE minilang_lib ${LLVM_LIBS})
 
-# Link LLVM libraries
+# Target properties
+target_compile_definitions(minilang PRIVATE ${LLVM_DEFINITIONS})
+target_include_directories(minilang PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}
+    SYSTEM ${LLVM_INCLUDE_DIRS}
+)
 target_link_libraries(minilang PRIVATE ${LLVM_LIBS})
 
-list(APPEND CMAKE_PREFIX_PATH "/mingw64/lib/cmake/llvm")
+# Windows-specific settings
+if(WIN32)
+    add_definitions("-D_CRT_SECURE_NO_WARNINGS")
+endif()
+
+if(LLVM_VERSION_MAJOR LESS 10)
+    message(FATAL_ERROR "LLVM 10 or higher required")
+endif()

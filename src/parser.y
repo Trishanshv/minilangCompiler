@@ -1,5 +1,6 @@
 %code requires {
     #include "ast.hpp"
+    #include <memory>
 }
 
 %{
@@ -37,9 +38,12 @@ std::vector<T*>* make_vector(T* item) {
 
 %token <id> IDENTIFIER
 %token <ival> NUMBER
-%token INT RETURN IF ELSE WHILE
+%token INT RETURN 
+%token TOK_IF TOK_ELSE TOK_WHILE TOK_FOR TOK_BREAK TOK_CONTINUE
 %token EQ NE LE GE
 
+%nonassoc LOWER_THAN_ELSE
+%nonassoc TOK_ELSE
 %left '+' '-'
 %left '*' '/'
 %left '<' '>' LE GE EQ NE
@@ -75,18 +79,24 @@ statement:
     | '{' statement_list '}' {
         $$ = new Block($2);   
     }
-    | IF '(' expression ')' statement {
-        $$ = new IFStatement($3, $5);   
-    }
-    | IF '(' expression ')' statement ELSE statement {
-        $$ = new IFStatement($3, $5, $7);   
-    }
-    | WHILE '(' expression ')' statement {
-        $$ = new WhileStatement($3, $5);   
-    }
     | expression ';' {
         $$ = new ExprStatement($1);   
         printf("Parsed expression statement\n");
+    }
+    | TOK_IF '(' expression ')' statement %prec LOWER_THAN_ELSE {
+        $$ = new IfStatement($3, $5);
+    }
+    | TOK_IF '(' expression ')' statement TOK_ELSE statement {
+        $$ = new IfStatement($3, $5, $7);
+    }
+    | TOK_WHILE '(' expression ')' statement {
+        $$ = new WhileStatement($3, $5);
+    }
+    | TOK_BREAK ';' {
+        $$ = new BreakStatement();
+    }
+    | TOK_CONTINUE ';' {
+        $$ = new ContinueStatement();
     }
 ;
 
