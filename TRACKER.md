@@ -1,65 +1,65 @@
 # MiniLang Compiler - Project Tracker
 
 **Last Updated:** March 31, 2026  
-**Project Status:** 🚀 In Development  
+**Project Status:** In Development  
 **Version:** 0.1.0 (Alpha)
 
 ---
 
-## 📋 Executive Summary
+## Executive Summary
 
 MiniLang is a **minimal C-like language compiler** built in C++17 using Flex, Bison, and LLVM. The project implements a full compiler pipeline from lexical analysis to native x86-64 code generation.
 
 | Aspect | Status |
 |--------|--------|
-| **Build System** | ✅ CMake (Working) |
-| **Lexer** | ✅ Complete (Flex) |
-| **Parser** | ✅ Complete (Bison) |
-| **AST** | ✅ Implemented |
-| **Semantic Analysis** | ⚠️ Partial (Symbol Table ready) |
-| **Code Generation** | ✅ Basic LLVM IR generation |
-| **Testing** | ⚠️ Manual tests only |
-| **Documentation** | ⚠️ Needs improvement |
+| **Build System** | [DONE] CMake (Working) |
+| **Lexer** | [DONE] Complete (Flex) |
+| **Parser** | [DONE] Complete (Bison) |
+| **AST** | [DONE] Implemented |
+| **Semantic Analysis** | [TODO] Partial (Symbol Table ready) |
+| **Code Generation** | [DONE] Basic LLVM IR generation |
+| **Testing** | [TODO] Manual tests only |
+| **Documentation** | [TODO] Needs improvement |
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 minilangCompiler/
 ├── src/                          # Source code
-│   ├── main.cpp                  # ✅ Entry point | Runs parser & codegen
-│   ├── lexer.l                   # ✅ Lexical analyzer (Flex)
-│   ├── parser.y                  # ✅ Parser rules (Bison)
-│   ├── ast.hpp                   # ✅ AST node classes
-│   ├── ast.cpp                   # ✅ AST implementation
-│   ├── codegen.hpp               # ✅ LLVM code generation interface
-│   ├── codegen.cpp               # ✅ LLVM code generation impl
-│   ├── semantic.cpp              # ⚠️ Symbol table (not integrated)
-│   ├── test_if.minilang          # 📝 Test: if/else statement
-│   └── (other test files)        # 📝 Test samples
-├── include/                      # ⚠️ Empty (should contain headers)
-├── tests/                        # 📝 Test files
+│   ├── main.cpp                  # [DONE] Entry point | Runs parser & codegen
+│   ├── lexer.l                   # [DONE] Lexical analyzer (Flex)
+│   ├── parser.y                  # [DONE] Parser rules (Bison)
+│   ├── ast.hpp                   # [DONE] AST node classes
+│   ├── ast.cpp                   # [DONE] AST implementation
+│   ├── codegen.hpp               # [DONE] LLVM code generation interface
+│   ├── codegen.cpp               # [DONE] LLVM code generation impl
+│   ├── semantic.cpp              # [TODO] Symbol table (not integrated)
+│   ├── test_if.minilang          # [DOC] Test: if/else statement
+│   └── (other test files)        # [DOC] Test samples
+├── include/                      # [TODO] Empty (should contain headers)
+├── tests/                        # [DOC] Test files
 │   ├── test_input.minilang
 │   └── test.minilang
-├── build/                        # 🔨 Build artifacts (CMake output)
-├── CMakeLists.txt                # ✅ Build configuration
-├── README.md                     # ✅ Project documentation
-└── TRACKER.md                    # 📊 This file
+├── build/                        # [BUILD] Build artifacts (CMake output)
+├── CMakeLists.txt                # [DONE] Build configuration
+├── README.md                     # [DONE] Project documentation
+└── TRACKER.md                    # This file
 
 Legend:
-✅ Complete/Working
-⚠️  Needs attention
-📝 Documentation/Tests
-🔨 Build artifacts
+[DONE] Complete/Working
+[TODO] Needs attention
+[DOC] Documentation/Tests
+[BUILD] Build artifacts
 ```
 
 ---
 
-## 🔧 Component Status
+## Component Status
 
 ### 1. **Lexer** (`src/lexer.l`)
-- **Status:** ✅ Complete
+- **Status:** [DONE] Complete
 - **Tokens Supported:**
   - Keywords: `if`, `else`, `while`, `for`, `break`, `continue`, `int`, `return`
   - Operators: `+`, `-`, `*`, `/`, `==`, `!=`, `<=`, `>=`, `<`, `>`
@@ -68,7 +68,7 @@ Legend:
 - **Issues:** None identified
 
 ### 2. **Parser** (`src/parser.y`)
-- **Status:** ✅ Complete
+- **Status:** [DONE] Complete
 - **Productions:**
   - Program → statements
   - Statements → return, variable declaration, assignment, blocks, if/else, while, for
@@ -76,7 +76,7 @@ Legend:
 - **Issues:** None identified
 
 ### 3. **AST** (`src/ast.hpp`, `src/ast.cpp`)
-- **Status:** ✅ Implemented
+- **Status:** [DONE] Implemented
 - **Node Types:**
   - Expression: `IntegerLiteral`, `VariableExpr`, `BinaryExpr`, `ComparisonExpr`
   - Statement: `ReturnStatement`, `VarDeclaration`, `Assignment`, `Block`, `IfStatement`, `WhileStatement`
@@ -84,7 +84,7 @@ Legend:
 - **Issues:** None identified
 
 ### 4. **Code Generation** (`src/codegen.hpp`, `src/codegen.cpp`)
-- **Status:** ✅ Functional
+- **Status:** [DONE] Functional
 - **Features:**
   - LLVM IR module creation
   - Main function generation
@@ -97,13 +97,13 @@ Legend:
 - **Issues:** None identified
 
 ### 5. **Semantic Analysis** (`src/semantic.cpp`)
-- **Status:** ⚠️ **NOT INTEGRATED**
+- **Status:** [TODO] NOT INTEGRATED
 - **Implemented:** Symbol table with scope management
 - **Action Required:** Integrate into parser/main pipeline
 - **Why:** Currently semantic checking is minimal; proper analysis needed
 
 ### 6. **Main Entry Point** (`src/main.cpp`)
-- **Status:** ✅ Functional
+- **Status:** [DONE] Functional
 - **Flow:**
   1. Parse command-line arguments
   2. Open source file
@@ -113,7 +113,7 @@ Legend:
 - **Issues:** No error recovery or helpful messages
 
 ### 7. **Build System** (`CMakeLists.txt`)
-- **Status:** ✅ Complete
+- **Status:** [DONE] Complete
 - **Features:**
   - Flex/Bison integration
   - LLVM detection
@@ -123,37 +123,35 @@ Legend:
 
 ---
 
-## 🧪 Testing Status
+## Testing Status
 
 ### Test Files
 | File | Purpose | Status |
 |------|---------|--------|
-| `test.minilang` | Simple return statement | ✅ Works |
-| `test_if.minilang` | If/else logic | ⚠️ Needs validation |
-| `tests/test_input.minilang` | Input test case | 📝 Exists |
-| `tests/test.minilang` | Generic test | 📝 Exists |
+| `test.minilang` | Simple return statement | [DONE] Works |
+| `test_if.minilang` | If/else logic | [TODO] Needs validation |
+| `tests/test_input.minilang` | Input test case | [DOC] Exists |
+| `tests/test.minilang` | Generic test | [DOC] Exists |
 
-### Testing Gaps ⚠️
-- [ ] No unit tests (no test framework)
-- [ ] No automated test suite
-- [ ] No regression tests
-- [ ] Manual testing only
-- [ ] No negative test cases
-- [ ] No performance tests
+### Testing Gaps
+[x] No unit tests (no test framework)
+[x] No automated test suite
+[x] No regression tests
+[x] Manual testing only
+[x] No negative test cases
+[x] No performance tests
 
 ---
 
-## ⚙️ Build & Compilation
+## Build & Compilation
 
 ### Prerequisites
-```
-✅ C++17 (or later)
-✅ CMake 3.10+
-✅ Flex (lexical analyzer generator)
-✅ Bison (parser generator)
-✅ LLVM 15+ 
-✅ Make or Ninja
-```
+[DONE] C++17 (or later)
+[DONE] CMake 3.10+
+[DONE] Flex (lexical analyzer generator)
+[DONE] Bison (parser generator)
+[DONE] LLVM 15+
+[DONE] Make or Ninja
 
 ### Build Steps
 ```bash
@@ -164,9 +162,9 @@ make
 ```
 
 ### Current Build Status
-- **Configured:** ✅ Yes (CMakeCache.txt exists)
-- **Last Build:** 🔄 Unknown (check `build/Makefile`)
-- **Artifacts:** 
+[DONE] Configured - Yes (CMakeCache.txt exists)
+[TODO] Last Build - Unknown (check `build/Makefile`)
+[DONE] Artifacts: 
   - `build/parser.cpp` (generated)
   - `build/parser.hpp` (generated)
   - `build/lexer.cpp` (generated)
@@ -174,64 +172,64 @@ make
 
 ---
 
-## 🚀 Known Issues & TODOs
+## Known Issues & TODOs
 
 ### Critical Issues
-- [ ] **Semantic Analysis Not Integrated** 
+[x] **Semantic Analysis Not Integrated** 
   - File: `src/semantic.cpp`
   - Impact: No type checking, redeclaration detection
   - Fix: Connect SymbolTable to parser/codegen
 
 ### Important Issues
-- [ ] **Error Messages**
+[x] **Error Messages**
   - Current: Generic parse errors
   - Needed: Line numbers, context, helpful hints
 
-- [ ] **No include/ Directory Usage**
+[x] **No include/ Directory Usage**
   - Headers currently in src/ only
   - Should organize into include/
 
-- [ ] **Incomplete Features**
-  - [ ] Function declarations & calls
-  - [ ] Array types
-  - [ ] Pointers
-  - [ ] Structs
-  - [ ] For loop implementation
+[x] **Incomplete Features**
+  [x] Function declarations & calls
+  [x] Array types
+  [x] Pointers
+  [x] Structs
+  [x] For loop implementation
 
 ### Nice-to-Have Improvements
-- [ ] Unit test framework (Catch2 in CMakeLists but not used)
-- [ ] LLVM optimization passes
-- [ ] Debug symbol generation (DWARF)
-- [ ] Intermediate assembly output option
-- [ ] REPL/interactive mode
-- [ ] Better error recovery in parser
+[x] Unit test framework (Catch2 in CMakeLists but not used)
+[x] LLVM optimization passes
+[x] Debug symbol generation (DWARF)
+[x] Intermediate assembly output option
+[x] REPL/interactive mode
+[x] Better error recovery in parser
 
 ---
 
-## 📊 File Inventory & Metrics
+## File Inventory & Metrics
 
 ### Source Files
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `ast.hpp` | ~150+ | ✅ | AST node definitions |
-| `ast.cpp` | ~150+ | ✅ | AST implementations |
-| `codegen.hpp` | ~50+ | ✅ | CodeGen interface |
-| `codegen.cpp` | ~200+ | ✅ | LLVM IR generation |
-| `semantic.cpp` | ~50+ | ⚠️ | NOT INTEGRATED |
-| `parser.y` | ~100+ | ✅ | Bison grammar |
-| `lexer.l` | ~40 | ✅ | Flex rules |
-| `main.cpp` | ~30 | ✅ | Entry point |
+| `ast.hpp` | ~150+ | [DONE] | AST node definitions |
+| `ast.cpp` | ~150+ | [DONE] | AST implementations |
+| `codegen.hpp` | ~50+ | [DONE] | CodeGen interface |
+| `codegen.cpp` | ~200+ | [DONE] | LLVM IR generation |
+| `semantic.cpp` | ~50+ | [TODO] | NOT INTEGRATED |
+| `parser.y` | ~100+ | [DONE] | Bison grammar |
+| `lexer.l` | ~40 | [DONE] | Flex rules |
+| `main.cpp` | ~30 | [DONE] | Entry point |
 
 ### Generated Files (in `build/`)
 | File | Purpose | Auto-Generated |
 |------|---------|----------------|
-| `parser.cpp` | Parser implementation | ✅ By Bison |
-| `parser.hpp` | Parser header | ✅ By Bison |
-| `lexer.cpp` | Lexer implementation | ✅ By Flex |
+| `parser.cpp` | Parser implementation | [DONE] By Bison |
+| `parser.hpp` | Parser header | [DONE] By Bison |
+| `lexer.cpp` | Lexer implementation | [DONE] By Flex |
 
 ---
 
-## 🎯 Next Steps (Priority Order)
+## Next Steps (Priority Order)
 
 ### Phase 1: Stabilize Current Features
 1. **Integrate Semantic Analysis**
@@ -263,45 +261,45 @@ make
 
 ---
 
-## 📝 Code Quality Checklist
+## Code Quality Checklist
 
-- [x] Build system works
-- [x] No compilation errors (main pipeline)
-- [ ] All features fully tested
-- [ ] Code commented thoroughly
-- [ ] Error handling complete
-- [ ] Memory leaks checked (valgrind/sanitizers)
-- [ ] Header guards in place
-- [ ] Consistent naming conventions
-- [ ] CMake best practices followed
-- [ ] Git history clean
+[x] Build system works
+[x] No compilation errors (main pipeline)
+[ ] All features fully tested
+[ ] Code commented thoroughly
+[ ] Error handling complete
+[ ] Memory leaks checked (valgrind/sanitizers)
+[ ] Header guards in place
+[ ] Consistent naming conventions
+[ ] CMake best practices followed
+[ ] Git history clean
 
 ---
 
-## � Quality Assurance Status
+## Quality Assurance Status
 
-**Last QA Check:** March 31, 2026  
-**Status:** ✅ **CRITICAL ISSUES FOUND & FIXED**
+**Last QA Check:** March 31, 2026
+**Status:** [DONE] CRITICAL ISSUES FOUND & FIXED
 
 ### Issues Discovered & Resolved
-- ✅ **Issue 1 (FIXED):** CMakeLists.txt had header files listed as sources (Lines 50-52)
+[DONE] **Issue 1 (FIXED):** CMakeLists.txt had header files listed as sources (Lines 50-52)
   - **Impact:** Would cause build compilation errors
   - **Fix:** Removed `.hpp` files from `add_executable()` and `add_library()` source lists
   
-- ✅ **Issue 2 (FIXED):** ISSUES.md Issue #4 documentation was inaccurate
+[DONE] **Issue 2 (FIXED):** ISSUES.md Issue #4 documentation was inaccurate
   - **Problem:** Claimed ForStatement AST node exists (it doesn't)
   - **Verified:** No ForStatement in AST, no for-loop parser rules
   - **Fix:** Corrected to accurately state feature is completely missing
 
 ### Other Findings
-- 🟡 **Minor:** Markdown formatting violations in TRACKER.md (style only, not blocking)
-- 🔵 **Low:** Header organization incomplete (not critical)
+[ ] **Minor:** Markdown formatting violations in TRACKER.md (style only, not blocking)
+[ ] **Low:** Header organization incomplete (not critical)
 
 ### Verification Completed
-- ✅ All source files validated
-- ✅ Build configuration corrected
-- ✅ Documentation accuracy verified
-- ✅ No compilation errors detected
+[DONE] All source files validated
+[DONE] Build configuration corrected
+[DONE] Documentation accuracy verified
+[DONE] No compilation errors detected
 
 **See QA_REPORT.md for complete audit details**
 
@@ -336,7 +334,7 @@ semantic.cpp
 
 ---
 
-## 🐛 Debugging Notes
+## Debugging Notes
 
 ### To Run a Test File
 ```bash
@@ -381,7 +379,3 @@ cd build
 - [ ] v0.5.0: Optimization passes
 
 ---
-
-**Maintained by:** Developer  
-**Last Reviewed:** March 31, 2026  
-**Next Review:** [Plan weekly check-ins]

@@ -8,21 +8,21 @@
 
 ## Executive Summary
 
-**4 Issues Found | 2 Fixed | 2 Documented**
+4 Issues Found | 2 Fixed | 2 Documented
 
-- 🔴 **1 Critical** - CMakeLists.txt build error (FIXED)
-- 🟠 **1 High** - Documentation inaccuracy (FIXED)  
-- 🟡 **1 Moderate** - Markdown formatting (Documented)
-- 🔵 **1 Low** - Header organization (Documented)
+[CRITICAL] 1 Critical - CMakeLists.txt build error (FIXED)
+[HIGH] 1 High - Documentation inaccuracy (FIXED)
+[MODERATE] 1 Moderate - Markdown formatting (Documented)
+[LOW] 1 Low - Header organization (Documented)
 
 ---
 
-## 🔴 CRITICAL ISSUES (Fixed)
+## CRITICAL ISSUES (Fixed)
 
-### Issue 1: CMakeLists.txt Build Configuration Error ✅ FIXED
+### Issue 1: CMakeLists.txt Build Configuration Error (FIXED)
 
-**Location:** Lines 50-52  
-**Severity:** 🔴 Critical - Causes build failure
+**Location:** Lines 50-52
+**Severity:** [CRITICAL] Causes build failure
 
 **Problem:**
 ```cmake
@@ -44,10 +44,10 @@ add_library(minilang_lib STATIC
 ```
 
 **Why It's Wrong:**
-- Header files (`.hpp`) should NOT be listed as sources in `add_executable()` or `add_library()`
+- Header files (.hpp) should NOT be listed as sources in add_executable() or add_library()
 - CMake will try to compile them as C++ code
 - Results in compilation errors or warnings
-- Standard CMake practice: only `.cpp` files in source lists
+- Standard CMake practice: only .cpp files in source lists
 
 **Fix Applied:**
 ```cmake
@@ -116,11 +116,11 @@ ISSUES.md Issue #4 updated to accurately reflect:
 
 ---
 
-## 🟠 MODERATE ISSUES (Documented)
+## MODERATE ISSUES (Documented)
 
 ### Issue 3: Markdown Formatting Violations in TRACKER.md
 
-**Status:** 🟡 Not Critical (Documentation still readable)  
+**Status:** [MODERATE] Not Critical (Documentation still readable)  
 **Impact:** Linting failures, not functional issues
 
 **Violations Found:** 70+ style issues
@@ -149,7 +149,7 @@ Some text
 
 ### Issue 4: Header Organization Incomplete
 
-**Status:** 🔵 Low Priority - Code organization
+**Status:** [LOW] Code organization
 
 **Current State:**
 ```
@@ -173,10 +173,10 @@ src/
 ### By Severity
 | Level | Count | Status |
 |-------|-------|--------|
-| 🔴 Critical | 1 | ✅ FIXED |
-| 🟠 High | 1 | ✅ FIXED |
-| 🟡 Moderate | 1 | 📝 Documented |
-| 🔵 Low | 1 | 📝 Documented |
+| [CRITICAL] | 1 | [DONE] FIXED |
+| [HIGH] | 1 | [DONE] FIXED |
+| [MODERATE] | 1 | [DOC] Documented |
+| [LOW] | 1 | [DOC] Documented |
 
 ### By Component
 | Component | Issues | Severity |
@@ -318,13 +318,13 @@ A: Only if you want linting to pass. The content is readable and correct as-is. 
 
 | Metric | Result |
 |--------|--------|
-| **Build Configuration** | ⚠️ FIXED ✅ |
-| **Documentation Accuracy** | ⚠️ FIXED ✅ |
-| **Code Quality** | ✅ PASS |
-| **Syntax Validation** | ✅ PASS |
-| **File Organization** | ⚠️ NOT CRITICAL |
+| **Build Configuration** | [DONE] FIXED |
+| **Documentation Accuracy** | [DONE] FIXED |
+| **Code Quality** | [DONE] PASSED |
+| **Syntax Validation** | [DONE] PASSED |
+| **File Organization** | [TODO] NOT CRITICAL |
 
-**Overall Grade: B+ → A-** (After fixes)
+**Overall Grade: A- (After fixes)
 
 ---
 

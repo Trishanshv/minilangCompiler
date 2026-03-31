@@ -114,9 +114,15 @@ Value* CodeGenContext::codegen(IntegerLiteral* expr) {
 }
 
 Value* CodeGenContext::codegen(VariableExpr* expr) {
+    // Semantic analysis: check if variable is declared
+    if (!symbolTable.isDeclared(expr->name)) {
+        std::cerr << "Error: Undeclared variable '" << expr->name << "'" << std::endl;
+        return nullptr;
+    }
+    
     AllocaInst* alloca = findVariable(expr->name);
     if (!alloca) {
-        std::cerr << "Unknown variable: " << expr->name << std::endl;
+        std::cerr << "Internal error: Variable '" << expr->name << "' declared but not allocated" << std::endl;
         return nullptr;
     }
     return builder.CreateLoad(
@@ -162,6 +168,12 @@ Value* CodeGenContext::codegen(FunctionCall* expr) {
 }
 
 Value* CodeGenContext::codegen(VarDeclaration* stmt) {
+    // Semantic analysis: check for redeclaration in current scope
+    if (!symbolTable.declare(stmt->name, SymbolType::VARIABLE)) {
+        std::cerr << "Error: Variable '" << stmt->name << "' already declared in this scope" << std::endl;
+        return nullptr;
+    }
+    
     Type* type = Type::getInt32Ty(*context);
     AllocaInst* alloca = builder.CreateAlloca(
         type, 

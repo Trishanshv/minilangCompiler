@@ -10,8 +10,8 @@
 **MiniLang Compiler** is a C++/LLVM compiler for a minimal C-like language.
 
 ```
-Source → Lexer → Parser → AST → [Semantic] → CodeGen → LLVM IR
-(✅)      (✅)      (✅)    (✅)    (⚠️ Missing)  (✅)      (✅)
+Source -> Lexer -> Parser -> AST -> [Semantic] -> CodeGen -> LLVM IR
+([OK])    ([OK])    ([OK])   ([OK])  ([MISSING])  ([OK])     ([OK])
 ```
 
 **Current:** Lexing, parsing, and basic codegen work. Semantic analysis not integrated.
@@ -22,20 +22,20 @@ Source → Lexer → Parser → AST → [Semantic] → CodeGen → LLVM IR
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| **Total Lines of Code** | ~800 | - |
-| **Generated Code** | ~1,500+ | (Flex/Bison generated) |
-| **Files** | 9 source | ✅ Core complete |
-| **Build System** | CMake | ✅ Working |
-| **Tests** | 0 unit | ⚠️ Need 20+ |
-| **Features** | 7/15 | 47% complete |
-| **Bugs** | 12 known | ⚠️ See ISSUES.md |
+| Total Lines of Code | ~800 | - |
+| Generated Code | ~1,500+ | (Flex/Bison generated) |
+| Files | 9 source | [DONE] Core complete |
+| Build System | CMake | [DONE] Working |
+| Tests | 0 unit | [TODO] Need 20+ |
+| Features | 7/15 | 47% complete |
+| Bugs | 12 known | [TODO] See ISSUES.md |
 
 ---
 
-## ✅ What Works
+## What Works
 
-- ✅ Lexical analysis (Flex)
-- ✅ Parsing (Bison) - constructs AST
+[DONE] Lexical analysis (Flex)
+[DONE] Parsing (Bison) - constructs AST
 - ✅ Variable declarations: `int x = 5;`
 - ✅ Arithmetic: `+`, `-`, `*`, `/`
 - ✅ Comparisons: `==`, `!=`, `<`, `>`, `<=`, `>=`
@@ -46,9 +46,9 @@ Source → Lexer → Parser → AST → [Semantic] → CodeGen → LLVM IR
 
 ---
 
-## ⚠️ What Needs Work
+## What Needs Work
 
-- ⚠️ **Semantic analysis** - not integrated yet
+[TODO] **Semantic analysis** - not integrated yet
 - ⚠️ **For-loop** - parsed but not codegened
 - ⚠️ **Function calls** - not supported
 - ⚠️ **Error messages** - no line numbers

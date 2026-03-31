@@ -6,66 +6,66 @@
 
 ---
 
-## 🔨 Build Status
+## Build Status
 
 | Component | Status | Details |
 |-----------|--------|---------|
-| **CMake Configuration** | ✅ OK | CMakeCache.txt exists, configured |
-| **Flex Setup** | ✅ OK | FLEX_TARGET configured |
-| **Bison Setup** | ✅ OK | BISON_TARGET configured |
-| **LLVM Detection** | ✅ OK | LLVM found and configured |
-| **C++ Compiler** | ✅ OK | C++17 enabled |
-| **Executable** | ? Unknown | Check `build/minilang` |
+| **CMake Configuration** | [DONE] OK | CMakeCache.txt exists, configured |
+| **Flex Setup** | [DONE] OK | FLEX_TARGET configured |
+| **Bison Setup** | [DONE] OK | BISON_TARGET configured |
+| **LLVM Detection** | [DONE] OK | LLVM found and configured |
+| **C++ Compiler** | [DONE] OK | C++17 enabled |
+| **Executable** | [TODO] Unknown | Check `build/minilang` |
 
 ---
 
-## 📦 Component Compilation Status
+## Component Compilation Status
 
 ### Source Files Ready for Compilation
 
-✅ **Core Components (Ready)**
-- [x] `src/lexer.l` → compiles to `build/lexer.cpp`
-- [x] `src/parser.y` → compiles to `build/parser.cpp` + `build/parser.hpp`
-- [x] `src/ast.hpp` → C++ header (no compilation)
-- [x] `src/ast.cpp` → source file
-- [x] `src/codegen.hpp` → C++ header
-- [x] `src/codegen.cpp` → source file
-- [x] `src/main.cpp` → entry point
+[DONE] **Core Components (Ready)**
+[x] `src/lexer.l` -> compiles to `build/lexer.cpp`
+[x] `src/parser.y` -> compiles to `build/parser.cpp` + `build/parser.hpp`
+[x] `src/ast.hpp` -> C++ header (no compilation)
+[x] `src/ast.cpp` -> source file
+[x] `src/codegen.hpp` -> C++ header
+[x] `src/codegen.cpp` -> source file
+[x] `src/main.cpp` -> entry point
 
-⚠️ **Optional Components (Configured but unused)**
-- [ ] `src/semantic.cpp` → **NOT LINKED** - needs integration
-- [ ] Unit tests → Catch2 available but no tests written
+[TODO] **Optional Components (Configured but unused)**
+[ ] `src/semantic.cpp` -> NOT LINKED - needs integration
+[ ] Unit tests -> Catch2 available but no tests written
 
 ---
 
-## 🧪 Test Status
+## Test Status
 
 ### Available Test Cases
 
 | Test File | Purpose | Last Run | Result |
 |-----------|---------|----------|--------|
-| `test.minilang` | Return statement | N/A | ✅ Should work |
-| `test_if.minilang` | If/else statement | N/A | ⚠️ Needs testing |
-| `tests/test_input.minilang` | Input test | N/A | ? Unknown |
-| `tests/test.minilang` | Generic test | N/A | ? Unknown |
+| `test.minilang` | Return statement | N/A | [DONE] Should work |
+| `test_if.minilang` | If/else statement | N/A | [TODO] Needs testing |
+| `tests/test_input.minilang` | Input test | N/A | [TODO] Unknown |
+| `tests/test.minilang` | Generic test | N/A | [TODO] Unknown |
 
 ### Test Suite Status
-- **Unit Tests:** ❌ None (0 tests)
-- **Integration Tests:** ⚠️ Manual only
-- **Regression Tests:** ❌ None
-- **Test Framework:** ⚠️ Catch2 configured but unused
+[DONE] Unit Tests - None (0 tests)
+[DONE] Integration Tests - Manual only
+[DONE] Regression Tests - None
+[DONE] Test Framework - Catch2 configured but unused
 
 ---
 
-## 🔗 Link Status
+## Link Status
 
 ### Target: `minilang` Executable
 
 **Expected to Link:**
-- [x] `build/parser.cpp`
-- [x] `build/lexer.cpp`
-- [x] `src/main.cpp`
-- [x] `build/libminilang_lib.a` (or .lib on Windows)
+[x] `build/parser.cpp`
+[x] `build/lexer.cpp`
+[x] `src/main.cpp`
+[x] `build/libminilang_lib.a` (or .lib on Windows)
 
 **Dependency Chain:**
 ```
@@ -103,12 +103,12 @@ minilang
 - **Fix:** Connect `SymbolTable` to main pipeline
 
 ### Issue: Include Directories
-- **Status:** ✅ OK
+[DONE] **Status: OK**
 - **Note:** Currently all headers in `src/`, `include/` empty
 - **TODO:** Reorganize headers to `include/` directory
 
 ### Issue: Parser Dependency
-- **Status:** ✅ OK
+[DONE] **Status: OK**
 - **Note:** `ADD_FLEX_BISON_DEPENDENCY` correctly set up
 - **Ensures:** Lexer recompiles if parser changes
 

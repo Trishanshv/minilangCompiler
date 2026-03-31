@@ -76,14 +76,14 @@ cmake ..
 
 | File | Purpose | Lines | Status |
 |------|---------|-------|--------|
-| **main.cpp** | Entry point; orchestrates pipeline | 30-40 | ✅ |
-| **lexer.l** | Flex lexical rules | 40-50 | ✅ |
-| **parser.y** | Bison grammar rules | 100-120 | ✅ |
-| **ast.hpp** | AST node class definitions | 150+ | ✅ |
-| **ast.cpp** | AST node implementations | 150+ | ✅ |
-| **codegen.hpp** | Code generation interface | 50+ | ✅ |
-| **codegen.cpp** | LLVM IR codegen impl | 200+ | ✅ |
-| **semantic.cpp** | Symbol table & semantic checking | 50+ | ⚠️ Not integrated |
+| **main.cpp** | Entry point; orchestrates pipeline | 30-40 | [DONE] |
+| **lexer.l** | Flex lexical rules | 40-50 | [DONE] |
+| **parser.y** | Bison grammar rules | 100-120 | [DONE] |
+| **ast.hpp** | AST node class definitions | 150+ | [DONE] |
+| **ast.cpp** | AST node implementations | 150+ | [DONE] |
+| **codegen.hpp** | Code generation interface | 50+ | [DONE] |
+| **codegen.cpp** | LLVM IR codegen impl | 200+ | [DONE] |
+| **semantic.cpp** | Symbol table & semantic checking | 50+ | [TODO] Not integrated |
 
 ### Test Files
 
@@ -94,7 +94,7 @@ cmake ..
 
 ## Current Implementation Status
 
-### ✅ Complete Components
+### Complete Components
 
 1. **Lexer (src/lexer.l)**
    - Tokenizes all keywords, operators, identifiers, numbers
@@ -124,7 +124,7 @@ cmake ..
      - Return statements
      - Scope management (push/pop scopes)
 
-### ⚠️ Incomplete/Issues
+### Incomplete/Issues
 
 1. **Semantic Analysis Not Integrated**
    - `src/semantic.cpp` has SymbolTable implementation but NOT used
@@ -243,11 +243,11 @@ module->print(llvm::outs(), nullptr);
 
 ## Known Pitfalls
 
-1. ⚠️ **Circular Includes** - Be careful with forward declarations
-2. ⚠️ **Memory Leaks** - Check with valgrind in Linux
-3. ⚠️ **LLVM Version Mismatch** - Check LLVM version compatibility
-4. ⚠️ **Parser Conflicts** - Use Bison warnings (`-Werror=conflicts`)
-5. ⚠️ **Flex/Bison Dependencies** - Regenerate if you modify .l or .y files
+1. CIRCULAR INCLUDES - Be careful with forward declarations
+2. MEMORY LEAKS - Check with valgrind in Linux
+3. LLVM VERSION MISMATCH - Check LLVM version compatibility
+4. PARSER CONFLICTS - Use Bison warnings (`-Werror=conflicts`)
+5. FLEX/BISON DEPENDENCIES - Regenerate if you modify .l or .y files
 
 ## Next Steps
 
