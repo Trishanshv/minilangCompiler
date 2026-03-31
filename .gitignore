@@ -1,5 +1,47 @@
+# Build artifacts
 /build/
-/*.o
-*.ll
-*.out
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+
+# Executables
 *.exe
+*.out
+*.app
+
+# LLVM IR output
+*.ll
+*.bc
+*.s
+
+# CMake
+CMakeCache.txt
+CMakeLists.txt.user
+CMakeUserPresets.json
+cmake_install.cmake
+Makefile
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.vs/
+
+# Generated files from Flex/Bison
+lexer.cpp
+parser.cpp
+parser.hpp
+location.hh
+parser.output
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.log

@@ -54,15 +54,12 @@ add_executable(minilang
     ${BISON_Parser_OUTPUTS}
     ${FLEX_Lexer_OUTPUTS}
     src/main.cpp
-    src/codegen.hpp
 )
 
 add_library(minilang_lib STATIC
     src/semantic.cpp
     src/codegen.cpp
     src/ast.cpp
-    src/ast.hpp
-    src/codegen.hpp
 )
 target_link_libraries(minilang PRIVATE minilang_lib ${LLVM_LIBS})
 
