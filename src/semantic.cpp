@@ -1,57 +1,47 @@
-#include <vector>
-#include <unordered_map>
-#include <string>
-#include <stdexcept>
-#include "ast.hpp"
+#include "semantic.hpp"
 
-enum class SymbolType { VARIABLE, FUNCTION };
+SymbolTable::SymbolTable() {
+    enterScope(); // Global scope
+}
 
-struct Symbol {
-    SymbolType type;
-    // Could add more info like data type, scope level, etc.
-};
+void SymbolTable::enterScope() {
+    scopes.emplace_back();
+}
 
-class SymbolTable {
-    std::vector<std::unordered_map<std::string, Symbol>> scopes;
-    
-public:
-    SymbolTable() {
-        enterScope(); // Global scope
+void SymbolTable::exitScope() {
+    if (scopes.size() <= 1) {
+        throw std::runtime_error("Cannot exit global scope");
     }
+    scopes.pop_back();
+}
 
-    void enterScope() {
-        scopes.emplace_back();
+bool SymbolTable::declare(const std::string& name, SymbolType type) {
+    if (scopes.back().count(name)) {
+        return false; // Redeclaration in same scope
     }
+    scopes.back()[name] = {type};
+    return true;
+}
 
-    void exitScope() {
-        if (scopes.size() <= 1) {
-            throw std::runtime_error("Cannot exit global scope");
+bool SymbolTable::isDeclared(const std::string& name) const {
+    // Search from innermost to outermost scope
+    for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
+        if (it->count(name)) {
+            return true;
         }
-        scopes.pop_back();
     }
+    return false;
+}
 
-    bool declare(const std::string& name, SymbolType type) {
-        if (scopes.back().count(name)) {
-            return false; // Redeclaration in same scope
+const Symbol* SymbolTable::lookup(const std::string& name) const {
+    for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
+        if (auto found = it->find(name); found != it->end()) {
+            return &found->second;
         }
-        scopes.back()[name] = {type};
-        return true;
     }
+    return nullptr;
+}
 
-    bool isDeclared(const std::string& name) const {
-        // Search from innermost to outermost scope
-        for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
-            if (it->count(name)) return true;
-        }
-        return false;
-    }
-
-    const Symbol* lookup(const std::string& name) const {
-        for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
-            if (auto found = it->find(name); found != it->end()) {
-                return &found->second;
-            }
-        }
-        return nullptr;
-    }
-};
+size_t SymbolTable::getScopeDepth() const {
+    return scopes.size();
+}

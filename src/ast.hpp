@@ -109,6 +109,16 @@ struct WhileStatement : Statement {
     llvm::Value* codegen(CodeGenContext& context) override;
 };
 
+struct ForStatement : Statement {
+    std::unique_ptr<Statement> init;
+    std::unique_ptr<Expression> condition;
+    std::unique_ptr<Statement> increment;
+    std::unique_ptr<Statement> body;
+    ForStatement(Statement* i, Expression* c, Statement* inc, Statement* b);
+    void print() const override;
+    llvm::Value* codegen(CodeGenContext& context) override;
+};
+
 struct BreakStatement : Statement {
     void print() const override;
     llvm::Value* codegen(CodeGenContext& context) override;

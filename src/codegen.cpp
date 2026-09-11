@@ -1,5 +1,6 @@
 #include "codegen.hpp"
 #include "ast.hpp"
+#include "semantic.hpp"
 #include <llvm/IR/Verifier.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Constants.h>
@@ -35,9 +36,9 @@ Function* CodeGenContext::generateCode(Program* prog) {
     setCurrentFunction(mainFunc);
 
     for (const auto& stmt : prog->getStatements()) {
-        if (!codegen(stmt.get())) {
-            std::cerr << "Error generating code for statement" << std::endl;
-            return nullptr;
+        codegen(stmt.get());
+        if (builder.GetInsertBlock()->getTerminator()) {
+            break;
         }
     }
 
@@ -51,6 +52,40 @@ Function* CodeGenContext::generateCode(Program* prog) {
     }
 
     return mainFunc;
+}
+
+// Scope management
+void CodeGenContext::pushScope() {
+    scopes.emplace_back();
+    symbolTable.enterScope();
+}
+
+void CodeGenContext::popScope() {
+    if (!scopes.empty()) {
+        scopes.pop_back();
+    }
+    if (symbolTable.getScopeDepth() > 1) {
+        symbolTable.exitScope();
+    }
+}
+
+// Loop management
+void CodeGenContext::pushLoop(BasicBlock* breakBB, BasicBlock* continueBB) {
+    loopStack.push_back({breakBB, continueBB});
+}
+
+void CodeGenContext::popLoop() {
+    if (!loopStack.empty()) {
+        loopStack.pop_back();
+    }
+}
+
+BasicBlock* CodeGenContext::getCurrentLoopEnd() const {
+    return loopStack.empty() ? nullptr : loopStack.back().breakBB;
+}
+
+BasicBlock* CodeGenContext::getCurrentLoopContinue() const {
+    return loopStack.empty() ? nullptr : loopStack.back().continueBB;
 }
 
 // Variable management
@@ -67,8 +102,9 @@ void CodeGenContext::registerVariable(const std::string& name, AllocaInst* alloc
     }
 }
 
-// Expression codegen
+// Expression codegen dispatch
 Value* CodeGenContext::codegen(Expression* expr) {
+    if (!expr) return nullptr;
     if (auto intLit = dynamic_cast<IntegerLiteral*>(expr)) {
         return codegen(intLit);
     }
@@ -78,14 +114,18 @@ Value* CodeGenContext::codegen(Expression* expr) {
     if (auto binExpr = dynamic_cast<BinaryExpr*>(expr)) {
         return codegen(binExpr);
     }
+    if (auto cmpExpr = dynamic_cast<ComparisonExpr*>(expr)) {
+        return codegen(cmpExpr);
+    }
     if (auto callExpr = dynamic_cast<FunctionCall*>(expr)) {
         return codegen(callExpr);
     }
     return nullptr;
 }
 
-// Statement codegen
+// Statement codegen dispatch
 Value* CodeGenContext::codegen(Statement* stmt) {
+    if (!stmt) return nullptr;
     if (auto retStmt = dynamic_cast<ReturnStatement*>(stmt)) {
         return codegen(retStmt);
     }
@@ -101,10 +141,25 @@ Value* CodeGenContext::codegen(Statement* stmt) {
     if (auto whileStmt = dynamic_cast<WhileStatement*>(stmt)) {
         return codegen(whileStmt);
     }
+    if (auto forStmt = dynamic_cast<ForStatement*>(stmt)) {
+        return codegen(forStmt);
+    }
+    if (auto block = dynamic_cast<Block*>(stmt)) {
+        return codegen(block);
+    }
+    if (auto exprStmt = dynamic_cast<ExprStatement*>(stmt)) {
+        return codegen(exprStmt);
+    }
+    if (auto breakStmt = dynamic_cast<BreakStatement*>(stmt)) {
+        return codegen(breakStmt);
+    }
+    if (auto contStmt = dynamic_cast<ContinueStatement*>(stmt)) {
+        return codegen(contStmt);
+    }
     return nullptr;
 }
 
-// Specific implementations
+// Specific expression implementations
 Value* CodeGenContext::codegen(IntegerLiteral* expr) {
     return ConstantInt::get(
         Type::getInt32Ty(*context),
@@ -114,7 +169,6 @@ Value* CodeGenContext::codegen(IntegerLiteral* expr) {
 }
 
 Value* CodeGenContext::codegen(VariableExpr* expr) {
-    // Semantic analysis: check if variable is declared
     if (!symbolTable.isDeclared(expr->name)) {
         std::cerr << "Error: Undeclared variable '" << expr->name << "'" << std::endl;
         return nullptr;
@@ -142,13 +196,26 @@ Value* CodeGenContext::codegen(BinaryExpr* expr) {
         case '-': return builder.CreateSub(L, R, "subtmp");
         case '*': return builder.CreateMul(L, R, "multmp");
         case '/': return builder.CreateSDiv(L, R, "divtmp");
-        case '<': return builder.CreateICmpSLT(L, R, "cmptmp");
-        case '>': return builder.CreateICmpSGT(L, R, "cmptmp");
-        case '=': return builder.CreateICmpEQ(L, R, "eqtmp");
         default:
             std::cerr << "Invalid binary operator: " << expr->op << std::endl;
             return nullptr;
     }
+}
+
+Value* CodeGenContext::codegen(ComparisonExpr* expr) {
+    Value* L = expr->lhs->codegen(*this);
+    Value* R = expr->rhs->codegen(*this);
+    if (!L || !R) return nullptr;
+
+    if (expr->op == "<") return builder.CreateICmpSLT(L, R, "cmptmp");
+    if (expr->op == "<=") return builder.CreateICmpSLE(L, R, "cmptmp");
+    if (expr->op == ">") return builder.CreateICmpSGT(L, R, "cmptmp");
+    if (expr->op == ">=") return builder.CreateICmpSGE(L, R, "cmptmp");
+    if (expr->op == "==") return builder.CreateICmpEQ(L, R, "cmptmp");
+    if (expr->op == "!=") return builder.CreateICmpNE(L, R, "cmptmp");
+
+    std::cerr << "Invalid comparison operator: " << expr->op << std::endl;
+    return nullptr;
 }
 
 Value* CodeGenContext::codegen(FunctionCall* expr) {
@@ -159,16 +226,18 @@ Value* CodeGenContext::codegen(FunctionCall* expr) {
     }
 
     std::vector<Value*> args;
-    for (auto& arg : *expr->args) {
-        args.push_back(arg->codegen(*this));
-        if (!args.back()) return nullptr;
+    if (expr->args) {
+        for (auto& arg : *expr->args) {
+            args.push_back(arg->codegen(*this));
+            if (!args.back()) return nullptr;
+        }
     }
 
     return builder.CreateCall(callee, args, "calltmp");
 }
 
+// Specific statement implementations
 Value* CodeGenContext::codegen(VarDeclaration* stmt) {
-    // Semantic analysis: check for redeclaration in current scope
     if (!symbolTable.declare(stmt->name, SymbolType::VARIABLE)) {
         std::cerr << "Error: Variable '" << stmt->name << "' already declared in this scope" << std::endl;
         return nullptr;
@@ -193,9 +262,9 @@ Value* CodeGenContext::codegen(VarDeclaration* stmt) {
 }
 
 Value* CodeGenContext::codegen(Assignment* stmt) {
-    Value* alloca = findVariable(stmt->name);
+    AllocaInst* alloca = findVariable(stmt->name);
     if (!alloca) {
-        std::cerr << "Unknown variable: " << stmt->name << std::endl;
+        std::cerr << "Error: Undeclared variable '" << stmt->name << "'" << std::endl;
         return nullptr;
     }
 
@@ -209,6 +278,7 @@ Value* CodeGenContext::codegen(Assignment* stmt) {
 Value* CodeGenContext::codegen(ReturnStatement* stmt) {
     if (stmt->expr) {
         Value* retVal = stmt->expr->codegen(*this);
+        if (!retVal) return nullptr;
         return builder.CreateRet(retVal);
     }
     return builder.CreateRetVoid();
@@ -229,18 +299,24 @@ Value* CodeGenContext::codegen(IfStatement* stmt) {
     BasicBlock* elseBB = BasicBlock::Create(*context, "else");
     BasicBlock* mergeBB = BasicBlock::Create(*context, "ifcont");
 
-    builder.CreateCondBr(condVal, thenBB, elseBB);
+    builder.CreateCondBr(condVal, thenBB, stmt->elseBlock ? elseBB : mergeBB);
 
+    // Then branch
     builder.SetInsertPoint(thenBB);
     codegen(stmt->thenBlock.get());
-    builder.CreateBr(mergeBB);
-
-    func->insert(func->end(), elseBB);
-    builder.SetInsertPoint(elseBB);
-    if (stmt->elseBlock) {
-        codegen(stmt->elseBlock.get());
+    if (!builder.GetInsertBlock()->getTerminator()) {
+        builder.CreateBr(mergeBB);
     }
-    builder.CreateBr(mergeBB);
+
+    // Else branch
+    if (stmt->elseBlock) {
+        func->insert(func->end(), elseBB);
+        builder.SetInsertPoint(elseBB);
+        codegen(stmt->elseBlock.get());
+        if (!builder.GetInsertBlock()->getTerminator()) {
+            builder.CreateBr(mergeBB);
+        }
+    }
 
     func->insert(func->end(), mergeBB);
     builder.SetInsertPoint(mergeBB);
@@ -270,11 +346,118 @@ Value* CodeGenContext::codegen(WhileStatement* stmt) {
 
     func->insert(func->end(), loopBodyBB);
     builder.SetInsertPoint(loopBodyBB);
+
+    pushLoop(afterLoopBB, loopCondBB);
     codegen(stmt->body.get());
-    builder.CreateBr(loopCondBB);
+    popLoop();
+
+    if (!builder.GetInsertBlock()->getTerminator()) {
+        builder.CreateBr(loopCondBB);
+    }
 
     func->insert(func->end(), afterLoopBB);
     builder.SetInsertPoint(afterLoopBB);
 
     return nullptr;
+}
+
+Value* CodeGenContext::codegen(ForStatement* stmt) {
+    pushScope(); // Loop variable scope
+
+    if (stmt->init) {
+        codegen(stmt->init.get());
+    }
+
+    Function* func = builder.GetInsertBlock()->getParent();
+
+    BasicBlock* condBB = BasicBlock::Create(*context, "for.cond", func);
+    BasicBlock* bodyBB = BasicBlock::Create(*context, "for.body");
+    BasicBlock* incBB = BasicBlock::Create(*context, "for.inc");
+    BasicBlock* afterBB = BasicBlock::Create(*context, "for.after");
+
+    builder.CreateBr(condBB);
+
+    // Condition
+    builder.SetInsertPoint(condBB);
+    Value* condVal = nullptr;
+    if (stmt->condition) {
+        condVal = stmt->condition->codegen(*this);
+        if (!condVal) {
+            popScope();
+            return nullptr;
+        }
+        condVal = builder.CreateICmpNE(
+            condVal,
+            ConstantInt::get(*context, APInt(1, 0)),
+            "for.condval");
+    } else {
+        condVal = ConstantInt::get(Type::getInt1Ty(*context), 1);
+    }
+    builder.CreateCondBr(condVal, bodyBB, afterBB);
+
+    // Body
+    func->insert(func->end(), bodyBB);
+    builder.SetInsertPoint(bodyBB);
+
+    pushLoop(afterBB, incBB);
+    if (stmt->body) {
+        codegen(stmt->body.get());
+    }
+    popLoop();
+
+    if (!builder.GetInsertBlock()->getTerminator()) {
+        builder.CreateBr(incBB);
+    }
+
+    // Increment (continue target)
+    func->insert(func->end(), incBB);
+    builder.SetInsertPoint(incBB);
+    if (stmt->increment) {
+        codegen(stmt->increment.get());
+    }
+    if (!builder.GetInsertBlock()->getTerminator()) {
+        builder.CreateBr(condBB);
+    }
+
+    // After loop (break target)
+    func->insert(func->end(), afterBB);
+    builder.SetInsertPoint(afterBB);
+
+    popScope();
+    return nullptr;
+}
+
+Value* CodeGenContext::codegen(Block* stmt) {
+    pushScope();
+    Value* last = nullptr;
+    for (const auto& s : stmt->statements) {
+        last = codegen(s.get());
+        if (builder.GetInsertBlock()->getTerminator()) {
+            break;
+        }
+    }
+    popScope();
+    return last ? last : ConstantInt::get(Type::getInt32Ty(*context), 0);
+}
+
+Value* CodeGenContext::codegen(ExprStatement* stmt) {
+    return stmt->expr ? stmt->expr->codegen(*this) : nullptr;
+}
+
+Value* CodeGenContext::codegen(BreakStatement* stmt) {
+    BasicBlock* breakBB = getCurrentLoopEnd();
+    if (!breakBB) {
+        std::cerr << "Error: 'break' statement not inside loop\n";
+        return nullptr;
+    }
+    return builder.CreateBr(breakBB);
+}
+
+Value* CodeGenContext::codegen(ContinueStatement* stmt) {
+    BasicBlock* contBB = getCurrentLoopContinue();
+    if (!contBB) {
+        std::cerr << "Error: 'continue' statement not inside loop\n";
+        return nullptr;
+    }
+    return builder.CreateBr(contBB);
 }

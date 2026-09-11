@@ -48,8 +48,8 @@ std::vector<T*>* make_vector(T* item) {
 %left '*' '/'
 %left '<' '>' LE GE EQ NE
 
-%type <expr> expression
-%type <stmt> statement
+%type <expr> expression for_cond
+%type <stmt> statement for_init for_inc
 %type <stmt_list> statement_list
 %type <expr_list> expression_list
 
@@ -81,7 +81,6 @@ statement:
     }
     | expression ';' {
         $$ = new ExprStatement($1);   
-        printf("Parsed expression statement\n");
     }
     | TOK_IF '(' expression ')' statement %prec LOWER_THAN_ELSE {
         $$ = new IfStatement($3, $5);
@@ -92,11 +91,45 @@ statement:
     | TOK_WHILE '(' expression ')' statement {
         $$ = new WhileStatement($3, $5);
     }
+    | TOK_FOR '(' for_init ';' for_cond ';' for_inc ')' statement {
+        $$ = new ForStatement($3, $5, $7, $9);
+    }
     | TOK_BREAK ';' {
         $$ = new BreakStatement();
     }
     | TOK_CONTINUE ';' {
         $$ = new ContinueStatement();
+    }
+;
+
+for_init:
+    /* empty */ { $$ = nullptr; }
+    | INT IDENTIFIER '=' expression {
+        $$ = new VarDeclaration($2, $4);
+        free($2);
+    }
+    | IDENTIFIER '=' expression {
+        $$ = new Assignment($1, $3);
+        free($1);
+    }
+    | expression {
+        $$ = new ExprStatement($1);
+    }
+;
+
+for_cond:
+    /* empty */ { $$ = nullptr; }
+    | expression { $$ = $1; }
+;
+
+for_inc:
+    /* empty */ { $$ = nullptr; }
+    | IDENTIFIER '=' expression {
+        $$ = new Assignment($1, $3);
+        free($1);
+    }
+    | expression {
+        $$ = new ExprStatement($1);
     }
 ;
 

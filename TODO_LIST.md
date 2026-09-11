@@ -23,18 +23,18 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 
 ### 1. 🚨 Critical Compilation & Build Errors (Fix First)
 
-- [ ] **Fix syntax errors in `src/codegen.hpp`**:
-  - [ ] Repair truncated `void registerVariable(const std::string& name, llvm::AllocaInst* alloca);` prototype.
-  - [ ] Restore proper `void pushScope();` implementation (pushing both LLVM alloca map and `symbolTable.enterScope()`).
-  - [ ] Clean up duplicate and corrupted `popScope()` method in `src/codegen.hpp` (remove dangling `scopemplace_back(); }`).
-- [ ] **Fix CMake configuration issues in `CMakeLists.txt`**:
-  - [ ] Add `${LLVM_INCLUDE_DIRS}` and `${CMAKE_BINARY_DIR}` to `minilang_lib` target include directories so `codegen.cpp` and `ast.cpp` reliably resolve LLVM headers.
-  - [ ] Remove duplicate `target_link_libraries(minilang PRIVATE ${LLVM_LIBS})` calls (lines 64 and 73).
-  - [ ] Configure header include path for `include/` so include directories follow standard conventions.
-- [ ] **Fix `semantic.cpp` structure**:
-  - [ ] Create `include/semantic.hpp` (or `src/semantic.hpp`) with the `SymbolTable` class definition.
-  - [ ] Move implementation to `src/semantic.cpp`.
-  - [ ] Remove inline copy-pasted `SymbolTable` from `src/codegen.hpp` and `#include "semantic.hpp"` instead.
+- [x] **Fix syntax errors in `src/codegen.hpp`**:
+  - [x] Repair truncated `void registerVariable(const std::string& name, llvm::AllocaInst* alloca);` prototype.
+  - [x] Restore proper `void pushScope();` implementation (pushing both LLVM alloca map and `symbolTable.enterScope()`).
+  - [x] Clean up duplicate and corrupted `popScope()` method in `src/codegen.hpp` (remove dangling `scopemplace_back(); }`).
+- [x] **Fix CMake configuration issues in `CMakeLists.txt`**:
+  - [x] Add `${LLVM_INCLUDE_DIRS}` and `${CMAKE_BINARY_DIR}` to `minilang_lib` target include directories so `codegen.cpp` and `ast.cpp` reliably resolve LLVM headers.
+  - [x] Remove duplicate `target_link_libraries(minilang PRIVATE ${LLVM_LIBS})` calls (lines 64 and 73).
+  - [x] Configure header include path for `include/` so include directories follow standard conventions.
+- [x] **Fix `semantic.cpp` structure**:
+  - [x] Create `include/semantic.hpp` (or `src/semantic.hpp`) with the `SymbolTable` class definition.
+  - [x] Move implementation to `src/semantic.cpp`.
+  - [x] Remove inline copy-pasted `SymbolTable` from `src/codegen.hpp` and `#include "semantic.hpp"` instead.
 
 ---
 
@@ -63,8 +63,8 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 
 ### 3. 🌲 Parser & Grammar Gaps (`src/parser.y`)
 
-- [ ] **Implement For-Loop grammar**:
-  - [ ] Token `TOK_FOR` exists but has no grammar rule. Add rule:
+- [x] **Implement For-Loop grammar**:
+  - [x] Token `TOK_FOR` exists but has no grammar rule. Add rule:
     ```yacc
     TOK_FOR '(' var_decl_or_expr ';' expression ';' assignment_or_expr ')' statement
     ```
@@ -101,13 +101,13 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
   - [ ] Resolve dual implementation: Currently code generation logic is duplicated between methods in `ast.cpp` (`Node::codegen`) and `codegen.cpp` (`CodeGenContext::codegen(Node*)`).
   - [ ] Decide on one pattern: either the Visitor pattern (clean separation of AST and backend) or virtual AST methods (direct dispatch), but do not mix both.
 - [ ] **Add missing AST nodes**:
-  - [ ] `ForStatement`: initializer, condition, step, body.
+  - [x] `ForStatement`: initializer, condition, step, body.
   - [ ] `FunctionDef`: return type, function name, parameter list, body block.
   - [ ] `Parameter`: type, name.
   - [ ] `UnaryExpr`: operator (`-`, `!`, `++`, `--`), operand.
   - [ ] `LogicalExpr`: `&&`, `||` with short-circuiting support.
   - [ ] `StringLiteral`: string value.
-  - [ ] `ExprStatement`: already exists in `ast.hpp`, but missing in `CodeGenContext::codegen(Statement*)`.
+  - [x] `ExprStatement`: already exists in `ast.hpp`, but missing in `CodeGenContext::codegen(Statement*)`.
 - [ ] **Fix memory leaks in existing AST nodes**:
   - [ ] `FunctionCall`: `std::vector<Expression*>* args` is a raw pointer holding raw pointers. Destructor does not clean them up. Convert to `std::vector<std::unique_ptr<Expression>>`.
   - [ ] Ensure all container nodes use `std::unique_ptr` for child expressions and statements.
@@ -142,22 +142,22 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 
 ### 6. ⚙️ Code Generation & LLVM Backend (`src/codegen.cpp`)
 
-- [ ] **Fix loop jump statements (`break` / `continue`)**:
-  - [ ] Maintain a stack of loop contexts (`std::vector<LoopContext> loopStack`) instead of a single `currentLoopEnd` / `currentLoopContinue` pointer.
-  - [ ] Push loop exit and continue blocks before codegening loop bodies, and pop on exit.
-  - [ ] Call `setCurrentLoopBlocks` in `WhileStatement::codegen`.
-  - [ ] Implement codegen for `ForStatement`.
-- [ ] **Fix Statement dispatch in `CodeGenContext::codegen(Statement*)`**:
-  - [ ] Add handlers for `ExprStatement`, `Block`, `BreakStatement`, and `ContinueStatement`. Currently these return `nullptr` and fail the build if present at the top level or inside conditionals.
-- [ ] **Fix multi-statement Block codegen**:
-  - [ ] Handle blocks where a statement terminates execution (e.g. `return` in the middle of a block). Do not emit instructions into a closed basic block.
+- [x] **Fix loop jump statements (`break` / `continue`)**:
+  - [x] Maintain a stack of loop contexts (`std::vector<LoopContext> loopStack`) instead of a single `currentLoopEnd` / `currentLoopContinue` pointer.
+  - [x] Push loop exit and continue blocks before codegening loop bodies, and pop on exit.
+  - [x] Call `pushLoop` / `popLoop` in `WhileStatement::codegen`.
+  - [x] Implement codegen for `ForStatement`.
+- [x] **Fix Statement dispatch in `CodeGenContext::codegen(Statement*)`**:
+  - [x] Add handlers for `ExprStatement`, `Block`, `BreakStatement`, and `ContinueStatement`.
+- [x] **Fix multi-statement Block codegen**:
+  - [x] Handle blocks where a statement terminates execution (e.g. `return` in the middle of a block). Do not emit instructions into a closed basic block.
 - [ ] **Implement user function code generation**:
   - [ ] Generate LLVM `Function` for user-defined functions with arguments allocated to local variables.
   - [ ] Retain `main()` as either explicit user function or default entry point.
 - [ ] **Built-in runtime / I/O functions**:
   - [ ] Provide or declare built-in `print` / `printInt` / `printf` so test samples can print values and output results.
-- [ ] **Fix comparison in `BinaryExpr`**:
-  - [ ] Remove `case '=':` from `BinaryExpr::codegen` in `ast.cpp` (assignment should not be evaluated as equality comparison).
+- [x] **Fix comparison in `BinaryExpr`**:
+  - [x] Remove `case '=':` from `BinaryExpr::codegen` in `ast.cpp` and `codegen.cpp` (assignment should not be evaluated as equality comparison).
 
 ---
 
@@ -204,7 +204,7 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 ### 9. 🧹 Codebase Cleanup & Maintenance
 
 - [ ] **Delete duplicate/junk files**:
-  - [ ] Delete accidental typo file `,gitignore` in project root.
+  - [x] Delete accidental typo file `,gitignore` in project root.
   - [ ] Consolidate empty/redundant forwarding header `include/ast.hpp`.
 - [ ] **Reconcile outdated documentation**:
   - [ ] `ISSUE_1_RESOLUTION.md`, `TRACKER.md`, and `QA_REPORT.md` claim Issue #1 is completely resolved and verified, but the code was committed in a broken state. Reconcile docs to reflect real state.

@@ -54,9 +54,6 @@ llvm::Value* BinaryExpr::codegen(CodeGenContext& context) {
         case '-': return context.builder.CreateSub(L, R, "subtmp");
         case '*': return context.builder.CreateMul(L, R, "multmp");
         case '/': return context.builder.CreateSDiv(L, R, "divtmp");
-        case '<': return context.builder.CreateICmpSLT(L, R, "cmptmp");
-        case '>': return context.builder.CreateICmpSGT(L, R, "cmptmp");
-        case '=': return context.builder.CreateICmpEQ(L, R, "eqtmp");
         default:
             std::cerr << "Invalid binary operator: " << op << std::endl;
             return nullptr;
@@ -241,23 +238,35 @@ llvm::Value* WhileStatement::codegen(CodeGenContext& context) {
     return context.codegen(this); // Implementation in CodeGenContext
 }
 
+// ForStatement
+ForStatement::ForStatement(Statement* i, Expression* c, Statement* inc, Statement* b)
+    : init(i), condition(c), increment(inc), body(b) {}
+
+void ForStatement::print() const {
+    std::cout << "for (";
+    if (init) init->print();
+    else std::cout << "; ";
+    if (condition) condition->print();
+    std::cout << "; ";
+    if (increment) increment->print();
+    std::cout << ") ";
+    if (body) body->print();
+}
+
+llvm::Value* ForStatement::codegen(CodeGenContext& context) {
+    return context.codegen(this); // Implementation in CodeGenContext
+}
+
 // BreakStatement
+void BreakStatement::print() const { std::cout << "break;\n"; }
 llvm::Value* BreakStatement::codegen(CodeGenContext& context) {
-    if (!context.getCurrentLoopEnd()) {
-        std::cerr << "break statement not inside loop\n";
-        return nullptr;
-    }
-    return context.builder.CreateBr(context.getCurrentLoopEnd());
+    return context.codegen(this);
 }
 
 // ContinueStatement
 void ContinueStatement::print() const { std::cout << "continue;\n"; }
 llvm::Value* ContinueStatement::codegen(CodeGenContext& context) {
-    if (!context.getCurrentLoopContinue()) {
-        std::cerr << "continue statement not inside loop\n";
-        return nullptr;
-    }
-    return context.builder.CreateBr(context.getCurrentLoopContinue());
+    return context.codegen(this);
 }
 
 // ExprStatement
