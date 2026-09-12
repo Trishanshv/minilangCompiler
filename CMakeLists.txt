@@ -32,9 +32,8 @@ message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
 add_definitions(${LLVM_DEFINITIONS})
-llvm_map_components_to_libnames(LLVM_LIBS core irreader mcjit native support)
 
-# Set LLVM components
+# Set LLVM components — includes targets, passes, bitcode writer for Phase 6
 llvm_map_components_to_libnames(LLVM_LIBS
     core
     executionengine
@@ -43,6 +42,8 @@ llvm_map_components_to_libnames(LLVM_LIBS
     native
     support
     analysis
+    passes
+    bitwriter
     all
 )
 
@@ -86,4 +87,18 @@ endif()
 
 if(LLVM_VERSION_MAJOR LESS 10)
     message(FATAL_ERROR "LLVM 10 or higher required")
+endif()
+
+# ─── Testing ─────────────────────────────────────────────────────────────────
+enable_testing()
+find_package(Python3 COMPONENTS Interpreter QUIET)
+if(Python3_FOUND)
+    add_test(
+        NAME CompilerTests
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/run_tests.py
+                --compiler $<TARGET_FILE:minilang>
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+else()
+    message(WARNING "Python3 not found — CTest target 'CompilerTests' will not be registered.")
 endif()

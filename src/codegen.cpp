@@ -8,6 +8,33 @@
 #include <llvm/IR/GlobalVariable.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instructions.h>
+#include <llvm/IR/LegacyPassManager.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Host.h>
+#include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Target/TargetMachine.h>
+#include <llvm/Target/TargetOptions.h>
+#include <llvm/Bitcode/BitcodeWriter.h>
+#include <llvm/Support/CodeGen.h>
+
+#if __has_include(<llvm/MC/TargetRegistry.h>)
+#include <llvm/MC/TargetRegistry.h>
+#else
+#include <llvm/Support/TargetRegistry.h>
+#endif
+
+#include <llvm/Passes/PassBuilder.h>
+#include <llvm/Analysis/LoopAnalysisManager.h>
+#include <llvm/Analysis/CGSCCAnalysisManager.h>
+
+#if __has_include(<llvm/Passes/OptimizationLevel.h>)
+#include <llvm/Passes/OptimizationLevel.h>
+using OptLevelType = llvm::OptimizationLevel;
+#else
+using OptLevelType = llvm::PassBuilder::OptimizationLevel;
+#endif
+
 #include <iostream>
 
 using namespace llvm;
@@ -682,4 +709,146 @@ Value* CodeGenContext::codegen(ContinueStatement* stmt) {
     BasicBlock* contBB = getCurrentLoopContinue();
     assert(contBB && "Semantic error leaked into codegen: 'continue' statement not inside loop");
     return builder.CreateBr(contBB);
+}
+
+void CodeGenContext::initLLVMTargets() {
+    static bool initialized = false;
+    if (!initialized) {
+        InitializeNativeTarget();
+        InitializeNativeTargetAsmPrinter();
+        InitializeNativeTargetAsmParser();
+        initialized = true;
+    }
+}
+
+bool CodeGenContext::optimizeModule(int optLevel, bool verbose) {
+    if (optLevel <= 0) {
+        if (verbose) {
+            std::cout << "[MiniLang] Optimization level -O0: Skipping optimization passes.\n";
+        }
+        return true;
+    }
+
+    if (verbose) {
+        std::cout << "[MiniLang] Running optimization pipeline at -O" << optLevel << "...\n";
+    }
+
+    initLLVMTargets();
+
+    LoopAnalysisManager LAM;
+    FunctionAnalysisManager FAM;
+    CGSCCAnalysisManager CGAM;
+    ModuleAnalysisManager MAM;
+
+    PassBuilder PB;
+
+    PB.registerModuleAnalyses(MAM);
+    PB.registerCGSCCAnalyses(CGAM);
+    PB.registerFunctionAnalyses(FAM);
+    PB.registerLoopAnalyses(LAM);
+    PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
+
+    OptLevelType level;
+    switch (optLevel) {
+        case 1: level = OptLevelType::O1; break;
+        case 2: level = OptLevelType::O2; break;
+        case 3: default: level = OptLevelType::O3; break;
+    }
+
+    ModulePassManager MPM = PB.buildPerModuleDefaultPipeline(level);
+    MPM.run(*module, MAM);
+
+    if (verbose) {
+        std::cout << "[MiniLang] Optimization pipeline completed successfully.\n";
+    }
+    return true;
+}
+
+bool CodeGenContext::emitLLVMIR(const std::string& outputPath) {
+    if (outputPath.empty() || outputPath == "-") {
+        module->print(outs(), nullptr);
+        return true;
+    }
+
+    std::error_code EC;
+    raw_fd_ostream dest(outputPath, EC, sys::fs::OF_None);
+    if (EC) {
+        std::cerr << "Error opening output file '" << outputPath << "': " << EC.message() << "\n";
+        return false;
+    }
+    module->print(dest, nullptr);
+    dest.flush();
+    return true;
+}
+
+bool CodeGenContext::emitBitcode(const std::string& outputPath) {
+    if (outputPath.empty() || outputPath == "-") {
+        WriteBitcodeToFile(*module, outs());
+        return true;
+    }
+
+    std::error_code EC;
+    raw_fd_ostream dest(outputPath, EC, sys::fs::OF_None);
+    if (EC) {
+        std::cerr << "Error opening output file '" << outputPath << "': " << EC.message() << "\n";
+        return false;
+    }
+    WriteBitcodeToFile(*module, dest);
+    dest.flush();
+    return true;
+}
+
+static bool emitTargetOutput(Module* module, const std::string& outputPath, CodeGenFileType fileType) {
+    CodeGenContext::initLLVMTargets();
+
+    auto targetTriple = sys::getDefaultTargetTriple();
+    module->setTargetTriple(targetTriple);
+
+    std::string error;
+    const Target* target = TargetRegistry::lookupTarget(targetTriple, error);
+    if (!target) {
+        std::cerr << "Error looking up target for triple " << targetTriple << ": " << error << "\n";
+        return false;
+    }
+
+    std::string cpu = sys::getHostCPUName().str();
+    if (cpu.empty()) cpu = "generic";
+    std::string features = "";
+
+    TargetOptions opt;
+    auto rm = Reloc::Model::PIC_;
+    std::unique_ptr<TargetMachine> targetMachine(
+        target->createTargetMachine(targetTriple, cpu, features, opt, rm)
+    );
+    if (!targetMachine) {
+        std::cerr << "Could not create TargetMachine for " << targetTriple << "\n";
+        return false;
+    }
+
+    module->setDataLayout(targetMachine->createDataLayout());
+
+    std::error_code EC;
+    raw_fd_ostream dest(outputPath, EC, sys::fs::OF_None);
+    if (EC) {
+        std::cerr << "Error opening output file '" << outputPath << "': " << EC.message() << "\n";
+        return false;
+    }
+
+    legacy::PassManager pass;
+    if (targetMachine->addPassesToEmitFile(pass, dest, nullptr, fileType)) {
+        std::cerr << "TargetMachine cannot emit a file of this type.\n";
+        return false;
+    }
+
+    pass.run(*module);
+    dest.flush();
+    return true;
+}
+
+bool CodeGenContext::emitAssembly(const std::string& outputPath) {
+    return emitTargetOutput(module.get(), outputPath, CodeGenFileType::AssemblyFile);
+}
+
+bool CodeGenContext::emitObjectFile(const std::string& outputPath) {
+    return emitTargetOutput(module.get(), outputPath, CodeGenFileType::ObjectFile);
 }

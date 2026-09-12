@@ -108,4 +108,12 @@ public:
     // Control flow management
     void setCurrentFunction(llvm::Function* func) { currentFunction = func; }
     llvm::Function* getCurrentFunction() const { return currentFunction; }
+
+    // Target initialization, optimization, and multi-format emission
+    static void initLLVMTargets();
+    bool optimizeModule(int optLevel = 0, bool verbose = false);
+    bool emitLLVMIR(const std::string& outputPath = "");
+    bool emitBitcode(const std::string& outputPath = "");
+    bool emitAssembly(const std::string& outputPath = "");
+    bool emitObjectFile(const std::string& outputPath = "");
 };
