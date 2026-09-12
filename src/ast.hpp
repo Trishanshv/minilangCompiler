@@ -38,9 +38,24 @@ struct IntegerLiteral : Expression {
     llvm::Value* codegen(CodeGenContext& context) override;
 };
 
+struct StringLiteral : Expression {
+    std::string value;
+    explicit StringLiteral(std::string v);
+    void print() const override;
+    llvm::Value* codegen(CodeGenContext& context) override;
+};
+
 struct VariableExpr : Expression {
     std::string name;
     explicit VariableExpr(std::string n);
+    void print() const override;
+    llvm::Value* codegen(CodeGenContext& context) override;
+};
+
+struct UnaryExpr : Expression {
+    char op;
+    std::unique_ptr<Expression> operand;
+    UnaryExpr(char o, Expression* e);
     void print() const override;
     llvm::Value* codegen(CodeGenContext& context) override;
 };
@@ -61,10 +76,17 @@ struct ComparisonExpr : Expression {
     llvm::Value* codegen(CodeGenContext& context) override;
 };
 
+struct LogicalExpr : Expression {
+    std::string op;
+    std::unique_ptr<Expression> lhs, rhs;
+    LogicalExpr(std::string o, Expression* l, Expression* r);
+    void print() const override;
+    llvm::Value* codegen(CodeGenContext& context) override;
+};
 
 struct ReturnStatement : Statement {
     std::unique_ptr<Expression> expr;
-    explicit ReturnStatement(Expression* e);
+    explicit ReturnStatement(Expression* e = nullptr);
     void print() const override;
     llvm::Value* codegen(CodeGenContext& context) override;
 };
@@ -133,6 +155,23 @@ struct FunctionCall : Expression {
     std::string name;
     std::vector<Expression*>* args;
     FunctionCall(const std::string& n, std::vector<Expression*>* a);
+    ~FunctionCall() override;
+    void print() const override;
+    llvm::Value* codegen(CodeGenContext& context) override;
+};
+
+struct Parameter {
+    std::string type;
+    std::string name;
+    Parameter(std::string t, std::string n);
+};
+
+struct FunctionDef : Statement {
+    std::string returnType;
+    std::string name;
+    std::vector<Parameter> params;
+    std::unique_ptr<Block> body;
+    FunctionDef(std::string retType, std::string n, std::vector<Parameter>* p, Block* b);
     void print() const override;
     llvm::Value* codegen(CodeGenContext& context) override;
 };

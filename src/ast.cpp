@@ -11,27 +11,32 @@
 IntegerLiteral::IntegerLiteral(int v) : value(v) {}
 void IntegerLiteral::print() const { std::cout << value; }
 llvm::Value* IntegerLiteral::codegen(CodeGenContext& context) {
-    return llvm::ConstantInt::get(
-        llvm::Type::getInt32Ty(context.getLLVMContext()),
-        value,
-        true
-    );
+    return context.codegen(this);
+}
+
+// StringLiteral
+StringLiteral::StringLiteral(std::string v) : value(std::move(v)) {}
+void StringLiteral::print() const { std::cout << "\"" << value << "\""; }
+llvm::Value* StringLiteral::codegen(CodeGenContext& context) {
+    return context.codegen(this);
 }
 
 // VariableExpr
 VariableExpr::VariableExpr(std::string n) : name(std::move(n)) {}
 void VariableExpr::print() const { std::cout << name; }
 llvm::Value* VariableExpr::codegen(CodeGenContext& context) {
-    llvm::AllocaInst* alloca = context.findVariable(name);
-    if (!alloca) {
-        std::cerr << "Unknown variable: " << name << std::endl;
-        return nullptr;
-    }
-    return context.builder.CreateLoad(
-        alloca->getAllocatedType(),
-        alloca,
-        name.c_str()
-    );
+    return context.codegen(this);
+}
+
+// UnaryExpr
+UnaryExpr::UnaryExpr(char o, Expression* e) : op(o), operand(e) {}
+void UnaryExpr::print() const {
+    std::cout << "(" << op;
+    if (operand) operand->print();
+    std::cout << ")";
+}
+llvm::Value* UnaryExpr::codegen(CodeGenContext& context) {
+    return context.codegen(this);
 }
 
 // BinaryExpr
@@ -45,19 +50,7 @@ void BinaryExpr::print() const {
     std::cout << ")";
 }
 llvm::Value* BinaryExpr::codegen(CodeGenContext& context) {
-    llvm::Value* L = lhs->codegen(context);
-    llvm::Value* R = rhs->codegen(context);
-    if (!L || !R) return nullptr;
-
-    switch (op) {
-        case '+': return context.builder.CreateAdd(L, R, "addtmp");
-        case '-': return context.builder.CreateSub(L, R, "subtmp");
-        case '*': return context.builder.CreateMul(L, R, "multmp");
-        case '/': return context.builder.CreateSDiv(L, R, "divtmp");
-        default:
-            std::cerr << "Invalid binary operator: " << op << std::endl;
-            return nullptr;
-    }
+    return context.codegen(this);
 }
 
 // ComparisonExpr
@@ -69,24 +62,32 @@ void ComparisonExpr::print() const {
     rhs->print();
 }
 llvm::Value* ComparisonExpr::codegen(CodeGenContext& context) {
-    llvm::Value* L = lhs->codegen(context);
-    llvm::Value* R = rhs->codegen(context);
-    if (!L || !R) return nullptr;
+    return context.codegen(this);
+}
 
-    if (op == "<") return context.builder.CreateICmpSLT(L, R, "cmptmp");
-    if (op == "<=") return context.builder.CreateICmpSLE(L, R, "cmptmp");
-    if (op == ">") return context.builder.CreateICmpSGT(L, R, "cmptmp");
-    if (op == ">=") return context.builder.CreateICmpSGE(L, R, "cmptmp");
-    if (op == "==") return context.builder.CreateICmpEQ(L, R, "cmptmp");
-    if (op == "!=") return context.builder.CreateICmpNE(L, R, "cmptmp");
-
-    std::cerr << "Invalid comparison operator: " << op << std::endl;
-    return nullptr;
+// LogicalExpr
+LogicalExpr::LogicalExpr(std::string o, Expression* l, Expression* r)
+    : op(std::move(o)), lhs(l), rhs(r) {}
+void LogicalExpr::print() const {
+    lhs->print();
+    std::cout << " " << op << " ";
+    rhs->print();
+}
+llvm::Value* LogicalExpr::codegen(CodeGenContext& context) {
+    return context.codegen(this);
 }
 
 // FunctionCall
 FunctionCall::FunctionCall(const std::string& n, std::vector<Expression*>* a)
     : name(n), args(a ? a : new std::vector<Expression*>()) {}
+FunctionCall::~FunctionCall() {
+    if (args) {
+        for (auto* a : *args) {
+            delete a;
+        }
+        delete args;
+    }
+}
 void FunctionCall::print() const {
     std::cout << name << "(";
     if (args) {
@@ -98,21 +99,7 @@ void FunctionCall::print() const {
     std::cout << ")";
 }
 llvm::Value* FunctionCall::codegen(CodeGenContext& context) {
-    llvm::Function* callee = context.module->getFunction(name);
-    if (!callee) {
-        std::cerr << "Unknown function: " << name << std::endl;
-        return nullptr;
-    }
-
-    std::vector<llvm::Value*> argsV;
-    if (args) {
-        for (auto& arg : *args) {
-            argsV.push_back(arg->codegen(context));
-            if (!argsV.back()) return nullptr;
-        }
-    }
-
-    return context.builder.CreateCall(callee, argsV, "calltmp");
+    return context.codegen(this);
 }
 
 // ==================== Statement Nodes ====================
@@ -120,13 +107,15 @@ llvm::Value* FunctionCall::codegen(CodeGenContext& context) {
 // ReturnStatement
 ReturnStatement::ReturnStatement(Expression* e) : expr(e) {}
 void ReturnStatement::print() const {
-    std::cout << "return ";
-    expr->print();
+    std::cout << "return";
+    if (expr) {
+        std::cout << " ";
+        expr->print();
+    }
     std::cout << ";\n";
 }
 llvm::Value* ReturnStatement::codegen(CodeGenContext& context) {
-    llvm::Value* retVal = expr->codegen(context);
-    return context.builder.CreateRet(retVal);
+    return context.codegen(this);
 }
 
 // VarDeclaration
@@ -141,21 +130,7 @@ void VarDeclaration::print() const {
     std::cout << ";\n";
 }
 llvm::Value* VarDeclaration::codegen(CodeGenContext& context) {
-    llvm::Type* type = llvm::Type::getInt32Ty(context.getLLVMContext());
-    llvm::AllocaInst* alloca = context.builder.CreateAlloca(
-        type, 
-        nullptr, 
-        name
-    );
-    context.registerVariable(name, alloca);
-    
-    if (init) {
-        llvm::Value* initVal = init->codegen(context);
-        if (!initVal) return nullptr;
-        context.builder.CreateStore(initVal, alloca);
-    }
-    
-    return alloca;
+    return context.codegen(this);
 }
 
 // Assignment
@@ -167,25 +142,17 @@ void Assignment::print() const {
     std::cout << ";\n";
 }
 llvm::Value* Assignment::codegen(CodeGenContext& context) {
-    llvm::Value* alloca = context.findVariable(name);
-    if (!alloca) {
-        std::cerr << "Unknown variable: " << name << std::endl;
-        return nullptr;
-    }
-
-    llvm::Value* val = expr->codegen(context);
-    if (!val) return nullptr;
-
-    context.builder.CreateStore(val, alloca);
-    return val;
+    return context.codegen(this);
 }
 
 // Block
 Block::Block(std::vector<Statement*>* stmts) {
-    for (auto* stmt : *stmts) {
-        statements.emplace_back(stmt);
+    if (stmts) {
+        for (auto* stmt : *stmts) {
+            statements.emplace_back(stmt);
+        }
+        delete stmts;
     }
-    delete stmts;
 }
 void Block::print() const {
     std::cout << "{\n";
@@ -195,17 +162,7 @@ void Block::print() const {
     std::cout << "}\n";
 }
 llvm::Value* Block::codegen(CodeGenContext& context) {
-    context.pushScope();
-    llvm::Value* last = nullptr;
-    for (const auto& stmt : statements) {
-        last = stmt->codegen(context);
-        if (!last) {
-            context.popScope();
-            return nullptr;
-        }
-    }
-    context.popScope();
-    return last;
+    return context.codegen(this);
 }
 
 // IfStatement
@@ -222,7 +179,7 @@ void IfStatement::print() const {
     }
 }
 llvm::Value* IfStatement::codegen(CodeGenContext& context) {
-    return context.codegen(this); // Implementation in CodeGenContext
+    return context.codegen(this);
 }
 
 // WhileStatement
@@ -235,7 +192,7 @@ void WhileStatement::print() const {
     body->print();
 }
 llvm::Value* WhileStatement::codegen(CodeGenContext& context) {
-    return context.codegen(this); // Implementation in CodeGenContext
+    return context.codegen(this);
 }
 
 // ForStatement
@@ -254,7 +211,7 @@ void ForStatement::print() const {
 }
 
 llvm::Value* ForStatement::codegen(CodeGenContext& context) {
-    return context.codegen(this); // Implementation in CodeGenContext
+    return context.codegen(this);
 }
 
 // BreakStatement
@@ -278,16 +235,43 @@ void ExprStatement::print() const {
     std::cout << ";\n";
 }
 llvm::Value* ExprStatement::codegen(CodeGenContext& context) {
-    return expr ? expr->codegen(context) : nullptr;
+    return context.codegen(this);
+}
+
+// Parameter
+Parameter::Parameter(std::string t, std::string n)
+    : type(std::move(t)), name(std::move(n)) {}
+
+// FunctionDef
+FunctionDef::FunctionDef(std::string retType, std::string n, std::vector<Parameter>* p, Block* b)
+    : returnType(std::move(retType)), name(std::move(n)), body(b) {
+    if (p) {
+        params = std::move(*p);
+        delete p;
+    }
+}
+void FunctionDef::print() const {
+    std::cout << returnType << " " << name << "(";
+    for (size_t i = 0; i < params.size(); ++i) {
+        std::cout << params[i].type << " " << params[i].name;
+        if (i + 1 < params.size()) std::cout << ", ";
+    }
+    std::cout << ") ";
+    if (body) body->print();
+}
+llvm::Value* FunctionDef::codegen(CodeGenContext& context) {
+    return context.codegen(this);
 }
 
 // ==================== Program ====================
 
 Program::Program(std::vector<Statement*>* stmts) {
-    for (auto* stmt : *stmts) {
-        statements.emplace_back(stmt);
+    if (stmts) {
+        for (auto* stmt : *stmts) {
+            statements.emplace_back(stmt);
+        }
+        delete stmts;
     }
-    delete stmts;
 }
 void Program::print() const {
     for (const auto& stmt : statements) {

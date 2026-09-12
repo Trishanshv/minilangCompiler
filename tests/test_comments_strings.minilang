@@ -1,0 +1,21 @@
+// This is a single line comment
+/* This is a 
+   multi-line comment */
+
+int count = 0;
+count += 10;
+count -= 2;
+count *= 3;
+count /= 2;
+
+int mod = count % 5;
+
+if (count > 10 && mod == 2) {
+    print("Logical AND and Modulo verified!");
+}
+
+if (count < 0 || mod != 0) {
+    print("Logical OR verified!");
+}
+
+return count;

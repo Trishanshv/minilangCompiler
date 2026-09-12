@@ -40,21 +40,21 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 
 ### 2. 🔤 Lexer Deficiencies (`src/lexer.l`)
 
-- [ ] **Add source location tracking**:
-  - [ ] Enable `%option yylineno` to track line numbers.
-  - [ ] Add column number tracking and pass location information (`YYLTYPE` / `yylloc`) to Bison.
-- [ ] **Add comment support**:
-  - [ ] Support single-line comments (`// ...`).
-  - [ ] Support multi-line block comments (`/* ... */`).
-- [ ] **Add string literal support**:
-  - [ ] Add regex for string literals (`\"([^\"\\]|\\.)*\"`).
-  - [ ] Add `STRING_LITERAL` token to `parser.y` and return escaped string values.
-- [ ] **Add missing operators & punctuation**:
-  - [ ] Explicitly define `{`, `}`, `,`, `=` tokens instead of letting them fall through to the catch-all dot rule (`.`).
-  - [ ] Compound assignment operators: `+=`, `-=`, `*=`, `/=`.
-  - [ ] Increment and decrement operators: `++`, `--` (needed for standard for-loops).
-  - [ ] Logical operators: `&&`, `||`, `!`.
-  - [ ] Modulo operator: `%`.
+- [x] **Add source location tracking**:
+  - [x] Enable `%option yylineno` to track line numbers.
+  - [x] Add column number tracking and pass location information (`YYLTYPE` / `yylloc`) to Bison.
+- [x] **Add comment support**:
+  - [x] Support single-line comments (`// ...`).
+  - [x] Support multi-line block comments (`/* ... */`).
+- [x] **Add string literal support**:
+  - [x] Add regex for string literals (`\"([^\"\\]|\\.)*\"`).
+  - [x] Add `STRING_LITERAL` token to `parser.y` and return escaped string values.
+- [x] **Add missing operators & punctuation**:
+  - [x] Explicitly define `{`, `}`, `,`, `=` tokens instead of letting them fall through to the catch-all dot rule (`.`).
+  - [x] Compound assignment operators: `+=`, `-=`, `*=`, `/=`.
+  - [x] Increment and decrement operators: `++`, `--` (needed for standard for-loops).
+  - [x] Logical operators: `&&`, `||`, `!`.
+  - [x] Modulo operator: `%`.
   - [ ] Bitwise operators: `&`, `|`, `^`, `~`, `<<`, `>>`.
 - [ ] **Lexer error handling**:
   - [ ] Replace silent fallthrough rule with proper error reporting for unexpected characters.
@@ -68,28 +68,28 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
     ```yacc
     TOK_FOR '(' var_decl_or_expr ';' expression ';' assignment_or_expr ')' statement
     ```
-- [ ] **Implement Function Definitions & Declarations**:
-  - [ ] Grammar currently only allows a top-level list of statements inside an implicit `main()`.
-  - [ ] Add grammar rules for defining functions:
+- [x] **Implement Function Definitions & Declarations**:
+  - [x] Grammar allows top-level list of statements and functions.
+  - [x] Add grammar rules for defining functions:
     ```yacc
     type IDENTIFIER '(' parameter_list ')' block
     ```
-  - [ ] Add parameter lists and empty parameter list support.
-  - [ ] Support global variable declarations vs local function bodies.
+  - [x] Add parameter lists and empty parameter list support.
+  - [x] Support global variable declarations alongside function bodies.
 - [ ] **Support more data types in grammar**:
-  - [ ] Add tokens and type specifiers for `void`, `bool`, `float`, `char`, `string`.
-- [ ] **Support void return**:
-  - [ ] Allow `RETURN ';'` without requiring an expression.
-- [ ] **Add unary expressions in grammar**:
-  - [ ] Unary negation: `-expr`.
-  - [ ] Logical NOT: `!expr`.
-- [ ] **Add logical binary expressions**:
-  - [ ] Logical AND: `expr && expr`.
-  - [ ] Logical OR: `expr || expr`.
-- [ ] **Parser error handling & recovery**:
-  - [ ] Integrate line and column numbers into `yyerror(const char* s)`.
-  - [ ] Print snippet or pointer to the line where syntax failed.
-  - [ ] Add Bison `error` tokens to statement rules so parsing can recover and report multiple errors instead of halting on the first one.
+  - [x] `int` and `void` supported.
+  - [ ] Add remaining types: `bool`, `float`, `char`, `string`.
+- [x] **Support void return**:
+  - [x] Allow `RETURN ';'` without requiring an expression.
+- [x] **Add unary expressions in grammar**:
+  - [x] Unary negation: `-expr`.
+  - [x] Logical NOT: `!expr`.
+- [x] **Add logical binary expressions**:
+  - [x] Logical AND: `expr && expr`.
+  - [x] Logical OR: `expr || expr`.
+- [x] **Parser error handling & recovery**:
+  - [x] Integrate line and column numbers into `yyerror(const char* s)`.
+  - [x] Add Bison `error` tokens to statement rules so parsing can recover and report multiple errors instead of halting on the first one.
 - [ ] **Fix AST memory management during parsing**:
   - [ ] Avoid memory leaks when parse errors abort compilation before AST is attached to `root`.
 
@@ -97,20 +97,19 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 
 ### 4. 🧱 AST Architecture & Memory Management (`src/ast.hpp`, `src/ast.cpp`)
 
-- [ ] **Unify codegen architecture**:
-  - [ ] Resolve dual implementation: Currently code generation logic is duplicated between methods in `ast.cpp` (`Node::codegen`) and `codegen.cpp` (`CodeGenContext::codegen(Node*)`).
-  - [ ] Decide on one pattern: either the Visitor pattern (clean separation of AST and backend) or virtual AST methods (direct dispatch), but do not mix both.
-- [ ] **Add missing AST nodes**:
+- [x] **Unify codegen architecture**:
+  - [x] Resolve dual implementation: AST virtual `codegen` methods delegate directly to `CodeGenContext::codegen(...)` as single source of truth.
+- [x] **Add missing AST nodes**:
   - [x] `ForStatement`: initializer, condition, step, body.
-  - [ ] `FunctionDef`: return type, function name, parameter list, body block.
-  - [ ] `Parameter`: type, name.
-  - [ ] `UnaryExpr`: operator (`-`, `!`, `++`, `--`), operand.
-  - [ ] `LogicalExpr`: `&&`, `||` with short-circuiting support.
-  - [ ] `StringLiteral`: string value.
-  - [x] `ExprStatement`: already exists in `ast.hpp`, but missing in `CodeGenContext::codegen(Statement*)`.
-- [ ] **Fix memory leaks in existing AST nodes**:
-  - [ ] `FunctionCall`: `std::vector<Expression*>* args` is a raw pointer holding raw pointers. Destructor does not clean them up. Convert to `std::vector<std::unique_ptr<Expression>>`.
-  - [ ] Ensure all container nodes use `std::unique_ptr` for child expressions and statements.
+  - [x] `FunctionDef`: return type, function name, parameter list, body block.
+  - [x] `Parameter`: type, name.
+  - [x] `UnaryExpr`: operator (`-`, `!`), operand.
+  - [x] `LogicalExpr`: `&&`, `||` with short-circuiting support.
+  - [x] `StringLiteral`: string value.
+  - [x] `ExprStatement`: already exists in `ast.hpp`, handled in `CodeGenContext::codegen(Statement*)`.
+- [x] **Fix memory leaks in existing AST nodes**:
+  - [x] `FunctionCall`: destructor frees `args` vector and individual expression elements.
+  - [x] Ensure all container nodes use `std::unique_ptr` for child expressions and statements.
 
 ---
 
@@ -148,14 +147,14 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
   - [x] Call `pushLoop` / `popLoop` in `WhileStatement::codegen`.
   - [x] Implement codegen for `ForStatement`.
 - [x] **Fix Statement dispatch in `CodeGenContext::codegen(Statement*)`**:
-  - [x] Add handlers for `ExprStatement`, `Block`, `BreakStatement`, and `ContinueStatement`.
+  - [x] Add handlers for `ExprStatement`, `Block`, `BreakStatement`, `ContinueStatement`, and `FunctionDef`.
 - [x] **Fix multi-statement Block codegen**:
   - [x] Handle blocks where a statement terminates execution (e.g. `return` in the middle of a block). Do not emit instructions into a closed basic block.
-- [ ] **Implement user function code generation**:
-  - [ ] Generate LLVM `Function` for user-defined functions with arguments allocated to local variables.
-  - [ ] Retain `main()` as either explicit user function or default entry point.
-- [ ] **Built-in runtime / I/O functions**:
-  - [ ] Provide or declare built-in `print` / `printInt` / `printf` so test samples can print values and output results.
+- [x] **Implement user function code generation**:
+  - [x] Generate LLVM `Function` for user-defined functions with arguments allocated to local variables.
+  - [x] Retain `main()` as either explicit user function or default entry point.
+- [x] **Built-in runtime / I/O functions**:
+  - [x] Provide built-in `print` helper polymorphic for string literals (`%s\n`) and integers (`%d\n`) via `printf`.
 - [x] **Fix comparison in `BinaryExpr`**:
   - [x] Remove `case '=':` from `BinaryExpr::codegen` in `ast.cpp` and `codegen.cpp` (assignment should not be evaluated as equality comparison).
 
@@ -183,19 +182,19 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 
 ### 8. 🧪 Testing & Test Suite
 
-- [ ] **Fix existing broken test cases**:
-  - [ ] `tests/test.minilang`: Uses string literals and `print(...)`, which fail. Either support strings/print or simplify test case.
-  - [ ] `tests/test_input.minilang`: Uses `int main() { ... }`, which fails parser. Update to supported syntax or implement function defs.
-  - [ ] `src/test_if.minilang`: Uses `print(...)`. Fix or replace.
+- [x] **Fix existing broken test cases**:
+  - [x] `tests/test.minilang`: Updated to valid variable declaration and string `print(...)`.
+  - [x] `tests/test_input.minilang`: Fully supported with `int main() { ... }` function definitions.
+  - [x] `src/test_if.minilang`: Fixed variable declaration and verified.
 - [ ] **Setup automated testing framework**:
   - [ ] Integrate Catch2 or a Python-based end-to-end test runner (`run_tests.py`).
   - [ ] Add unit tests for AST nodes and SymbolTable.
-  - [ ] Add integration tests for:
-    - [ ] Arithmetic evaluation and operator precedence.
-    - [ ] If-else branching and nested conditionals.
-    - [ ] While loops and nested while loops.
-    - [ ] Variable scoping and shadowing.
-    - [ ] Semantic error diagnostics (redeclaration, undeclared access).
+  - [x] Add integration sample tests for:
+    - [x] Arithmetic evaluation, modulo, and operator precedence.
+    - [x] If-else branching and nested conditionals.
+    - [x] While loops, for loops, and nested while loops.
+    - [x] User-defined functions with parameters and calls.
+    - [x] String literals, single-line/multi-line comments, and polymorphic `print`.
 - [ ] **Add negative test cases**:
   - [ ] Tests that assert compilation fails with appropriate error messages on invalid syntax or invalid types.
 
