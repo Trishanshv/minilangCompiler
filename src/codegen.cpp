@@ -1,6 +1,7 @@
 #include "codegen.hpp"
 #include "ast.hpp"
 #include "semantic.hpp"
+#include <cassert>
 #include <llvm/IR/Verifier.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Constants.h>
@@ -241,16 +242,9 @@ Value* CodeGenContext::codegen(StringLiteral* expr) {
 }
 
 Value* CodeGenContext::codegen(VariableExpr* expr) {
-    if (!symbolTable.isDeclared(expr->name)) {
-        std::cerr << "Error: Undeclared variable '" << expr->name << "'" << std::endl;
-        return nullptr;
-    }
-    
+    assert(symbolTable.isDeclared(expr->name) && "Semantic error leaked into codegen: variable not declared");
     AllocaInst* alloca = findVariable(expr->name);
-    if (!alloca) {
-        std::cerr << "Internal error: Variable '" << expr->name << "' declared but not allocated" << std::endl;
-        return nullptr;
-    }
+    assert(alloca && "Internal error: variable declared but not allocated");
     return builder.CreateLoad(
         alloca->getAllocatedType(),
         alloca,
@@ -498,13 +492,10 @@ Value* CodeGenContext::codegen(VarDeclaration* stmt) {
 
 Value* CodeGenContext::codegen(Assignment* stmt) {
     AllocaInst* alloca = findVariable(stmt->name);
-    if (!alloca) {
-        std::cerr << "Error: Undeclared variable '" << stmt->name << "'" << std::endl;
-        return nullptr;
-    }
+    assert(alloca && "Semantic error leaked into codegen: assignment to unallocated variable");
 
     Value* val = stmt->expr->codegen(*this);
-    if (!val) return nullptr;
+    assert(val && "Internal error: assignment expression codegen failed");
 
     builder.CreateStore(val, alloca);
     return val;
@@ -680,19 +671,15 @@ Value* CodeGenContext::codegen(ExprStatement* stmt) {
 }
 
 Value* CodeGenContext::codegen(BreakStatement* stmt) {
+    (void)stmt;
     BasicBlock* breakBB = getCurrentLoopEnd();
-    if (!breakBB) {
-        std::cerr << "Error: 'break' statement not inside loop\n";
-        return nullptr;
-    }
+    assert(breakBB && "Semantic error leaked into codegen: 'break' statement not inside loop");
     return builder.CreateBr(breakBB);
 }
 
 Value* CodeGenContext::codegen(ContinueStatement* stmt) {
+    (void)stmt;
     BasicBlock* contBB = getCurrentLoopContinue();
-    if (!contBB) {
-        std::cerr << "Error: 'continue' statement not inside loop\n";
-        return nullptr;
-    }
+    assert(contBB && "Semantic error leaked into codegen: 'continue' statement not inside loop");
     return builder.CreateBr(contBB);
 }

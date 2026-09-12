@@ -1,0 +1,10 @@
+int main() {
+    int x;
+    int cond = 1;
+    if (cond) {
+        x = 5;
+    }
+    // x is not initialized on the false branch!
+    print(x);
+    return 0;
+}

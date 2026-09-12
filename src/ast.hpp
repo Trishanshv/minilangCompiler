@@ -12,14 +12,19 @@ namespace llvm {
 }
 
 class CodeGenContext;  // Forward declaration
-struct Statement {
-    virtual ~Statement() = default;
+
+struct ASTNode {
+    int line = 1;
+    int col = 1;
+    virtual ~ASTNode() = default;
+};
+
+struct Statement : ASTNode {
     virtual void print() const = 0;
     virtual llvm::Value* codegen(CodeGenContext& context) = 0;
 };
 
-struct Expression {
-    virtual ~Expression() = default;
+struct Expression : ASTNode {
     virtual void print() const = 0;
     virtual llvm::Value* codegen(CodeGenContext& context) = 0;
 };
@@ -176,7 +181,7 @@ struct FunctionDef : Statement {
     llvm::Value* codegen(CodeGenContext& context) override;
 };
 
-struct Program {
+struct Program : ASTNode {
     std::vector<std::unique_ptr<Statement>> statements;
     explicit Program(std::vector<Statement*>* stmts);
     const auto& getStatements() const { return statements; }

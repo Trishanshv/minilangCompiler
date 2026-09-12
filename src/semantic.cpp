@@ -25,8 +25,25 @@ DataType stringToDataType(const std::string& str) {
 
 SymbolTable::SymbolTable() {
     enterScope(); // Global scope
-    // Register built-in functions
-    declareFunction("print", DataType::VOID, {}, true);
+
+    // Register built-in functions with custom validators
+    auto printValidator = [](const std::vector<DataType>& args, std::string& err) -> bool {
+        if (args.size() != 1) {
+            err = "'print' function expects exactly 1 argument, got " + std::to_string(args.size());
+            return false;
+        }
+        if (args[0] == DataType::VOID) {
+            err = "Cannot print void expression";
+            return false;
+        }
+        if (args[0] != DataType::INT && args[0] != DataType::STRING && args[0] != DataType::UNKNOWN) {
+            err = "Cannot print expression of type " + dataTypeToString(args[0]);
+            return false;
+        }
+        return true;
+    };
+
+    declareFunction("print", DataType::VOID, {}, true, printValidator);
 }
 
 void SymbolTable::enterScope() {
@@ -44,11 +61,15 @@ size_t SymbolTable::getScopeDepth() const {
     return variableScopes.size();
 }
 
-bool SymbolTable::declareVariable(const std::string& name, DataType type, bool isInitialized) {
+const std::unordered_map<std::string, VariableSymbol>& SymbolTable::getCurrentScopeVariables() const {
+    return variableScopes.back();
+}
+
+bool SymbolTable::declareVariable(const std::string& name, DataType type, bool isInitialized, int line, int col) {
     if (variableScopes.back().count(name)) {
         return false; // Redeclaration in same scope
     }
-    variableScopes.back()[name] = VariableSymbol{name, type, isInitialized, false};
+    variableScopes.back()[name] = VariableSymbol{name, type, isInitialized, false, line, col};
     return true;
 }
 
@@ -77,11 +98,11 @@ const VariableSymbol* SymbolTable::lookupVariable(const std::string& name) const
     return nullptr;
 }
 
-bool SymbolTable::declareFunction(const std::string& name, DataType returnType, const std::vector<DataType>& paramTypes, bool isBuiltin) {
+bool SymbolTable::declareFunction(const std::string& name, DataType returnType, const std::vector<DataType>& paramTypes, bool isBuiltin, BuiltinValidator validator, int line, int col) {
     if (functionTable.count(name)) {
         return false; // Function already declared
     }
-    functionTable[name] = FunctionSymbol{name, returnType, paramTypes, isBuiltin};
+    functionTable[name] = FunctionSymbol{name, returnType, paramTypes, isBuiltin, validator, line, col};
     return true;
 }
 
@@ -133,21 +154,48 @@ const Symbol* SymbolTable::lookup(const std::string& name) const {
 // ==================== SemanticAnalyzer ====================
 
 SemanticAnalyzer::SemanticAnalyzer()
-    : loopDepth(0), currentFunctionReturnType(DataType::INT),
-      currentFunctionHasReturn(false), insideFunction(false) {}
+    : loopDepth(0), currentFunctionReturnType(DataType::INT), insideFunction(false) {}
 
-void SemanticAnalyzer::addError(const std::string& message) {
-    errors.push_back("Semantic Error: " + message);
+void SemanticAnalyzer::addError(const ASTNode* node, const std::string& message) {
+    int line = node ? node->line : 1;
+    int col = node ? node->col : 1;
+    errors.push_back("[Line " + std::to_string(line) + ", Col " + std::to_string(col) + "] Semantic Error: " + message);
 }
 
-void SemanticAnalyzer::addWarning(const std::string& message) {
-    warnings.push_back("Semantic Warning: " + message);
+void SemanticAnalyzer::addWarning(const ASTNode* node, const std::string& message) {
+    int line = node ? node->line : 1;
+    int col = node ? node->col : 1;
+    warnings.push_back("[Line " + std::to_string(line) + ", Col " + std::to_string(col) + "] Semantic Warning: " + message);
+}
+
+bool SemanticAnalyzer::returnsOnAllPaths(Statement* stmt) {
+    if (!stmt) return false;
+    if (dynamic_cast<ReturnStatement*>(stmt)) return true;
+    if (auto* block = dynamic_cast<Block*>(stmt)) {
+        for (const auto& s : block->statements) {
+            if (returnsOnAllPaths(s.get())) return true;
+        }
+        return false;
+    }
+    if (auto* ifStmt = dynamic_cast<IfStatement*>(stmt)) {
+        if (!ifStmt->elseBlock) return false;
+        return returnsOnAllPaths(ifStmt->thenBlock.get()) && returnsOnAllPaths(ifStmt->elseBlock.get());
+    }
+    return false;
+}
+
+void SemanticAnalyzer::checkUnusedVariablesInCurrentScope() {
+    for (const auto& [name, var] : symbolTable.getCurrentScopeVariables()) {
+        if (!var.isUsed) {
+            warnings.push_back("[Line " + std::to_string(var.line) + ", Col " + std::to_string(var.col) + "] Semantic Warning: Unused variable '" + name + "'");
+        }
+    }
 }
 
 bool SemanticAnalyzer::analyze(Program* prog) {
     if (!prog) return true;
 
-    // Pass 1: Register all function signatures
+    // Pass 1: Gather and declare function signatures
     for (const auto& stmt : prog->getStatements()) {
         if (auto* funcDef = dynamic_cast<FunctionDef*>(stmt.get())) {
             DataType retType = stringToDataType(funcDef->returnType);
@@ -156,16 +204,19 @@ bool SemanticAnalyzer::analyze(Program* prog) {
                 paramTypes.push_back(stringToDataType(p.type));
             }
 
-            if (!symbolTable.declareFunction(funcDef->name, retType, paramTypes)) {
-                addError("Function '" + funcDef->name + "' already declared");
+            if (!symbolTable.declareFunction(funcDef->name, retType, paramTypes, false, nullptr, funcDef->line, funcDef->col)) {
+                addError(funcDef, "Function '" + funcDef->name + "' already declared");
             }
         }
     }
 
-    // Pass 2: Analyze all statement bodies and expressions
+    // Pass 2: Analyze statements and function bodies
     for (const auto& stmt : prog->getStatements()) {
         analyzeStmt(stmt.get());
     }
+
+    // Check for unused global variables
+    checkUnusedVariablesInCurrentScope();
 
     return !hasErrors();
 }
@@ -199,32 +250,33 @@ void SemanticAnalyzer::analyzeStmt(Statement* stmt) {
 }
 
 void SemanticAnalyzer::analyzeVarDecl(VarDeclaration* stmt) {
-    if (!symbolTable.declareVariable(stmt->name, DataType::INT, stmt->init != nullptr)) {
-        addError("Variable '" + stmt->name + "' already declared in this scope");
+    if (!symbolTable.declareVariable(stmt->name, DataType::INT, stmt->init != nullptr, stmt->line, stmt->col)) {
+        addError(stmt, "Variable '" + stmt->name + "' already declared in this scope");
         return;
     }
 
     if (stmt->init) {
         DataType initType = analyzeExpr(stmt->init.get());
         if (initType != DataType::INT && initType != DataType::UNKNOWN) {
-            addError("Cannot initialize integer variable '" + stmt->name + "' with type " + dataTypeToString(initType));
+            addError(stmt, "Cannot initialize integer variable '" + stmt->name + "' with type " + dataTypeToString(initType));
         }
+        definitelyAssigned.insert(stmt->name);
     }
 }
 
 void SemanticAnalyzer::analyzeAssignment(Assignment* stmt) {
     VariableSymbol* var = symbolTable.lookupVariable(stmt->name);
     if (!var) {
-        addError("Assignment to undeclared variable '" + stmt->name + "'");
+        addError(stmt, "Assignment to undeclared variable '" + stmt->name + "'");
     }
 
     DataType exprType = analyzeExpr(stmt->expr.get());
     if (var && exprType != var->type && exprType != DataType::UNKNOWN) {
-        addError("Type mismatch: cannot assign " + dataTypeToString(exprType) + " to variable '" + stmt->name + "' of type " + dataTypeToString(var->type));
+        addError(stmt, "Type mismatch: cannot assign " + dataTypeToString(exprType) + " to variable '" + stmt->name + "' of type " + dataTypeToString(var->type));
     }
 
     if (var) {
-        var->isInitialized = true;
+        definitelyAssigned.insert(stmt->name);
     }
 }
 
@@ -234,7 +286,7 @@ void SemanticAnalyzer::analyzeBlock(Block* stmt) {
 
     for (const auto& s : stmt->statements) {
         if (terminatorEncountered) {
-            addWarning("Unreachable code detected after return, break, or continue");
+            addWarning(s.get(), "Unreachable code detected after return, break, or continue");
             break;
         }
 
@@ -247,30 +299,51 @@ void SemanticAnalyzer::analyzeBlock(Block* stmt) {
         }
     }
 
+    checkUnusedVariablesInCurrentScope();
     symbolTable.exitScope();
 }
 
 void SemanticAnalyzer::analyzeIf(IfStatement* stmt) {
     DataType condType = analyzeExpr(stmt->condition.get());
-    if (condType == DataType::VOID || condType == DataType::STRING) {
-        addError("Condition in if-statement must be an integer or boolean, got " + dataTypeToString(condType));
+    if (condType != DataType::INT && condType != DataType::BOOL && condType != DataType::UNKNOWN) {
+        addError(stmt->condition.get(), "Condition in if-statement must be an integer or boolean, got " + dataTypeToString(condType));
     }
 
+    auto before = definitelyAssigned;
+
     analyzeStmt(stmt->thenBlock.get());
+    auto afterThen = definitelyAssigned;
+
     if (stmt->elseBlock) {
+        definitelyAssigned = before;
         analyzeStmt(stmt->elseBlock.get());
+        auto afterElse = definitelyAssigned;
+
+        // Merge join point: intersection of then and else branches
+        definitelyAssigned = before;
+        for (const auto& var : afterThen) {
+            if (afterElse.count(var)) {
+                definitelyAssigned.insert(var);
+            }
+        }
+    } else {
+        // Without an else branch, then branch is not guaranteed to run
+        definitelyAssigned = before;
     }
 }
 
 void SemanticAnalyzer::analyzeWhile(WhileStatement* stmt) {
     DataType condType = analyzeExpr(stmt->condition.get());
-    if (condType == DataType::VOID || condType == DataType::STRING) {
-        addError("Condition in while-statement must be an integer or boolean, got " + dataTypeToString(condType));
+    if (condType != DataType::INT && condType != DataType::BOOL && condType != DataType::UNKNOWN) {
+        addError(stmt->condition.get(), "Condition in while-statement must be an integer or boolean, got " + dataTypeToString(condType));
     }
 
+    auto before = definitelyAssigned;
     loopDepth++;
     analyzeStmt(stmt->body.get());
     loopDepth--;
+    // Body might execute 0 times
+    definitelyAssigned = before;
 }
 
 void SemanticAnalyzer::analyzeFor(ForStatement* stmt) {
@@ -282,8 +355,8 @@ void SemanticAnalyzer::analyzeFor(ForStatement* stmt) {
 
     if (stmt->condition) {
         DataType condType = analyzeExpr(stmt->condition.get());
-        if (condType == DataType::VOID || condType == DataType::STRING) {
-            addError("Condition in for-statement must be an integer or boolean, got " + dataTypeToString(condType));
+        if (condType != DataType::INT && condType != DataType::BOOL && condType != DataType::UNKNOWN) {
+            addError(stmt->condition.get(), "Condition in for-statement must be an integer or boolean, got " + dataTypeToString(condType));
         }
     }
 
@@ -291,45 +364,43 @@ void SemanticAnalyzer::analyzeFor(ForStatement* stmt) {
         analyzeStmt(stmt->increment.get());
     }
 
+    auto before = definitelyAssigned;
     loopDepth++;
     if (stmt->body) {
         analyzeStmt(stmt->body.get());
     }
     loopDepth--;
+    // Body might execute 0 times
+    definitelyAssigned = before;
 
+    checkUnusedVariablesInCurrentScope();
     symbolTable.exitScope();
 }
 
 void SemanticAnalyzer::analyzeReturn(ReturnStatement* stmt) {
-    if (insideFunction) {
-        currentFunctionHasReturn = true;
-    }
-
     if (stmt->expr) {
         DataType retType = analyzeExpr(stmt->expr.get());
         if (insideFunction && currentFunctionReturnType == DataType::VOID) {
-            addError("Cannot return a value from void function");
+            addError(stmt, "Cannot return a value from void function");
         } else if (insideFunction && retType != currentFunctionReturnType && retType != DataType::UNKNOWN) {
-            addError("Return type mismatch: expected " + dataTypeToString(currentFunctionReturnType) + ", got " + dataTypeToString(retType));
+            addError(stmt, "Return type mismatch: expected " + dataTypeToString(currentFunctionReturnType) + ", got " + dataTypeToString(retType));
         }
     } else {
         if (insideFunction && currentFunctionReturnType != DataType::VOID) {
-            addError("Non-void function must return a value");
+            addError(stmt, "Non-void function must return a value of type " + dataTypeToString(currentFunctionReturnType));
         }
     }
 }
 
 void SemanticAnalyzer::analyzeBreak(BreakStatement* stmt) {
-    (void)stmt;
     if (loopDepth <= 0) {
-        addError("'break' statement not inside a loop");
+        addError(stmt, "'break' statement not inside a loop");
     }
 }
 
 void SemanticAnalyzer::analyzeContinue(ContinueStatement* stmt) {
-    (void)stmt;
     if (loopDepth <= 0) {
-        addError("'continue' statement not inside a loop");
+        addError(stmt, "'continue' statement not inside a loop");
     }
 }
 
@@ -342,14 +413,17 @@ void SemanticAnalyzer::analyzeExprStmt(ExprStatement* stmt) {
 void SemanticAnalyzer::analyzeFunctionDef(FunctionDef* stmt) {
     insideFunction = true;
     currentFunctionReturnType = stringToDataType(stmt->returnType);
-    currentFunctionHasReturn = false;
 
     symbolTable.enterScope();
+    auto savedAssigned = definitelyAssigned;
+    definitelyAssigned.clear();
 
     for (const auto& p : stmt->params) {
         DataType paramType = stringToDataType(p.type);
-        if (!symbolTable.declareVariable(p.name, paramType, true)) {
-            addError("Duplicate parameter name '" + p.name + "' in function '" + stmt->name + "'");
+        if (!symbolTable.declareVariable(p.name, paramType, true, stmt->line, stmt->col)) {
+            addError(stmt, "Duplicate parameter name '" + p.name + "' in function '" + stmt->name + "'");
+        } else {
+            definitelyAssigned.insert(p.name);
         }
     }
 
@@ -357,11 +431,16 @@ void SemanticAnalyzer::analyzeFunctionDef(FunctionDef* stmt) {
         analyzeStmt(stmt->body.get());
     }
 
-    if (currentFunctionReturnType != DataType::VOID && !currentFunctionHasReturn && stmt->name != "main") {
-        addWarning("Function '" + stmt->name + "' does not explicitly return a value");
+    // Missing-return check
+    if (currentFunctionReturnType != DataType::VOID && stmt->name != "main") {
+        if (!returnsOnAllPaths(stmt->body.get())) {
+            addError(stmt, "Control reaches end of non-void function '" + stmt->name + "' without returning a value");
+        }
     }
 
+    checkUnusedVariablesInCurrentScope();
     symbolTable.exitScope();
+    definitelyAssigned = savedAssigned;
     insideFunction = false;
 }
 
@@ -409,13 +488,13 @@ DataType SemanticAnalyzer::analyzeStringLiteral(StringLiteral* expr) {
 DataType SemanticAnalyzer::analyzeVariableExpr(VariableExpr* expr) {
     VariableSymbol* var = symbolTable.lookupVariable(expr->name);
     if (!var) {
-        addError("Undeclared variable '" + expr->name + "'");
+        addError(expr, "Undeclared variable '" + expr->name + "'");
         return DataType::UNKNOWN;
     }
 
     var->isUsed = true;
-    if (!var->isInitialized) {
-        addWarning("Variable '" + expr->name + "' used without being initialized");
+    if (definitelyAssigned.find(expr->name) == definitelyAssigned.end()) {
+        addWarning(expr, "Variable '" + expr->name + "' used before being initialized");
     }
 
     return var->type;
@@ -423,17 +502,20 @@ DataType SemanticAnalyzer::analyzeVariableExpr(VariableExpr* expr) {
 
 DataType SemanticAnalyzer::analyzeUnaryExpr(UnaryExpr* expr) {
     DataType t = analyzeExpr(expr->operand.get());
+    if (t == DataType::UNKNOWN) return DataType::UNKNOWN;
 
     if (expr->op == '-') {
-        if (t != DataType::INT && t != DataType::UNKNOWN) {
-            addError("Unary '-' expects integer operand, got " + dataTypeToString(t));
+        if (t != DataType::INT) {
+            addError(expr, "Unary '-' expects integer operand, got " + dataTypeToString(t));
+            return DataType::UNKNOWN;
         }
         return DataType::INT;
     }
 
     if (expr->op == '!') {
-        if (t != DataType::INT && t != DataType::BOOL && t != DataType::UNKNOWN) {
-            addError("Logical '!' expects integer or boolean operand, got " + dataTypeToString(t));
+        if (t != DataType::INT && t != DataType::BOOL) {
+            addError(expr, "Logical '!' expects integer or boolean operand, got " + dataTypeToString(t));
+            return DataType::UNKNOWN;
         }
         return DataType::BOOL;
     }
@@ -445,9 +527,13 @@ DataType SemanticAnalyzer::analyzeBinaryExpr(BinaryExpr* expr) {
     DataType l = analyzeExpr(expr->lhs.get());
     DataType r = analyzeExpr(expr->rhs.get());
 
-    if ((l != DataType::INT && l != DataType::UNKNOWN) ||
-        (r != DataType::INT && r != DataType::UNKNOWN)) {
-        addError(std::string("Binary operator '") + expr->op + "' requires integer operands");
+    if (l == DataType::UNKNOWN || r == DataType::UNKNOWN) {
+        return DataType::UNKNOWN;
+    }
+
+    if (l != DataType::INT || r != DataType::INT) {
+        addError(expr, std::string("Binary operator '") + expr->op + "' requires integer operands, got " + dataTypeToString(l) + " and " + dataTypeToString(r));
+        return DataType::UNKNOWN;
     }
 
     return DataType::INT;
@@ -457,9 +543,14 @@ DataType SemanticAnalyzer::analyzeComparisonExpr(ComparisonExpr* expr) {
     DataType l = analyzeExpr(expr->lhs.get());
     DataType r = analyzeExpr(expr->rhs.get());
 
-    if (l != r && l != DataType::UNKNOWN && r != DataType::UNKNOWN) {
-        addError("Comparison operator '" + expr->op + "' compares incompatible types (" +
+    if (l == DataType::UNKNOWN || r == DataType::UNKNOWN) {
+        return DataType::UNKNOWN;
+    }
+
+    if (l != r) {
+        addError(expr, "Comparison operator '" + expr->op + "' compares incompatible types (" +
                  dataTypeToString(l) + " and " + dataTypeToString(r) + ")");
+        return DataType::UNKNOWN;
     }
 
     return DataType::BOOL;
@@ -469,47 +560,65 @@ DataType SemanticAnalyzer::analyzeLogicalExpr(LogicalExpr* expr) {
     DataType l = analyzeExpr(expr->lhs.get());
     DataType r = analyzeExpr(expr->rhs.get());
 
+    if (l == DataType::UNKNOWN || r == DataType::UNKNOWN) {
+        return DataType::UNKNOWN;
+    }
+
     if (l == DataType::VOID || l == DataType::STRING ||
         r == DataType::VOID || r == DataType::STRING) {
-        addError("Logical operator '" + expr->op + "' cannot operate on void or string");
+        addError(expr, "Logical operator '" + expr->op + "' cannot operate on void or string");
+        return DataType::UNKNOWN;
     }
 
     return DataType::BOOL;
 }
 
 DataType SemanticAnalyzer::analyzeFunctionCall(FunctionCall* expr) {
-    if (expr->name == "print") {
-        if (!expr->args || expr->args->size() != 1) {
-            addError("'print' function expects exactly 1 argument");
-        } else {
-            DataType argType = analyzeExpr((*expr->args)[0]);
-            if (argType == DataType::VOID) {
-                addError("Cannot print void expression");
-            }
-        }
-        return DataType::VOID;
-    }
-
     FunctionSymbol* fn = symbolTable.lookupFunction(expr->name);
     if (!fn) {
-        addError("Call to undeclared function '" + expr->name + "'");
+        addError(expr, "Call to undeclared function '" + expr->name + "'");
         return DataType::UNKNOWN;
     }
 
+    // Collect argument types
+    std::vector<DataType> argTypes;
+    bool hasUnknownArg = false;
+    if (expr->args) {
+        for (auto* a : *expr->args) {
+            DataType t = analyzeExpr(a);
+            if (t == DataType::UNKNOWN) hasUnknownArg = true;
+            argTypes.push_back(t);
+        }
+    }
+
+    // Custom builtin validation path (e.g. for print)
+    if (fn->validator) {
+        std::string err;
+        if (!fn->validator(argTypes, err)) {
+            addError(expr, err);
+            return DataType::UNKNOWN;
+        }
+        return fn->returnType;
+    }
+
+    if (hasUnknownArg) {
+        return fn->returnType;
+    }
+
     size_t expected = fn->paramTypes.size();
-    size_t actual = expr->args ? expr->args->size() : 0;
+    size_t actual = argTypes.size();
 
     if (expected != actual) {
-        addError("Function '" + expr->name + "' expects " + std::to_string(expected) +
+        addError(expr, "Function '" + expr->name + "' expects " + std::to_string(expected) +
                  " argument(s), but " + std::to_string(actual) + " were provided");
-    } else if (expr->args) {
-        for (size_t i = 0; i < actual; ++i) {
-            DataType argType = analyzeExpr((*expr->args)[i]);
-            if (argType != fn->paramTypes[i] && argType != DataType::UNKNOWN) {
-                addError("Argument " + std::to_string(i + 1) + " of function '" + expr->name +
-                         "' expects type " + dataTypeToString(fn->paramTypes[i]) +
-                         ", got " + dataTypeToString(argType));
-            }
+        return fn->returnType;
+    }
+
+    for (size_t i = 0; i < actual; ++i) {
+        if (argTypes[i] != fn->paramTypes[i]) {
+            addError(expr, "Argument " + std::to_string(i + 1) + " of function '" + expr->name +
+                     "' expects type " + dataTypeToString(fn->paramTypes[i]) +
+                     ", got " + dataTypeToString(argTypes[i]));
         }
     }
 

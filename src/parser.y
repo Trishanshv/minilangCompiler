@@ -17,12 +17,22 @@
 extern int yylex();
 extern char* yytext;
 extern int yylineno;
+extern YYLTYPE yylloc;
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error at line %d: %s near '%s'\n", yylineno, s, yytext);
+    fprintf(stderr, "[Line %d, Col %d] Syntax Error: %s near '%s'\n", yylloc.first_line, yylloc.first_column, s, yytext);
 }
 
 std::unique_ptr<Program> root;
+
+template<typename T>
+T* set_loc(T* node, const YYLTYPE& loc) {
+    if (node) {
+        node->line = loc.first_line;
+        node->col = loc.first_column;
+    }
+    return node;
+}
 
 template<typename T>
 std::vector<T*>* make_vector(T* item) {
@@ -77,8 +87,8 @@ std::vector<T*>* make_vector(T* item) {
 %%
 
 program:
-    top_level_list { root = std::make_unique<Program>($1); }
-  | /* empty */    { root = std::make_unique<Program>(new std::vector<Statement*>()); }
+    top_level_list { root = std::unique_ptr<Program>(set_loc(new Program($1), @$)); }
+  | /* empty */    { root = std::unique_ptr<Program>(set_loc(new Program(new std::vector<Statement*>()), @$)); }
 ;
 
 top_level_list:
@@ -108,12 +118,12 @@ statement_list:
 
 function_def:
     type IDENTIFIER '(' param_list ')' '{' statement_list '}' {
-        $$ = new FunctionDef($1, $2, $4, new Block($7));
+        $$ = set_loc(new FunctionDef($1, $2, $4, set_loc(new Block($7), @7)), @$);
         free($1);
         free($2);
     }
   | type IDENTIFIER '(' param_list ')' '{' '}' {
-        $$ = new FunctionDef($1, $2, $4, new Block(new std::vector<Statement*>()));
+        $$ = set_loc(new FunctionDef($1, $2, $4, set_loc(new Block(new std::vector<Statement*>()), @$)), @$);
         free($1);
         free($2);
     }
@@ -146,73 +156,73 @@ param_nonempty_list:
 
 statement:
     RETURN expression ';' {
-        $$ = new ReturnStatement($2);   
+        $$ = set_loc(new ReturnStatement($2), @$);   
     }
     | RETURN ';' {
-        $$ = new ReturnStatement(nullptr);
+        $$ = set_loc(new ReturnStatement(nullptr), @$);
     }
     | INT IDENTIFIER '=' expression ';' {
-        $$ = new VarDeclaration($2, $4);   
+        $$ = set_loc(new VarDeclaration($2, $4), @$);   
         free($2);  
     }
     | INT IDENTIFIER ';' {
-        $$ = new VarDeclaration($2, nullptr);
+        $$ = set_loc(new VarDeclaration($2, nullptr), @$);
         free($2);
     }
     | IDENTIFIER '=' expression ';' {
-        $$ = new Assignment($1, $3);   
+        $$ = set_loc(new Assignment($1, $3), @$);   
         free($1); 
     }
     | IDENTIFIER ADD_ASSIGN expression ';' {
-        $$ = new Assignment($1, new BinaryExpr('+', new VariableExpr($1), $3));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('+', set_loc(new VariableExpr($1), @1), $3), @$)), @$);
         free($1);
     }
     | IDENTIFIER SUB_ASSIGN expression ';' {
-        $$ = new Assignment($1, new BinaryExpr('-', new VariableExpr($1), $3));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('-', set_loc(new VariableExpr($1), @1), $3), @$)), @$);
         free($1);
     }
     | IDENTIFIER MUL_ASSIGN expression ';' {
-        $$ = new Assignment($1, new BinaryExpr('*', new VariableExpr($1), $3));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('*', set_loc(new VariableExpr($1), @1), $3), @$)), @$);
         free($1);
     }
     | IDENTIFIER DIV_ASSIGN expression ';' {
-        $$ = new Assignment($1, new BinaryExpr('/', new VariableExpr($1), $3));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('/', set_loc(new VariableExpr($1), @1), $3), @$)), @$);
         free($1);
     }
     | IDENTIFIER TOK_INC ';' {
-        $$ = new Assignment($1, new BinaryExpr('+', new VariableExpr($1), new IntegerLiteral(1)));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('+', set_loc(new VariableExpr($1), @1), set_loc(new IntegerLiteral(1), @$)), @$)), @$);
         free($1);
     }
     | IDENTIFIER TOK_DEC ';' {
-        $$ = new Assignment($1, new BinaryExpr('-', new VariableExpr($1), new IntegerLiteral(1)));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('-', set_loc(new VariableExpr($1), @1), set_loc(new IntegerLiteral(1), @$)), @$)), @$);
         free($1);
     }
     | '{' statement_list '}' {
-        $$ = new Block($2);   
+        $$ = set_loc(new Block($2), @$);   
     }
     | '{' '}' {
-        $$ = new Block(new std::vector<Statement*>());
+        $$ = set_loc(new Block(new std::vector<Statement*>()), @$);
     }
     | expression ';' {
-        $$ = new ExprStatement($1);   
+        $$ = set_loc(new ExprStatement($1), @$);   
     }
     | TOK_IF '(' expression ')' statement %prec LOWER_THAN_ELSE {
-        $$ = new IfStatement($3, $5);
+        $$ = set_loc(new IfStatement($3, $5), @$);
     }
     | TOK_IF '(' expression ')' statement TOK_ELSE statement {
-        $$ = new IfStatement($3, $5, $7);
+        $$ = set_loc(new IfStatement($3, $5, $7), @$);
     }
     | TOK_WHILE '(' expression ')' statement {
-        $$ = new WhileStatement($3, $5);
+        $$ = set_loc(new WhileStatement($3, $5), @$);
     }
     | TOK_FOR '(' for_init ';' for_cond ';' for_inc ')' statement {
-        $$ = new ForStatement($3, $5, $7, $9);
+        $$ = set_loc(new ForStatement($3, $5, $7, $9), @$);
     }
     | TOK_BREAK ';' {
-        $$ = new BreakStatement();
+        $$ = set_loc(new BreakStatement(), @$);
     }
     | TOK_CONTINUE ';' {
-        $$ = new ContinueStatement();
+        $$ = set_loc(new ContinueStatement(), @$);
     }
     | error ';' {
         yyerrok;
@@ -223,15 +233,15 @@ statement:
 for_init:
     /* empty */ { $$ = nullptr; }
     | INT IDENTIFIER '=' expression {
-        $$ = new VarDeclaration($2, $4);
+        $$ = set_loc(new VarDeclaration($2, $4), @$);
         free($2);
     }
     | IDENTIFIER '=' expression {
-        $$ = new Assignment($1, $3);
+        $$ = set_loc(new Assignment($1, $3), @$);
         free($1);
     }
     | expression {
-        $$ = new ExprStatement($1);
+        $$ = set_loc(new ExprStatement($1), @$);
     }
 ;
 
@@ -243,99 +253,99 @@ for_cond:
 for_inc:
     /* empty */ { $$ = nullptr; }
     | IDENTIFIER '=' expression {
-        $$ = new Assignment($1, $3);
+        $$ = set_loc(new Assignment($1, $3), @$);
         free($1);
     }
     | IDENTIFIER ADD_ASSIGN expression {
-        $$ = new Assignment($1, new BinaryExpr('+', new VariableExpr($1), $3));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('+', set_loc(new VariableExpr($1), @1), $3), @$)), @$);
         free($1);
     }
     | IDENTIFIER SUB_ASSIGN expression {
-        $$ = new Assignment($1, new BinaryExpr('-', new VariableExpr($1), $3));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('-', set_loc(new VariableExpr($1), @1), $3), @$)), @$);
         free($1);
     }
     | IDENTIFIER TOK_INC {
-        $$ = new Assignment($1, new BinaryExpr('+', new VariableExpr($1), new IntegerLiteral(1)));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('+', set_loc(new VariableExpr($1), @1), set_loc(new IntegerLiteral(1), @$)), @$)), @$);
         free($1);
     }
     | IDENTIFIER TOK_DEC {
-        $$ = new Assignment($1, new BinaryExpr('-', new VariableExpr($1), new IntegerLiteral(1)));
+        $$ = set_loc(new Assignment($1, set_loc(new BinaryExpr('-', set_loc(new VariableExpr($1), @1), set_loc(new IntegerLiteral(1), @$)), @$)), @$);
         free($1);
     }
     | expression {
-        $$ = new ExprStatement($1);
+        $$ = set_loc(new ExprStatement($1), @$);
     }
 ;
 
 expression:
     NUMBER {
-        $$ = new IntegerLiteral($1);
+        $$ = set_loc(new IntegerLiteral($1), @$);
     }
     | STRING_LITERAL {
-        $$ = new StringLiteral($1);
+        $$ = set_loc(new StringLiteral($1), @$);
         free($1);
     }
     | IDENTIFIER {
-        $$ = new VariableExpr($1);   
+        $$ = set_loc(new VariableExpr($1), @$);   
         free($1);
     }
     | '(' expression ')' {
         $$ = $2;
     }
     | '-' expression %prec UMINUS {
-        $$ = new UnaryExpr('-', $2);
+        $$ = set_loc(new UnaryExpr('-', $2), @$);
     }
     | '!' expression {
-        $$ = new UnaryExpr('!', $2);
+        $$ = set_loc(new UnaryExpr('!', $2), @$);
     }
     | expression '+' expression {
-        $$ = new BinaryExpr('+', $1, $3);   
+        $$ = set_loc(new BinaryExpr('+', $1, $3), @$);   
     }
     | expression '-' expression {
-        $$ = new BinaryExpr('-', $1, $3);   
+        $$ = set_loc(new BinaryExpr('-', $1, $3), @$);   
     }
     | expression '*' expression {
-        $$ = new BinaryExpr('*', $1, $3);   
+        $$ = set_loc(new BinaryExpr('*', $1, $3), @$);   
     }
     | expression '/' expression {
-        $$ = new BinaryExpr('/', $1, $3);   
+        $$ = set_loc(new BinaryExpr('/', $1, $3), @$);   
     }
     | expression '%' expression {
-        $$ = new BinaryExpr('%', $1, $3);
+        $$ = set_loc(new BinaryExpr('%', $1, $3), @$);
     }
     | expression '<' expression {
-        $$ = new ComparisonExpr("<", $1, $3);   
+        $$ = set_loc(new ComparisonExpr("<", $1, $3), @$);   
     }
     | expression '>' expression {
-        $$ = new ComparisonExpr(">", $1, $3);   
+        $$ = set_loc(new ComparisonExpr(">", $1, $3), @$);   
     }
     | expression LE expression {
-        $$ = new ComparisonExpr("<=", $1, $3);   
+        $$ = set_loc(new ComparisonExpr("<=", $1, $3), @$);   
     }
     | expression GE expression {
-        $$ = new ComparisonExpr(">=", $1, $3);   
+        $$ = set_loc(new ComparisonExpr(">=", $1, $3), @$);   
     }
     | expression EQ expression {
-        $$ = new ComparisonExpr("==", $1, $3);   
+        $$ = set_loc(new ComparisonExpr("==", $1, $3), @$);   
     }
     | expression NE expression {
-        $$ = new ComparisonExpr("!=", $1, $3);   
+        $$ = set_loc(new ComparisonExpr("!=", $1, $3), @$);   
     }
     | expression AND expression {
-        $$ = new LogicalExpr("&&", $1, $3);
+        $$ = set_loc(new LogicalExpr("&&", $1, $3), @$);
     }
     | expression OR expression {
-        $$ = new LogicalExpr("||", $1, $3);
+        $$ = set_loc(new LogicalExpr("||", $1, $3), @$);
     }
     | IDENTIFIER '(' ')' {
-        $$ = new FunctionCall(
+        $$ = set_loc(new FunctionCall(
             std::string($1), 
             new std::vector<Expression*>()   
-        );
+        ), @$);
         free($1); 
     }
     | IDENTIFIER '(' expression_list ')' {
-        $$ = new FunctionCall(std::string($1), $3);   
+        $$ = set_loc(new FunctionCall(std::string($1), $3), @$);   
         free($1);
     }
 ;
