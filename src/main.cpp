@@ -1,4 +1,5 @@
 #include "ast.hpp"
+#include "semantic.hpp"
 #include "codegen.hpp"
 #include "parser.hpp"
 #include <iostream>
@@ -11,7 +12,7 @@ extern FILE* yyin;
 
 int main(int argc, char** argv) {
     if (argc < 2) {
-        fprintf(stderr, "Using: %s <source file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <source file>\n", argv[0]);
         return 1;
     }
     
@@ -20,17 +21,34 @@ int main(int argc, char** argv) {
         perror("fopen");
         return 1;
     }
-    yydebug=1;
-    std::cout<<"Starting parsing\n";
     
-    if (yyparse() != 0) {
+    yydebug = 0;
+    
+    if (yyparse() != 0 || !root) {
         std::cerr << "Parsing failed.\n";
+        fclose(yyin);
+        return 1;
+    }
+    fclose(yyin);
+
+    // Run dedicated semantic analysis pass
+    SemanticAnalyzer analyzer;
+    if (!analyzer.analyze(root.get())) {
+        analyzer.printDiagnostics();
+        std::cerr << "Semantic analysis failed with " << analyzer.getErrorCount() << " error(s).\n";
         return 1;
     }
 
-    std::cout << "Generating LLVM IR...\n";
+    if (analyzer.getWarningCount() > 0) {
+        analyzer.printDiagnostics();
+    }
+
+    // Code generation
     CodeGenContext context;
-    context.generateCode(root.get());
+    if (!context.generateCode(root.get())) {
+        std::cerr << "Code generation failed.\n";
+        return 1;
+    }
 
     context.module->print(llvm::outs(), nullptr);
 

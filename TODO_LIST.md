@@ -115,27 +115,27 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
 
 ### 5. 🔍 Semantic Analysis (`src/semantic.cpp`, `src/codegen.hpp`)
 
-- [ ] **Establish dedicated semantic analysis pass**:
-  - [ ] Perform semantic analysis as a dedicated AST traversal pass *before* code generation rather than inline inside LLVM IR emission.
-- [ ] **Variable validation**:
-  - [x] Variable redeclaration detection in the same scope (partially added in `codegen.cpp`).
-  - [x] Undeclared variable use detection (partially added in `codegen.cpp`).
-  - [ ] Check assignment to undeclared variables in `Assignment` (currently checks LLVM alloca rather than symbol table).
-  - [ ] Detect use of uninitialized variables.
-  - [ ] Detect unused variables (warning).
-- [ ] **Type checking & validation**:
-  - [ ] Type checking for binary arithmetic operands.
-  - [ ] Type checking for comparisons.
-  - [ ] Condition type validation for `if`, `while`, and `for` (ensure boolean/integer).
-  - [ ] Type checking on variable initialization and assignment.
-- [ ] **Function validation**:
-  - [ ] Function signature registration in symbol table.
-  - [ ] Function call arity check (argument count matches parameter count).
-  - [ ] Function call argument type compatibility check.
-  - [ ] Verify non-void functions always return a value along all execution paths.
-- [ ] **Control flow validation**:
-  - [ ] Validate `break` and `continue` statements at semantic check time (must be lexically enclosed within a loop).
-  - [ ] Detect unreachable code after unconditional `return`, `break`, or `continue`.
+- [x] **Establish dedicated semantic analysis pass**:
+  - [x] Perform semantic analysis as a dedicated AST traversal pass *before* code generation rather than inline inside LLVM IR emission.
+- [x] **Variable validation**:
+  - [x] Variable redeclaration detection in the same scope.
+  - [x] Undeclared variable use detection.
+  - [x] Check assignment to undeclared variables in `Assignment`.
+  - [x] Detect use of uninitialized variables (warning).
+  - [x] Detect unused variables (warning).
+- [x] **Type checking & validation**:
+  - [x] Type checking for binary arithmetic operands.
+  - [x] Type checking for comparisons.
+  - [x] Condition type validation for `if`, `while`, and `for` (ensure boolean/integer).
+  - [x] Type checking on variable initialization and assignment.
+- [x] **Function validation**:
+  - [x] Function signature registration in symbol table.
+  - [x] Function call arity check (argument count matches parameter count).
+  - [x] Function call argument type compatibility check.
+  - [x] Verify non-void functions return a value along execution paths (warning).
+- [x] **Control flow validation**:
+  - [x] Validate `break` and `continue` statements at semantic check time (must be lexically enclosed within a loop).
+  - [x] Detect unreachable code after unconditional `return`, `break`, or `continue`.
 
 ---
 
@@ -195,8 +195,8 @@ All unfinished items are marked with `[ ]`. Items that are already functional ar
     - [x] While loops, for loops, and nested while loops.
     - [x] User-defined functions with parameters and calls.
     - [x] String literals, single-line/multi-line comments, and polymorphic `print`.
-- [ ] **Add negative test cases**:
-  - [ ] Tests that assert compilation fails with appropriate error messages on invalid syntax or invalid types.
+- [x] **Add negative test cases**:
+  - [x] Tests that assert compilation fails with appropriate error messages on invalid syntax or invalid types (`tests/negative/`).
 
 ---
 
